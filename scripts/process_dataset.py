@@ -114,6 +114,10 @@ def main():
 
     blocklist = get_blocklist(args.blocklist_filename)
 
+    for word in blocklist:
+        if word in word_set:
+            del word_set[word]
+
     seen = set()
     with open(args.target_sentences_filename) as target_file:
         with open(args.base_sentences_filename) as base_file:
