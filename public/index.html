@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>freqminer: mine sentences by word frequency</title>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <!-- <script defer src="/__/firebase/init.js?useEmulator=true"></script> -->
+
+    <link rel="stylesheet" type="text/css" href="css/freq-miner.css">
+</head>
+
+<body>
+    <h1 class="main-header">FreqMiner</h1>
+    <div id="query-container" class="controls">
+        <div id="language-selection-container">
+            I am learning <select id="target-language-selector">
+                <option>French</option>
+            </select> and I speak <select id="base-language-selector">
+                <option>English</option>
+            </select>
+        </div>
+        <form id="query-form" class="primary-control-container">
+            <label id="search-label">
+                Find French sentences with the French word:
+            </label>
+            <label for="base-target-toggle" style="float:right">
+                Toggle search language
+                <input id="base-target-toggle" style="display:none" type="checkbox" />
+            </label>
+            <input type="text" class="primary-control" id="search-box" />
+        </form>
+    </div>
+    <div id="results-container" class="results"></div>
+    <script type="text/javascript" src="js/bundle.js"></script>
+</body>
+
+</html>

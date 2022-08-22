@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "firebase": "^9.9.3"
+  }
+}

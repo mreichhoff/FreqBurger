@@ -1,0 +1,95 @@
+body {
+    background: #ECEFF1;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.main-header {
+    margin: 4px auto;
+    text-align: center;
+}
+
+.dataset-header {
+    margin: 2px;
+}
+
+.dataset-metadata,
+.frequency-metadata {
+    margin: 2px;
+}
+
+.dataset-description,
+.dataset-attribution {
+    font-size: 12px;
+}
+
+.controls,
+.results {
+    width: 1000px;
+    margin: 10px auto;
+}
+
+.results {
+    display: grid;
+    grid-template-columns: 500px 500px;
+}
+
+.dataset-results {
+    margin: 4px;
+}
+
+.primary-control-container {
+    margin: 10px 0;
+}
+
+.primary-control {
+    display: block;
+    width: 1000px;
+    height: 25px;
+    font-size: 20px;
+    margin: 10px auto;
+}
+
+.example-text {
+    margin: 4px 0;
+}
+
+.example {
+    margin: 10px 0;
+}
+
+.target {
+    font-size: 18px;
+}
+
+.base {
+    font-size: 14px;
+}
+
+.token {
+    cursor: pointer;
+}
+
+.searched-term {
+    background-color: #ff635f33;
+}
+
+.example-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+@media (max-width: 600px) {
+
+    .controls,
+    .results {
+        width: 580px;
+        margin: 4px auto;
+        display: grid;
+        grid-template-columns: 580px;
+    }
+}
