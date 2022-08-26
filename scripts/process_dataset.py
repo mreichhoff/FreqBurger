@@ -98,6 +98,7 @@ def main():
     sorted_freqs = sorted(
         target_freqs.items(), key=lambda kvp: kvp[1], reverse=True)
     ranked_freqs = {x[0]: index for index, x in enumerate(sorted_freqs)}
+    base_ranked_freqs = {}
 
     word_set = {}
     if args.get_base_examples:
@@ -108,6 +109,10 @@ def main():
             args.base_sentences_filename, args.base_language, args.base_ignore_case)
         word_set = {key: [] for key,
                     value in base_freqs.items() if value >= int(args.min)}
+        sorted_base_freqs = sorted(
+            base_freqs.items(), key=lambda kvp: kvp[1], reverse=True)
+        base_ranked_freqs = {x[0]: index for index,
+                             x in enumerate(sorted_base_freqs)}
     else:
         word_set = {key: [] for key,
                     value in target_freqs.items() if value >= int(args.min)}
@@ -140,8 +145,14 @@ def main():
                     target, args.target_language)
                 base_words = get_words_with_punctuation(
                     base, args.base_language)
-                average_freq = get_average_frequency_rank(
-                    ranked_freqs, target_tokens)
+                if args.get_base_examples:
+                    base_tokens = tokenize(
+                        base, args.base_language, args.base_ignore_case)
+                    average_freq = get_average_frequency_rank(
+                        base_ranked_freqs, base_tokens)
+                else:
+                    average_freq = get_average_frequency_rank(
+                        ranked_freqs, target_tokens)
 
                 if args.get_base_examples:
                     tokens = tokenize(base, args.base_language,

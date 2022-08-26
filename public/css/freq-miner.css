@@ -28,12 +28,12 @@ body {
 }
 
 .controls,
-.results {
+.result-container {
     width: 1000px;
     margin: 10px auto;
 }
 
-.results {
+.result-container.grid {
     display: grid;
     grid-template-columns: 500px 500px;
 }
@@ -81,6 +81,24 @@ body {
 .example-list {
     list-style-type: none;
     padding: 0;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: 333px 334px 333px;
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3333;
+}
+
+.tab {
+    cursor: pointer;
+}
+
+.tab.active {
+    font-weight: bold;
 }
 
 @media (max-width: 600px) {

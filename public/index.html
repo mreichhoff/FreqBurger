@@ -28,6 +28,7 @@
             <label id="search-label">
                 Find French sentences with the French word:
             </label>
+            <!-- TODO: stop this float right -->
             <label for="base-target-toggle" style="float:right">
                 Toggle search language
                 <input id="base-target-toggle" style="display:none" type="checkbox" />
@@ -35,7 +36,16 @@
             <input type="text" class="primary-control" id="search-box" />
         </form>
     </div>
-    <div id="results-container" class="results"></div>
+    <div id="result-types-container" style="display:none">
+        <div class="tabs">
+            <span id="examples-tab" class="tab active">Examples</span>
+            <span id="definitions-tab" class="tab">Definitions</span>
+            <span id="collocations-tab" class="tab">Collocations</span>
+        </div>
+        <div id="results-container" class="result-container grid"></div>
+        <div id="definitions-container" style="display:none" class="result-container"></div>
+        <div id="collocations-container" style="display:none" class="result-container">coming soon</div>
+    </div>
     <script type="text/javascript" src="js/bundle.js"></script>
 </body>
 

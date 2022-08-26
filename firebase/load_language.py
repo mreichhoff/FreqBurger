@@ -68,7 +68,7 @@ def main():
             else:
                 document[dataset_key] = {}
         if should_write:
-            collection.document(key).set(document)
+            collection.document(key).set(document, merge=True)
         # index = index+1
         # print(key)
         # if index >= 10:

@@ -1,5 +1,5 @@
 import { initialize as initializeFirebase } from "./firebase-init";
-import { initialize as initializeDatalayer, setLanguages, getData, queryTypes } from "./data-layer";
+import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, queryTypes } from "./data-layer";
 
 initializeFirebase();
 initializeDatalayer();
@@ -8,10 +8,25 @@ const queryForm = document.getElementById('query-form');
 const searchBox = document.getElementById('search-box');
 const searchLabel = document.getElementById('search-label');
 const toggleCheckbox = document.getElementById('base-target-toggle');
+
 const resultsContainer = document.getElementById('results-container');
+const definitionsContainer = document.getElementById('definitions-container');
+const collocationsContainer = document.getElementById('collocations-container');
+
+const resultsTypesContainer = document.getElementById('result-types-container');
 
 const targetLanguageSelector = document.getElementById('target-language-selector');
 const baseLanguageSelector = document.getElementById('base-language-selector');
+
+const resultsTab = document.getElementById('examples-tab');
+const definitionsTab = document.getElementById('definitions-tab');
+const collocationsTab = document.getElementById('collocations-tab');
+
+const tabs = [
+    { tab: resultsTab, container: resultsContainer },
+    { tab: definitionsTab, container: definitionsContainer },
+    { tab: collocationsTab, container: collocationsContainer }
+];
 
 let targetLanguage = 'French';
 let baseLanguage = 'English';
@@ -23,6 +38,11 @@ const languageMetadata = {
     'English': {
         'key': 'en'
     }
+};
+
+const cleanTypes = {
+    'definitions': 'definitions',
+    'examples': 'examples'
 }
 
 const datasetPriorities = ['tatoeba', 'commoncrawl', 'opensubs', 'wiki'];
@@ -49,11 +69,17 @@ const datasetMetadata = {
         'attributionUrl': 'https://opus.nlpl.eu/Wikipedia.php'
     }
 };
-function clean(token) {
+function clean(token, cleanType) {
+    token = token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
+    if (cleanType === cleanTypes.definitions) {
+        // TODO: language specificity, general hackiness
+        return token.replace(/(^[djlmt]\')/, '');
+    }
+
     // TODO: why allow trailing but not leading numbers?
     // TODO: handle case sensitive languages
     // wow https://stackoverflow.com/questions/20690499/concrete-javascript-regular-expression-for-accented-characters-diacritics
-    return token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
+    return token;
 }
 function getOrderingSuffix(number) {
     // they ask me why i do it, because I can
@@ -64,12 +90,13 @@ function renderExampleText(term, tokens, queryType, container) {
     for (const token of tokens) {
         let anchor = document.createElement('a');
         anchor.classList.add('token');
-        const cleanToken = clean(token);
+        const cleanToken = clean(token, cleanTypes.examples);
         if (cleanToken === term) {
             // TODO: array expansion thing with classList.add
             anchor.classList.add('searched-term');
         }
-        anchor.addEventListener('dblclick', function () {
+        anchor.addEventListener('dblclick', function (event) {
+            event.preventDefault();
             if (queryType === queryTypes.base) {
                 toggleCheckbox.checked = true;
                 toggleCheckbox.dispatchEvent(new Event('change'));
@@ -156,9 +183,51 @@ function renderData(term, data) {
 function clearResults() {
     resultsContainer.innerHTML = '';
 }
+function clearDefinitions() {
+    definitionsContainer.innerHTML = '';
+}
+function renderDefinitionWithReference(term, reference, definition, container) {
+    let anchor = document.createElement('a');
+    anchor.classList.add('token');
+    anchor.innerText = ` (form of ${reference})`;
+    anchor.addEventListener('dblclick', function () {
+        searchBox.value = reference;
+        query(reference, queryTypes.target);
+    });
+    container.append(`${term}: ${definition}`);
+    container.appendChild(anchor);
+}
+function renderDefinition(term, definition, container) {
+    let definitionElement = document.createElement('p');
+    definitionElement.classList.add('definition');
+    if (definition.def && definition.form) {
+        // TODO: multiple forms?
+        renderDefinitionWithReference(term, definition.form[0].word, definition.def, definitionElement);
+    } else {
+        definitionElement.innerText = `${term}: ${definition.def}`;
+    }
+    container.appendChild(definitionElement);
+    if (definition.tags) {
+        let tagElement = document.createElement('p');
+        tagElement.classList.add('definition', 'tags');
+        // TODO: find better way to render tags, possibly with text per tag
+        tagElement.innerText = `word attributes: ${definition.tags.join('; ')}`
+        container.appendChild(tagElement);
+    }
+}
+function renderDefinitions(term, data) {
+    let definitionContainer = document.createElement('div');
+    for (const definition of data.defs) {
+        renderDefinition(term, definition, definitionContainer);
+    }
+    definitionsContainer.appendChild(definitionContainer);
+}
 function query(term, queryType) {
-    const cleanTerm = clean(term);
-    const dataPromise = getData(cleanTerm, queryType);
+    //ensure the parent container is shown
+    resultsTypesContainer.removeAttribute('style');
+
+    const cleanTerm = clean(term, cleanTypes.examples);
+    const dataPromise = getExampleData(cleanTerm, queryType);
     dataPromise.then(value => {
         if (value.exists()) {
             // with each query, clear out the old results
@@ -167,6 +236,21 @@ function query(term, queryType) {
         } else {
             //TODO
         }
+    }).catch(x => {
+        //TODO
+    });
+    const termForDefinitions = clean(term, cleanTypes.definitions);
+    const definitionPromise = getDefinitions(termForDefinitions);
+    // TODO: just combine with sentences into a single doc per word
+    definitionPromise.then(value => {
+        if (value.exists()) {
+            clearDefinitions();
+            renderDefinitions(termForDefinitions, value.data());
+        } else {
+            //TODO
+        }
+    }).catch(x => {
+        // todo
     });
 }
 queryForm.addEventListener('submit', function (event) {
@@ -188,3 +272,19 @@ function languageChangeHandler() {
 }
 targetLanguageSelector.addEventListener('change', languageChangeHandler);
 baseLanguageSelector.addEventListener('change', languageChangeHandler);
+
+function tabClickHandler(event) {
+    for (const entry of tabs) {
+        if (entry.tab.id === event.target.id) {
+            entry.tab.classList.add('active');
+            entry.container.removeAttribute('style');
+        } else {
+            entry.tab.classList.remove('active');
+            entry.container.style.display = 'none';
+        }
+    }
+}
+
+for (const entry of tabs) {
+    entry.tab.addEventListener('click', tabClickHandler);
+}
