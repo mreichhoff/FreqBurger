@@ -44,6 +44,7 @@ def main():
                 load_document, collection, key, document))
             # if index > 10:
             #     break
+        # TODO: what was i going to do here?
         for future in futures:
             future.result()
 

@@ -1,17 +1,26 @@
 import { initialize as initializeFirebase } from "./firebase-init";
 import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, queryTypes } from "./data-layer";
+import { renderDefinitions } from "./definitions";
+import { renderCollocations, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
 
 initializeFirebase();
 initializeDatalayer();
+initializeCollocations();
 
 const queryForm = document.getElementById('query-form');
 const searchBox = document.getElementById('search-box');
 const searchLabel = document.getElementById('search-label');
 const toggleCheckbox = document.getElementById('base-target-toggle');
 
+const collocationListContainer = document.getElementById('collocation-list-container');
+const collocationsPrimary = document.getElementById('collocations-primary');
+const collocationsFallback = document.getElementById('collocations-fallback');
+const collocationsFallbackList = document.getElementById('collocations-fallback-list');
+const collocationsBaseFallback = document.getElementById('base-collocations-message');
+
 const resultsContainer = document.getElementById('results-container');
-const definitionsContainer = document.getElementById('definitions-container');
 const collocationsContainer = document.getElementById('collocations-container');
+const definitionsContainer = document.getElementById('definitions-container');
 
 const resultsTypesContainer = document.getElementById('result-types-container');
 
@@ -22,6 +31,7 @@ const resultsTab = document.getElementById('examples-tab');
 const definitionsTab = document.getElementById('definitions-tab');
 const collocationsTab = document.getElementById('collocations-tab');
 
+// ordering is important
 const tabs = [
     { tab: resultsTab, container: resultsContainer },
     { tab: definitionsTab, container: definitionsContainer },
@@ -50,23 +60,27 @@ const datasetPriorities = ['tatoeba', 'commoncrawl', 'opensubs', 'wiki'];
 const datasetMetadata = {
     'tatoeba': {
         'name': 'Tatoeba',
-        'description': 'A crowdsourced collection of translated sentences.',
-        'attributionUrl': 'https://tatoeba.org'
+        'description': 'A crowdsourced collection of translated sentences. Mostly colloquial sentences, often geared towards learners.',
+        'attributionUrl': 'https://tatoeba.org',
+        'attributionSiteName': 'Tatoeba'
     },
     'commoncrawl': {
         'name': 'CommonCrawl',
-        'description': 'Multilingual website text from a web crawler.',
-        'attributionUrl': 'https://opus.nlpl.eu/CCAligned.php'
+        'description': 'Multilingual website text from a web crawler. Often formal, like marketing text or terms of use.',
+        'attributionUrl': 'https://opus.nlpl.eu/CCAligned.php',
+        'attributionSiteName': 'Opus'
     },
     'opensubs': {
         'name': 'OpenSubtitles',
-        'description': 'Movie and TV subtitles with translations.',
-        'attributionUrl': 'https://opus.nlpl.eu/OpenSubtitles2018.php'
+        'description': 'Movie and TV subtitles with translations. Usually colloquial.',
+        'attributionUrl': 'https://opus.nlpl.eu/OpenSubtitles2018.php',
+        'attributionSiteName': 'Opus'
     },
     'wiki': {
         'name': 'Wiki',
-        'description': 'Wikipedia articles with translations.',
-        'attributionUrl': 'https://opus.nlpl.eu/Wikipedia.php'
+        'description': 'Wikipedia articles with translations. Usually formal.',
+        'attributionUrl': 'https://opus.nlpl.eu/Wikipedia.php',
+        'attributionSiteName': 'Opus'
     }
 };
 function clean(token, cleanType) {
@@ -80,6 +94,9 @@ function clean(token, cleanType) {
     // TODO: handle case sensitive languages
     // wow https://stackoverflow.com/questions/20690499/concrete-javascript-regular-expression-for-accented-characters-diacritics
     return token;
+}
+function clearDefinitions() {
+    definitionsContainer.innerHTML = '';
 }
 function getOrderingSuffix(number) {
     // they ask me why i do it, because I can
@@ -95,7 +112,7 @@ function renderExampleText(term, tokens, queryType, container) {
             // TODO: array expansion thing with classList.add
             anchor.classList.add('searched-term');
         }
-        anchor.addEventListener('dblclick', function (event) {
+        anchor.addEventListener('click', function (event) {
             event.preventDefault();
             if (queryType === queryTypes.base) {
                 toggleCheckbox.checked = true;
@@ -147,7 +164,7 @@ function renderFreq(freq, term, metadata, container) {
 function renderDatasetMetadata(metadata, container) {
     const metadataContainer = document.createElement('div');
     metadataContainer.classList.add('dataset-metadata');
-    metadataContainer.innerHTML = `<span class='dataset-description'>${metadata['description']}</span>&nbsp;<span class='dataset-attribution'>Accessed via <a href='${metadata['attributionUrl']}'>${metadata['attributionUrl']}</a></span>`;
+    metadataContainer.innerHTML = `<span class='dataset-description'>${metadata['description']}</span>&nbsp;<span class='dataset-attribution'>Accessed via <a href='${metadata['attributionUrl']}'>${metadata['attributionSiteName']}</a></span>`;
     container.appendChild(metadataContainer);
 }
 function renderHeader(metadata, container) {
@@ -166,11 +183,15 @@ function renderDataset(term, datasetId, results, container) {
     }
     renderExamples(term, results.examples, container);
 }
+
 function renderData(term, data) {
     let value = {};
+    collocationListContainer.innerHTML = '';
+    let collocations = new Set();
     for (const key of datasetPriorities) {
         if (!(key in data) || !data[key].examples) {
             // if there are no examples, bail out.
+            // there won't be collocations either in that case.
             continue;
         }
         value = data[key];
@@ -178,57 +199,49 @@ function renderData(term, data) {
         datasetContainer.classList.add('dataset-results');
         renderDataset(term, key, value, datasetContainer);
         resultsContainer.appendChild(datasetContainer);
+
+        if (!data[key].collocations) {
+            continue;
+        }
+        Object.keys(data[key].collocations).forEach(x => collocations.add(x));
+    }
+    renderCollocations(collocations, collocationListContainer, function (searchTerm) {
+        searchBox.value = searchTerm;
+        query(searchTerm, queryTypes.target).then(x => {
+            switchToTab(tabs[0].tab.id);
+        });
+    });
+    //TODO there must be a better way, please no
+    collocationsPrimary.style.display = 'none';
+    collocationsFallback.style.display = 'none';
+    collocationsBaseFallback.style.display = 'none';
+    if (data.words && collocations.size === 0) {
+        collocationsFallbackList.innerHTML = '';
+        renderCollocationsFallback(data.words, collocationsFallbackList, function (word) {
+            searchBox.value = word;
+            query(word, queryTypes.target);
+        });
+        collocationsFallback.removeAttribute('style');
+    } else if (collocations.size === 0) {
+        collocationsBaseFallback.removeAttribute('style');
+    } else {
+        collocationsPrimary.removeAttribute('style');
     }
 }
 function clearResults() {
     resultsContainer.innerHTML = '';
 }
-function clearDefinitions() {
-    definitionsContainer.innerHTML = '';
-}
-function renderDefinitionWithReference(term, reference, definition, container) {
-    let anchor = document.createElement('a');
-    anchor.classList.add('token');
-    anchor.innerText = ` (form of ${reference})`;
-    anchor.addEventListener('dblclick', function () {
-        searchBox.value = reference;
-        query(reference, queryTypes.target);
-    });
-    container.append(`${term}: ${definition}`);
-    container.appendChild(anchor);
-}
-function renderDefinition(term, definition, container) {
-    let definitionElement = document.createElement('p');
-    definitionElement.classList.add('definition');
-    if (definition.def && definition.form) {
-        // TODO: multiple forms?
-        renderDefinitionWithReference(term, definition.form[0].word, definition.def, definitionElement);
-    } else {
-        definitionElement.innerText = `${term}: ${definition.def}`;
-    }
-    container.appendChild(definitionElement);
-    if (definition.tags) {
-        let tagElement = document.createElement('p');
-        tagElement.classList.add('definition', 'tags');
-        // TODO: find better way to render tags, possibly with text per tag
-        tagElement.innerText = `word attributes: ${definition.tags.join('; ')}`
-        container.appendChild(tagElement);
-    }
-}
-function renderDefinitions(term, data) {
-    let definitionContainer = document.createElement('div');
-    for (const definition of data.defs) {
-        renderDefinition(term, definition, definitionContainer);
-    }
-    definitionsContainer.appendChild(definitionContainer);
-}
+
 function query(term, queryType) {
     //ensure the parent container is shown
     resultsTypesContainer.removeAttribute('style');
 
     const cleanTerm = clean(term, cleanTypes.examples);
     const dataPromise = getExampleData(cleanTerm, queryType);
-    dataPromise.then(value => {
+    const termForDefinitions = clean(term, cleanTypes.definitions);
+    const definitionPromise = getDefinitions(termForDefinitions);
+
+    return Promise.all([dataPromise.then(value => {
         if (value.exists()) {
             // with each query, clear out the old results
             clearResults();
@@ -238,24 +251,27 @@ function query(term, queryType) {
         }
     }).catch(x => {
         //TODO
-    });
-    const termForDefinitions = clean(term, cleanTypes.definitions);
-    const definitionPromise = getDefinitions(termForDefinitions);
+    }),
     // TODO: just combine with sentences into a single doc per word
     definitionPromise.then(value => {
+        clearDefinitions();
         if (value.exists()) {
-            clearDefinitions();
-            renderDefinitions(termForDefinitions, value.data());
+            renderDefinitions(termForDefinitions, value.data(), definitionsContainer, function (reference) {
+                searchBox.value = reference;
+                query(reference, queryTypes.target);
+            });
         } else {
-            //TODO
+            //TODO: specific messaging
         }
     }).catch(x => {
         // todo
-    });
+    })]);
 }
 queryForm.addEventListener('submit', function (event) {
     event.preventDefault();
-    query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target);
+    query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target).then(x => {
+        switchToTab(tabs[0].tab.id);
+    });
 });
 
 toggleCheckbox.addEventListener('change', function () {
@@ -273,9 +289,9 @@ function languageChangeHandler() {
 targetLanguageSelector.addEventListener('change', languageChangeHandler);
 baseLanguageSelector.addEventListener('change', languageChangeHandler);
 
-function tabClickHandler(event) {
+function switchToTab(id) {
     for (const entry of tabs) {
-        if (entry.tab.id === event.target.id) {
+        if (entry.tab.id === id) {
             entry.tab.classList.add('active');
             entry.container.removeAttribute('style');
         } else {
@@ -286,5 +302,7 @@ function tabClickHandler(event) {
 }
 
 for (const entry of tabs) {
-    entry.tab.addEventListener('click', tabClickHandler);
+    entry.tab.addEventListener('click', function (event) {
+        switchToTab(event.target.id)
+    });
 }

@@ -44,7 +44,22 @@
         </div>
         <div id="results-container" class="result-container grid"></div>
         <div id="definitions-container" style="display:none" class="result-container"></div>
-        <div id="collocations-container" style="display:none" class="result-container">coming soon</div>
+        <div id="collocations-container" style="display:none" class="result-container">
+            <div id="collocations-primary" style="display: none">
+                <label>See collocations with:
+                    <select id="collocations-length-selector"></select> words
+                </label>
+                <p>Click any collocation to get example sentences.</p>
+                <div id="collocation-list-container"></div>
+            </div>
+            <div id="collocations-fallback" style="display: none">
+                <p>Click a word below to see its most common collocations.</p>
+                <ul id="collocations-fallback-list" class="collocation-list"></ul>
+            </div>
+            <p id="base-collocations-message" style="display:none">
+                No collocations found. Note that searches in the base language will
+                currently not show any collocations.</p>
+        </div>
     </div>
     <script type="text/javascript" src="js/bundle.js"></script>
 </body>

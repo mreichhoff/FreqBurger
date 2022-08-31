@@ -1,5 +1,6 @@
 import argparse
 import json
+import concurrent.futures
 
 import firebase_admin
 from firebase_admin import credentials
@@ -18,6 +19,11 @@ def transform(process_dataset_item):
 
 allkeys = set()
 data = {}
+
+
+def load_document(collection, key, document):
+    collection.document(key).set(document, merge=True)
+    print(key)
 
 
 def main():
@@ -53,26 +59,30 @@ def main():
     db = firestore.client()
     collection = db.collection(collection_id)
     # index = 0
-    # TODO: parallelize and/or enable multiprocess via merge=true in the set() call
-    for item in allkeys:
-        if '/' in item or item == '.' or item == '..':
-            print(f"failed to write: {item}")
-            continue
-        key = f"{item}-{word_key_suffix}"
-        document = {}
-        should_write = False
-        for dataset_key, dataset in data.items():
-            if item in dataset and len(dataset[item]['examples']) > 0:
-                document[dataset_key] = transform(dataset[item])
-                should_write = True
-            else:
-                document[dataset_key] = {}
-        if should_write:
-            collection.document(key).set(document, merge=True)
-        # index = index+1
-        # print(key)
-        # if index >= 10:
-        #     break
+    # print(len(allkeys))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+        for item in allkeys:
+            if '/' in item or item == '.' or item == '..':
+                print(f"failed to write: {item}")
+                continue
+            key = f"{item}-{word_key_suffix}"
+            document = {}
+            should_write = False
+            for dataset_key, dataset in data.items():
+                if item in dataset and len(dataset[item]['examples']) > 0:
+                    document[dataset_key] = transform(dataset[item])
+                    should_write = True
+                else:
+                    document[dataset_key] = {}
+            possible_words = item.split(' ')
+            if len(possible_words) > 1:
+                document['words'] = possible_words
+            if should_write:
+                executor.submit(load_document, collection, key, document)
+            # index = index+1
+            # print(key)
+            # if index >= 10:
+            #     break
 
 
 if __name__ == '__main__':

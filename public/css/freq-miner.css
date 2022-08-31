@@ -101,6 +101,18 @@ body {
     font-weight: bold;
 }
 
+/* TODO: is this going to be the same for the definitions fallback? */
+.collocation-list {
+    list-style-type: none;
+    padding: 0;
+    font-size: 18px;
+}
+
+.collocation {
+    cursor: pointer;
+    margin: 8px 0;
+}
+
 @media (max-width: 600px) {
 
     .controls,
