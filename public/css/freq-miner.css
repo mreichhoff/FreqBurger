@@ -1,11 +1,15 @@
 body {
-    background: #ECEFF1;
+    background: #fafafa;
     color: rgba(0, 0, 0, 0.87);
     font-family: Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
+}
+
+select {
+    font-size: 14px;
 }
 
 .main-header {
@@ -19,15 +23,18 @@ body {
 
 .dataset-metadata,
 .frequency-metadata {
-    margin: 2px;
+    margin: 6px 0;
+    font-weight: 300;
+    opacity: 0.85;
 }
 
 .dataset-description,
 .dataset-attribution {
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 300;
 }
 
-.controls,
+.example-container,
 .result-container {
     width: 1000px;
     margin: 10px auto;
@@ -35,7 +42,64 @@ body {
 
 .result-container.grid {
     display: grid;
-    grid-template-columns: 500px 500px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.controls {
+    width: 1000px;
+    margin: 10px auto;
+    font-weight: 300;
+}
+
+.primary-control {
+    width: calc(100% - 90px);
+    height: 28px;
+    font-size: 20px;
+    margin: 10px auto;
+    padding: 0;
+    text-align: center;
+}
+
+.submit {
+    width: 80px;
+    font-size: 16px;
+    height: 28px;
+    line-height: 28px;
+    margin: 10px auto;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    padding: 0;
+}
+
+/* TODO: primary-control vs .control.secondary */
+.control.secondary {
+    font-weight: 300;
+}
+
+.secondary-controls-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 16px;
+}
+
+.control.right {
+    text-align: right;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3333;
+}
+
+.instructions {
+    text-align: center;
+    opacity: 0.90;
+    font-weight: 300;
+    font-size: 15px;
 }
 
 .dataset-results {
@@ -46,16 +110,12 @@ body {
     margin: 10px 0;
 }
 
-.primary-control {
-    display: block;
-    width: 1000px;
-    height: 25px;
-    font-size: 20px;
-    margin: 10px auto;
-}
-
 .example-text {
     margin: 4px 0;
+}
+
+.base.example-text {
+    font-weight: 300;
 }
 
 .example {
@@ -74,6 +134,22 @@ body {
     cursor: pointer;
 }
 
+.definition .token {
+    text-decoration: underline;
+}
+
+.definition {
+    font-size: 18px;
+}
+
+.definition.term {
+    font-weight: bold;
+}
+
+.definition.tags {
+    font-size: 14px;
+}
+
 .searched-term {
     background-color: #ff635f33;
 }
@@ -81,16 +157,6 @@ body {
 .example-list {
     list-style-type: none;
     padding: 0;
-}
-
-.tabs {
-    display: grid;
-    grid-template-columns: 333px 334px 333px;
-    width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #3333;
 }
 
 .tab {
@@ -106,6 +172,9 @@ body {
     list-style-type: none;
     padding: 0;
     font-size: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
 }
 
 .collocation {
@@ -113,13 +182,58 @@ body {
     margin: 8px 0;
 }
 
-@media (max-width: 600px) {
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: rgba(255, 255, 255, 0.87);
+    }
 
+    input[type="text"] {
+        background-color: rgba(74, 74, 74, 0.9);
+        border: 1px solid #3333;
+        color: rgba(255, 255, 255, 0.87);
+    }
+
+    .dataset-attribution a {
+        color: rgba(177, 178, 225, 0.95);
+    }
+
+    input::placeholder {
+        color: #eeee;
+    }
+
+    .tabs {
+        border-bottom: 1px solid #eeee;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .example-container,
     .controls,
-    .results {
-        width: 580px;
-        margin: 4px auto;
-        display: grid;
-        grid-template-columns: 580px;
+    .tabs,
+    .result-container {
+        width: 98%;
+    }
+}
+
+@media (max-width:664px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    .example-container,
+    .controls,
+    .tabs,
+    .result-container {
+        width: 98%;
+    }
+
+    .result-container.grid {
+        grid-template-columns: 1fr;
+    }
+
+    .secondary-controls-container {
+        font-size: 14px;
     }
 }

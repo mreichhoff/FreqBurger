@@ -13460,11 +13460,15 @@
     function renderDefinitionWithReference(term, reference, definition, container, referenceHandler) {
         let anchor = document.createElement('a');
         anchor.classList.add('token');
-        anchor.innerText = ` (form of ${reference})`;
+        anchor.innerText = `(form of ${reference})`;
         anchor.addEventListener('click', function () {
             referenceHandler(reference);
         });
-        container.append(`${term}: ${definition}`);
+        let termSignifier = document.createElement('span');
+        termSignifier.classList.add('definition', 'term');
+        termSignifier.innerText = term;
+        container.append(termSignifier);
+        container.append(`: ${definition} `);
         container.appendChild(anchor);
     }
     function renderDefinition(term, definition, container, referenceHandler) {
@@ -13474,7 +13478,12 @@
             // TODO: multiple forms?
             renderDefinitionWithReference(term, definition.form[0].word, definition.def, definitionElement, referenceHandler);
         } else {
-            definitionElement.innerText = `${term}: ${definition.def}`;
+            // TODO combine with above
+            let termSignifier = document.createElement('span');
+            termSignifier.classList.add('definition', 'term');
+            termSignifier.innerText = term;
+            definitionElement.appendChild(termSignifier);
+            definitionElement.append(`: ${definition.def}`);
         }
         container.appendChild(definitionElement);
         if (definition.tags) {
@@ -13571,8 +13580,11 @@
     const collocationsBaseFallback = document.getElementById('base-collocations-message');
 
     const resultsContainer = document.getElementById('results-container');
+    const examplesContainer = document.getElementById('examples-container');
     const collocationsContainer = document.getElementById('collocations-container');
     const definitionsContainer = document.getElementById('definitions-container');
+    const definitionsResultContainer = document.getElementById('definitions-result-container');
+    const definitionsFallback = document.getElementById('definitions-fallback');
 
     const resultsTypesContainer = document.getElementById('result-types-container');
 
@@ -13585,7 +13597,7 @@
 
     // ordering is important
     const tabs = [
-        { tab: resultsTab, container: resultsContainer },
+        { tab: resultsTab, container: examplesContainer },
         { tab: definitionsTab, container: definitionsContainer },
         { tab: collocationsTab, container: collocationsContainer }
     ];
@@ -13607,12 +13619,12 @@
         'examples': 'examples'
     };
 
-    const datasetPriorities = ['tatoeba', 'commoncrawl', 'opensubs', 'wiki'];
+    const datasetPriorities = ['tatoeba', 'opensubs', 'commoncrawl', 'wiki'];
     //TODO: probably should get this on load
     const datasetMetadata = {
         'tatoeba': {
             'name': 'Tatoeba',
-            'description': 'A crowdsourced collection of translated sentences. Mostly colloquial sentences, often geared towards learners.',
+            'description': 'A crowdsourced collection of translated sentences. Mostly colloquial, often geared towards learners.',
             'attributionUrl': 'https://tatoeba.org',
             'attributionSiteName': 'Tatoeba'
         },
@@ -13630,7 +13642,7 @@
         },
         'wiki': {
             'name': 'Wiki',
-            'description': 'Wikipedia articles with translations. Usually formal.',
+            'description': 'Wikipedia articles with translations. Often formal.',
             'attributionUrl': 'https://opus.nlpl.eu/Wikipedia.php',
             'attributionSiteName': 'Opus'
         }
@@ -13648,10 +13660,13 @@
         return token;
     }
     function clearDefinitions() {
-        definitionsContainer.innerHTML = '';
+        definitionsResultContainer.innerHTML = '';
     }
     function getOrderingSuffix(number) {
         // they ask me why i do it, because I can
+        if (number % 100 === 11 || number % 100 === 12 || number % 100 === 13) {
+            return 'th';
+        }
         number = number % 10;
         return number === 1 ? 'st' : number === 2 ? 'nd' : number === 3 ? 'rd' : 'th';
     }
@@ -13805,11 +13820,15 @@
         // TODO: just combine with sentences into a single doc per word
         definitionPromise.then(value => {
             clearDefinitions();
+            definitionsFallback.style.display = 'none';
             if (value.exists()) {
-                renderDefinitions(termForDefinitions, value.data(), definitionsContainer, function (reference) {
+                renderDefinitions(termForDefinitions, value.data(), definitionsResultContainer, function (reference) {
                     searchBox.value = reference;
                     query(reference, queryTypes.target);
                 });
+            } else {
+                //TODO: specific messaging
+                definitionsFallback.removeAttribute('style');
             }
         }).catch(x => {
             // todo

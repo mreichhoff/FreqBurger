@@ -25,15 +25,18 @@
             </select>
         </div>
         <form id="query-form" class="primary-control-container">
-            <label id="search-label">
-                Find French sentences with the French word:
-            </label>
-            <!-- TODO: stop this float right -->
-            <label for="base-target-toggle" style="float:right">
-                Toggle search language
-                <input id="base-target-toggle" style="display:none" type="checkbox" />
-            </label>
-            <input type="text" class="primary-control" id="search-box" />
+            <div class="secondary-controls-container">
+                <label id="search-label" class="control secondary left">
+                    Find French sentences with the French word:
+                </label>
+                <label for="base-target-toggle" class="control secondary right">
+                    Swap search languages
+                    <input id="base-target-toggle" style="display:none" type="checkbox" />
+                </label>
+            </div>
+            <input type="text" autocapitalize="none" class="primary-control" id="search-box"
+                placeholder="Enter a word..." />
+            <input type="submit" value="Search" class="submit" />
         </form>
     </div>
     <div id="result-types-container" style="display:none">
@@ -42,21 +45,30 @@
             <span id="definitions-tab" class="tab">Definitions</span>
             <span id="collocations-tab" class="tab">Collocations</span>
         </div>
-        <div id="results-container" class="result-container grid"></div>
-        <div id="definitions-container" style="display:none" class="result-container"></div>
+        <div id="examples-container" class="example-container">
+            <p class="instructions">Click any word, in any example, to learn more. Examples are sorted
+                by average word frequency.</p>
+            <div id="results-container" class="result-container grid"></div>
+        </div>
+        <div id="definitions-container" style="display:none" class="result-container">
+            <p class="instructions" id="definitions-fallback" style="display:none">Definitions not found. Note that
+                definitions are currently
+                available only in the target language.</p>
+            <div id="definitions-result-container"></div>
+        </div>
         <div id="collocations-container" style="display:none" class="result-container">
             <div id="collocations-primary" style="display: none">
-                <label>See collocations with:
+                <p class="instructions">Click any collocation to get example sentences.</p>
+                <label class="control secondary">See collocations with:
                     <select id="collocations-length-selector"></select> words
                 </label>
-                <p>Click any collocation to get example sentences.</p>
                 <div id="collocation-list-container"></div>
             </div>
-            <div id="collocations-fallback" style="display: none">
+            <div id="collocations-fallback" class="instructions" style="display: none">
                 <p>Click a word below to see its most common collocations.</p>
                 <ul id="collocations-fallback-list" class="collocation-list"></ul>
             </div>
-            <p id="base-collocations-message" style="display:none">
+            <p id="base-collocations-message" class="instructions" style="display:none">
                 No collocations found. Note that searches in the base language will
                 currently not show any collocations.</p>
         </div>

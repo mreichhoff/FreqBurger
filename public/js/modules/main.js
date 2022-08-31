@@ -19,8 +19,11 @@ const collocationsFallbackList = document.getElementById('collocations-fallback-
 const collocationsBaseFallback = document.getElementById('base-collocations-message');
 
 const resultsContainer = document.getElementById('results-container');
+const examplesContainer = document.getElementById('examples-container');
 const collocationsContainer = document.getElementById('collocations-container');
 const definitionsContainer = document.getElementById('definitions-container');
+const definitionsResultContainer = document.getElementById('definitions-result-container');
+const definitionsFallback = document.getElementById('definitions-fallback');
 
 const resultsTypesContainer = document.getElementById('result-types-container');
 
@@ -33,7 +36,7 @@ const collocationsTab = document.getElementById('collocations-tab');
 
 // ordering is important
 const tabs = [
-    { tab: resultsTab, container: resultsContainer },
+    { tab: resultsTab, container: examplesContainer },
     { tab: definitionsTab, container: definitionsContainer },
     { tab: collocationsTab, container: collocationsContainer }
 ];
@@ -55,12 +58,12 @@ const cleanTypes = {
     'examples': 'examples'
 }
 
-const datasetPriorities = ['tatoeba', 'commoncrawl', 'opensubs', 'wiki'];
+const datasetPriorities = ['tatoeba', 'opensubs', 'commoncrawl', 'wiki'];
 //TODO: probably should get this on load
 const datasetMetadata = {
     'tatoeba': {
         'name': 'Tatoeba',
-        'description': 'A crowdsourced collection of translated sentences. Mostly colloquial sentences, often geared towards learners.',
+        'description': 'A crowdsourced collection of translated sentences. Mostly colloquial, often geared towards learners.',
         'attributionUrl': 'https://tatoeba.org',
         'attributionSiteName': 'Tatoeba'
     },
@@ -78,7 +81,7 @@ const datasetMetadata = {
     },
     'wiki': {
         'name': 'Wiki',
-        'description': 'Wikipedia articles with translations. Usually formal.',
+        'description': 'Wikipedia articles with translations. Often formal.',
         'attributionUrl': 'https://opus.nlpl.eu/Wikipedia.php',
         'attributionSiteName': 'Opus'
     }
@@ -96,10 +99,13 @@ function clean(token, cleanType) {
     return token;
 }
 function clearDefinitions() {
-    definitionsContainer.innerHTML = '';
+    definitionsResultContainer.innerHTML = '';
 }
 function getOrderingSuffix(number) {
     // they ask me why i do it, because I can
+    if (number % 100 === 11 || number % 100 === 12 || number % 100 === 13) {
+        return 'th';
+    }
     number = number % 10;
     return number === 1 ? 'st' : number === 2 ? 'nd' : number === 3 ? 'rd' : 'th';
 }
@@ -255,13 +261,15 @@ function query(term, queryType) {
     // TODO: just combine with sentences into a single doc per word
     definitionPromise.then(value => {
         clearDefinitions();
+        definitionsFallback.style.display = 'none';
         if (value.exists()) {
-            renderDefinitions(termForDefinitions, value.data(), definitionsContainer, function (reference) {
+            renderDefinitions(termForDefinitions, value.data(), definitionsResultContainer, function (reference) {
                 searchBox.value = reference;
                 query(reference, queryTypes.target);
             });
         } else {
             //TODO: specific messaging
+            definitionsFallback.removeAttribute('style');
         }
     }).catch(x => {
         // todo

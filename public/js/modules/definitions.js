@@ -1,11 +1,15 @@
 function renderDefinitionWithReference(term, reference, definition, container, referenceHandler) {
     let anchor = document.createElement('a');
     anchor.classList.add('token');
-    anchor.innerText = ` (form of ${reference})`;
+    anchor.innerText = `(form of ${reference})`;
     anchor.addEventListener('click', function () {
         referenceHandler(reference);
     });
-    container.append(`${term}: ${definition}`);
+    let termSignifier = document.createElement('span');
+    termSignifier.classList.add('definition', 'term');
+    termSignifier.innerText = term;
+    container.append(termSignifier);
+    container.append(`: ${definition} `);
     container.appendChild(anchor);
 }
 function renderDefinition(term, definition, container, referenceHandler) {
@@ -15,7 +19,12 @@ function renderDefinition(term, definition, container, referenceHandler) {
         // TODO: multiple forms?
         renderDefinitionWithReference(term, definition.form[0].word, definition.def, definitionElement, referenceHandler);
     } else {
-        definitionElement.innerText = `${term}: ${definition.def}`;
+        // TODO combine with above
+        let termSignifier = document.createElement('span');
+        termSignifier.classList.add('definition', 'term');
+        termSignifier.innerText = term;
+        definitionElement.appendChild(termSignifier);
+        definitionElement.append(`: ${definition.def}`);
     }
     container.appendChild(definitionElement);
     if (definition.tags) {
