@@ -52,22 +52,12 @@ select {
 }
 
 .primary-control {
-    width: calc(100% - 90px);
+    width: 100%;
     height: 28px;
     font-size: 20px;
     margin: 10px auto;
     padding: 0;
     text-align: center;
-}
-
-.submit {
-    width: 80px;
-    font-size: 16px;
-    height: 28px;
-    line-height: 28px;
-    margin: 10px auto;
-    font-family: Roboto, Helvetica, Arial, sans-serif;
-    padding: 0;
 }
 
 /* TODO: primary-control vs .control.secondary */

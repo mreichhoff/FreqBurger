@@ -13564,6 +13564,8 @@
         });
     }
 
+    const DEFAULT_BASE_LANGUAGE = 'english';
+
     initialize$2();
     initialize$1();
     initialize();
@@ -13606,10 +13608,10 @@
     let baseLanguage = 'English';
 
     const languageMetadata = {
-        'French': {
+        'french': {
             'key': 'fr'
         },
-        'English': {
+        'english': {
             'key': 'en'
         }
     };
@@ -13689,7 +13691,7 @@
                     toggleCheckbox.dispatchEvent(new Event('change'));
                 }
                 searchBox.value = cleanToken;
-                query(token, queryType);
+                query(token, queryType, true);
             });
             // TODO: non-space-delimited languages
             anchor.innerText = token;
@@ -13774,7 +13776,7 @@
         }
         renderCollocations(collocations, collocationListContainer, function (searchTerm) {
             searchBox.value = searchTerm;
-            query(searchTerm, queryTypes.target).then(x => {
+            query(searchTerm, queryTypes.target, true).then(x => {
                 switchToTab(tabs[0].tab.id);
             });
         });
@@ -13786,7 +13788,7 @@
             collocationsFallbackList.innerHTML = '';
             renderCollocationsFallback(data.words, collocationsFallbackList, function (word) {
                 searchBox.value = word;
-                query(word, queryTypes.target);
+                query(word, queryTypes.target, true);
             });
             collocationsFallback.removeAttribute('style');
         } else if (collocations.size === 0) {
@@ -13799,7 +13801,7 @@
         resultsContainer.innerHTML = '';
     }
 
-    function query(term, queryType) {
+    function query(term, queryType, shouldPushState) {
         //ensure the parent container is shown
         resultsTypesContainer.removeAttribute('style');
 
@@ -13813,6 +13815,31 @@
                 // with each query, clear out the old results
                 clearResults();
                 renderData(cleanTerm, value.data());
+                let newUrl = `/${targetLanguageSelector.value}/${cleanTerm}`;
+                let newQueryString = [];
+                if (baseLanguageSelector.value !== DEFAULT_BASE_LANGUAGE) {
+                    newQueryString.push(`base=${baseLanguageSelector.value}`);
+                }
+                if (queryType != queryTypes.target) {
+                    newQueryString.push(`queryType=${queryType}`);
+                }
+                if (newQueryString.length !== 0) {
+                    newUrl += '?';
+                    for (let i = 0; i < newQueryString.length - 1; i++) {
+                        newUrl += `${newQueryString[i]}&`;
+                    }
+                    newUrl += newQueryString[newQueryString.length - 1];
+                }
+                if (shouldPushState) {
+                    history.pushState({
+                        term: term,
+                        queryType: queryType,
+                        languages: {
+                            base: baseLanguageSelector.value,
+                            target: targetLanguageSelector.value
+                        }
+                    }, '', newUrl);
+                }
             }
         }).catch(x => {
             //TODO
@@ -13824,7 +13851,7 @@
             if (value.exists()) {
                 renderDefinitions(termForDefinitions, value.data(), definitionsResultContainer, function (reference) {
                     searchBox.value = reference;
-                    query(reference, queryTypes.target);
+                    query(reference, queryTypes.target, true);
                 });
             } else {
                 //TODO: specific messaging
@@ -13836,7 +13863,7 @@
     }
     queryForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target).then(x => {
+        query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target, true).then(x => {
             switchToTab(tabs[0].tab.id);
         });
     });
@@ -13855,6 +13882,67 @@
     }
     targetLanguageSelector.addEventListener('change', languageChangeHandler);
     baseLanguageSelector.addEventListener('change', languageChangeHandler);
+
+    function loadState(state) {
+        targetLanguageSelector.value = state.languages.target;
+        baseLanguageSelector.value = state.languages.base;
+        targetLanguageSelector.dispatchEvent(new Event('change'));
+        baseLanguageSelector.dispatchEvent(new Event('change'));
+        const term = decodeURIComponent(state.term);
+        searchBox.value = term;
+        if (state.queryType === queryTypes.base) {
+            toggleCheckbox.checked = true;
+            toggleCheckbox.dispatchEvent(new Event('change'));
+        } else {
+            toggleCheckbox.checked = false;
+            toggleCheckbox.dispatchEvent(new Event('change'));
+        }
+        query(term, state.queryType, false);
+    }
+
+    function parseUrl(path) {
+        if (path[0] === '/') {
+            path = path.substring(1);
+        }
+        const segments = path.split('/');
+        if (segments.length !== 2) {
+            return null;
+        }
+        const targetLanguage = segments[0];
+        const term = segments[1];
+        return {
+            languages: {
+                base: DEFAULT_BASE_LANGUAGE,
+                target: targetLanguage
+            },
+            term: term,
+            queryType: queryTypes.target
+        };
+    }
+    if (history.state) {
+        loadState(history.state);
+    } else if (document.location.pathname !== '/') {
+        let state = parseUrl(document.location.pathname);
+        if (state) {
+            const urlParams = new URLSearchParams(window.location.search);
+            state.queryType = urlParams.get('queryType') || queryTypes.target;
+            state.languages.base = urlParams.get('base') || DEFAULT_BASE_LANGUAGE;
+            loadState(state);
+            history.pushState(state, '', document.location);
+        }
+    }
+
+    window.onpopstate = (event) => {
+        const state = event.state;
+        if (!state) {
+            searchBox.value = '';
+            clearResults();
+            clearDefinitions();
+            resultsTypesContainer.style.display = 'none';
+            return;
+        }
+        loadState(state);
+    };
 
     function switchToTab(id) {
         for (const entry of tabs) {

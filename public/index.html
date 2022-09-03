@@ -11,7 +11,7 @@
     -->
     <!-- <script defer src="/__/firebase/init.js?useEmulator=true"></script> -->
 
-    <link rel="stylesheet" type="text/css" href="css/freq-miner.css">
+    <link rel="stylesheet" type="text/css" href="/css/freq-miner.css">
 </head>
 
 <body>
@@ -19,9 +19,9 @@
     <div id="query-container" class="controls">
         <div id="language-selection-container">
             I am learning <select id="target-language-selector">
-                <option>French</option>
+                <option value="french">French</option>
             </select> and I speak <select id="base-language-selector">
-                <option>English</option>
+                <option value="english">English</option>
             </select>
         </div>
         <form id="query-form" class="primary-control-container">
@@ -35,8 +35,7 @@
                 </label>
             </div>
             <input type="text" autocapitalize="none" class="primary-control" id="search-box"
-                placeholder="Enter a word..." />
-            <input type="submit" value="Search" class="submit" />
+                placeholder="Enter a word..." enterkeyhint="search" />
         </form>
     </div>
     <div id="result-types-container" style="display:none">
@@ -73,7 +72,7 @@
                 currently not show any collocations.</p>
         </div>
     </div>
-    <script type="text/javascript" src="js/bundle.js"></script>
+    <script type="text/javascript" src="/js/bundle.js"></script>
 </body>
 
 </html>
