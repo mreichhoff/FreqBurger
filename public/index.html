@@ -34,8 +34,9 @@
                     <input id="base-target-toggle" style="display:none" type="checkbox" />
                 </label>
             </div>
-            <input type="text" autocapitalize="none" class="primary-control" id="search-box"
+            <input type="text" autocapitalize="none" autocomplete="off" class="primary-control" id="search-box"
                 placeholder="Enter a word..." enterkeyhint="search" />
+            <ul id="autocomplete" class="search-suggestions" style="display:none"></ul>
         </form>
     </div>
     <div id="result-types-container" style="display:none">
@@ -57,6 +58,7 @@
         </div>
         <div id="collocations-container" style="display:none" class="result-container">
             <div id="collocations-primary" style="display: none">
+                <p class="instructions">Collocations are groups of words commonly used together.</p>
                 <p class="instructions">Click any collocation to get example sentences.</p>
                 <label class="control secondary">See collocations with:
                     <select id="collocations-length-selector"></select> words

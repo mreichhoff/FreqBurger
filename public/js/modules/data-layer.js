@@ -4,7 +4,8 @@ const languagesToCollection = {
     'fr': {
         'en': {
             'examples': 'fr-en',
-            'definitions': 'fr-en-defs'
+            'definitions': 'fr-en-defs',
+            'autocomplete': 'fr-en-trie'
         }
     }
 };
@@ -34,8 +35,13 @@ let getDefinitions = function (word) {
     return getDoc(docRef);
 };
 
+let getAutocomplete = function (prefix) {
+    const docRef = doc(db, collectionId.autocomplete, prefix);
+    return getDoc(docRef);
+}
+
 let initialize = function () {
     db = getFirestore();
 };
 
-export { initialize, getExampleData, getDefinitions, setLanguages, queryTypes };
+export { initialize, getExampleData, getDefinitions, setLanguages, getAutocomplete, queryTypes };

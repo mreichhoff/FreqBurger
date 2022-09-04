@@ -1,5 +1,5 @@
 import { initialize as initializeFirebase } from "./firebase-init";
-import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, queryTypes } from "./data-layer";
+import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, getAutocomplete, queryTypes } from "./data-layer";
 import { renderDefinitions } from "./definitions";
 import { renderCollocations, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
 
@@ -35,6 +35,8 @@ const baseLanguageSelector = document.getElementById('base-language-selector');
 const resultsTab = document.getElementById('examples-tab');
 const definitionsTab = document.getElementById('definitions-tab');
 const collocationsTab = document.getElementById('collocations-tab');
+
+const suggestionContainer = document.getElementById('autocomplete');
 
 // ordering is important
 const tabs = [
@@ -172,7 +174,7 @@ function renderFreq(freq, term, metadata, container) {
 function renderDatasetMetadata(metadata, container) {
     const metadataContainer = document.createElement('div');
     metadataContainer.classList.add('dataset-metadata');
-    metadataContainer.innerHTML = `<span class='dataset-description'>${metadata['description']}</span>&nbsp;<span class='dataset-attribution'>Accessed via <a href='${metadata['attributionUrl']}'>${metadata['attributionSiteName']}</a></span>`;
+    metadataContainer.innerHTML = `<span class='dataset-description'>${metadata['description']}</span>&nbsp;<span class='dataset-attribution'>Accessed via <a href='${metadata['attributionUrl']}'>${metadata['attributionSiteName']}.</a></span>`;
     container.appendChild(metadataContainer);
 }
 function renderHeader(metadata, container) {
@@ -243,6 +245,7 @@ function clearResults() {
 function query(term, queryType, shouldPushState) {
     //ensure the parent container is shown
     resultsTypesContainer.removeAttribute('style');
+    clearSuggestions();
 
     const cleanTerm = clean(term, cleanTypes.examples);
     const dataPromise = getExampleData(cleanTerm, queryType);
@@ -304,6 +307,7 @@ function query(term, queryType, shouldPushState) {
 }
 queryForm.addEventListener('submit', function (event) {
     event.preventDefault();
+    searchBox.blur();
     query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target, true).then(x => {
         switchToTab(tabs[0].tab.id);
     });
@@ -396,6 +400,47 @@ function switchToTab(id) {
         }
     }
 }
+
+function clearSuggestions() {
+    suggestionContainer.innerHTML = '';
+    suggestionContainer.style.display = 'none';
+}
+
+function renderAutocomplete(data, container) {
+    for (const word of data.words) {
+        let suggestion = document.createElement('li');
+        suggestion.classList.add('search-suggestion');
+        suggestion.innerText = word;
+        container.appendChild(suggestion);
+        suggestion.addEventListener('mousedown', function () {
+            searchBox.value = word;
+            query(word, queryTypes.target, true);
+        });
+    }
+}
+
+searchBox.addEventListener('blur', function () {
+    clearSuggestions();
+});
+
+searchBox.addEventListener('input', function () {
+    if (toggleCheckbox.checked || !searchBox.value) {
+        clearSuggestions();
+        return false;
+    }
+    let currentPrefix = searchBox.value;
+    getAutocomplete(searchBox.value).then(value => {
+        if (searchBox.value !== currentPrefix) {
+            // this could be a late return of an old promise; just leave it
+            return false;
+        }
+        clearSuggestions();
+        if (value.exists()) {
+            suggestionContainer.removeAttribute('style');
+            renderAutocomplete(value.data(), suggestionContainer);
+        }
+    })
+});
 
 for (const entry of tabs) {
     entry.tab.addEventListener('click', function (event) {

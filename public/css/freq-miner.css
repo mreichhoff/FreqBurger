@@ -172,6 +172,20 @@ select {
     margin: 8px 0;
 }
 
+.search-suggestions {
+    padding: 2px;
+    border: 1px solid #3333;
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+    list-style-type: none;
+}
+
+.search-suggestion {
+    margin: 12px;
+    cursor: pointer;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
