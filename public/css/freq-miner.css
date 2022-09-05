@@ -34,15 +34,27 @@ select {
     font-weight: 300;
 }
 
+.study-container,
 .example-container,
 .result-container {
     width: 1000px;
     margin: 10px auto;
 }
 
+.study-container {
+    text-align: center;
+}
+
 .result-container.grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.header-container {
+    width: 1000px;
+    margin: 10px auto;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
 }
 
 .controls {
@@ -92,6 +104,19 @@ select {
     font-size: 15px;
 }
 
+.instructions.add-card {
+    text-align: left;
+}
+
+.add-card-form-item {
+    font-size: 14px;
+}
+
+.add-card-submit {
+    width: 100px;
+    height: 26px;
+}
+
 .dataset-results {
     margin: 4px;
 }
@@ -118,6 +143,9 @@ select {
     display: inline-block;
     margin: 4px 0;
     vertical-align: top;
+    margin: 4px 0 0 14px;
+    line-height: 20px;
+    font-weight: bold;
 }
 
 .option-list {
@@ -135,6 +163,11 @@ select {
 .less-options {
     color: #ff635f;
     font-size: 18px;
+}
+
+.example-option {
+    padding-bottom: 4px;
+    border-bottom: 1px solid #3333;
 }
 
 .target {
@@ -213,6 +246,101 @@ select {
     cursor: pointer;
 }
 
+.tts {
+    cursor: pointer;
+}
+
+/* icons */
+.volume {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(0.7);
+    width: 22px;
+    height: 22px;
+    border: 2px solid;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.volume::before {
+    content: "";
+    display: inline-block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 0;
+    height: 10px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 6px solid;
+    top: 4px;
+    left: 7px
+}
+
+.study {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 22px;
+    border: 2px solid;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.study::after,
+.study::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    border-radius: 3px;
+    height: 2px;
+    background: currentColor;
+    left: 2px
+}
+
+.study::before {
+    box-shadow:
+        0 4px 0,
+        0 8px 0;
+    width: 12px;
+    top: 2px
+}
+
+.study::after {
+    width: 6px;
+    top: 14px
+}
+
+.menu {
+    margin-top: 8px;
+}
+
+.menu,
+.menu::after,
+.menu::before {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 3px;
+    background: currentColor;
+    cursor: pointer;
+}
+
+.menu::after,
+.menu::before {
+    content: "";
+    position: absolute;
+    top: -6px
+}
+
+.menu::after {
+    top: 6px
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
@@ -240,11 +368,16 @@ select {
     .option-list {
         border: 1px solid #eee4;
     }
+
+    .example-option {
+        border-bottom: 1px solid #eeee;
+    }
 }
 
 @media (max-width: 1024px) {
 
     .example-container,
+    .header-container,
     .controls,
     .tabs,
     .result-container {
@@ -258,6 +391,7 @@ select {
     }
 
     .example-container,
+    .header-container,
     .controls,
     .tabs,
     .result-container {
@@ -271,30 +405,4 @@ select {
     .secondary-controls-container {
         font-size: 14px;
     }
-}
-
-.volume {
-    box-sizing: border-box;
-    position: relative;
-    display: inline-block;
-    transform: scale(0.7);
-    width: 22px;
-    height: 22px;
-    border: 2px solid;
-    border-radius: 4px;
-    vertical-align: middle;
-}
-
-.volume::before {
-    content: "";
-    display: inline-block;
-    box-sizing: border-box;
-    position: absolute;
-    width: 0;
-    height: 10px;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 6px solid;
-    top: 4px;
-    left: 7px
 }

@@ -2324,7 +2324,7 @@
     };
 
     // Initialize Firebase
-    let initialize$2 = function () {
+    let initialize$3 = function () {
         initializeApp(firebaseConfig);
     };
 
@@ -2344,11 +2344,11 @@
     if(l.document&&y){var Ta$1=Ma$1();Sa$1=Ta$1?Ta$1:parseInt(Na,10)||void 0;}else Sa$1=void 0;var Ua$1=Sa$1;var Va$1=function(){if(!l.addEventListener||!Object.defineProperty)return !1;var a=!1,b=Object.defineProperty({},"passive",{get:function(){a=!0;}});try{l.addEventListener("test",aa$1,b),l.removeEventListener("test",aa$1,b);}catch(c){}return a}();function z$1(a,b){this.type=a;this.g=this.target=b;this.defaultPrevented=!1;}z$1.prototype.h=function(){this.defaultPrevented=!0;};function A(a,b){z$1.call(this,a?a.type:"");this.relatedTarget=this.g=this.target=null;this.button=this.screenY=this.screenX=this.clientY=this.clientX=0;this.key="";this.metaKey=this.shiftKey=this.altKey=this.ctrlKey=!1;this.state=null;this.pointerId=0;this.pointerType="";this.i=null;if(a){var c=this.type=a.type,d=a.changedTouches&&a.changedTouches.length?a.changedTouches[0]:null;this.target=a.target||a.srcElement;this.g=b;if(b=a.relatedTarget){if(Ka$1){a:{try{Ca(b.nodeName);var e=!0;break a}catch(f){}e=
     !1;}e||(b=null);}}else "mouseover"==c?b=a.fromElement:"mouseout"==c&&(b=a.toElement);this.relatedTarget=b;d?(this.clientX=void 0!==d.clientX?d.clientX:d.pageX,this.clientY=void 0!==d.clientY?d.clientY:d.pageY,this.screenX=d.screenX||0,this.screenY=d.screenY||0):(this.clientX=void 0!==a.clientX?a.clientX:a.pageX,this.clientY=void 0!==a.clientY?a.clientY:a.pageY,this.screenX=a.screenX||0,this.screenY=a.screenY||0);this.button=a.button;this.key=a.key||"";this.ctrlKey=a.ctrlKey;this.altKey=a.altKey;this.shiftKey=
     a.shiftKey;this.metaKey=a.metaKey;this.pointerId=a.pointerId||0;this.pointerType="string"===typeof a.pointerType?a.pointerType:Wa[a.pointerType]||"";this.state=a.state;this.i=a;a.defaultPrevented&&A.Z.h.call(this);}}t(A,z$1);var Wa={2:"touch",3:"pen",4:"mouse"};A.prototype.h=function(){A.Z.h.call(this);var a=this.i;a.preventDefault?a.preventDefault():a.returnValue=!1;};var B$1="closure_listenable_"+(1E6*Math.random()|0);var Xa=0;function Ya(a,b,c,d,e){this.listener=a;this.proxy=null;this.src=b;this.type=c;this.capture=!!d;this.ia=e;this.key=++Xa;this.ca=this.fa=!1;}function Za(a){a.ca=!0;a.listener=null;a.proxy=null;a.src=null;a.ia=null;}function $a(a){this.src=a;this.g={};this.h=0;}$a.prototype.add=function(a,b,c,d,e){var f=a.toString();a=this.g[f];a||(a=this.g[f]=[],this.h++);var h=ab(a,b,d,e);-1<h?(b=a[h],c||(b.fa=!1)):(b=new Ya(b,this.src,f,!!d,e),b.fa=c,a.push(b));return b};function bb(a,b){var c=b.type;if(c in a.g){var d=a.g[c],e=ma$1(d,b),f;(f=0<=e)&&Array.prototype.splice.call(d,e,1);f&&(Za(b),0==a.g[c].length&&(delete a.g[c],a.h--));}}
-    function ab(a,b,c,d){for(var e=0;e<a.length;++e){var f=a[e];if(!f.ca&&f.listener==b&&f.capture==!!c&&f.ia==d)return e}return -1}var cb="closure_lm_"+(1E6*Math.random()|0),db$1={};function fb(a,b,c,d,e){if(d&&d.once)return gb(a,b,c,d,e);if(Array.isArray(b)){for(var f=0;f<b.length;f++)fb(a,b[f],c,d,e);return null}c=hb(c);return a&&a[B$1]?a.N(b,c,p(d)?!!d.capture:!!d,e):ib(a,b,c,!1,d,e)}
+    function ab(a,b,c,d){for(var e=0;e<a.length;++e){var f=a[e];if(!f.ca&&f.listener==b&&f.capture==!!c&&f.ia==d)return e}return -1}var cb="closure_lm_"+(1E6*Math.random()|0),db={};function fb(a,b,c,d,e){if(d&&d.once)return gb(a,b,c,d,e);if(Array.isArray(b)){for(var f=0;f<b.length;f++)fb(a,b[f],c,d,e);return null}c=hb(c);return a&&a[B$1]?a.N(b,c,p(d)?!!d.capture:!!d,e):ib(a,b,c,!1,d,e)}
     function ib(a,b,c,d,e,f){if(!b)throw Error("Invalid event type");var h=p(e)?!!e.capture:!!e,n=jb(a);n||(a[cb]=n=new $a(a));c=n.add(b,c,d,h,f);if(c.proxy)return c;d=kb();c.proxy=d;d.src=a;d.listener=c;if(a.addEventListener)Va$1||(e=h),void 0===e&&(e=!1),a.addEventListener(b.toString(),d,e);else if(a.attachEvent)a.attachEvent(lb(b.toString()),d);else if(a.addListener&&a.removeListener)a.addListener(d);else throw Error("addEventListener and attachEvent are unavailable.");return c}
     function kb(){function a(c){return b.call(a.src,a.listener,c)}var b=mb;return a}function gb(a,b,c,d,e){if(Array.isArray(b)){for(var f=0;f<b.length;f++)gb(a,b[f],c,d,e);return null}c=hb(c);return a&&a[B$1]?a.O(b,c,p(d)?!!d.capture:!!d,e):ib(a,b,c,!0,d,e)}
     function nb(a,b,c,d,e){if(Array.isArray(b))for(var f=0;f<b.length;f++)nb(a,b[f],c,d,e);else (d=p(d)?!!d.capture:!!d,c=hb(c),a&&a[B$1])?(a=a.i,b=String(b).toString(),b in a.g&&(f=a.g[b],c=ab(f,c,d,e),-1<c&&(Za(f[c]),Array.prototype.splice.call(f,c,1),0==f.length&&(delete a.g[b],a.h--)))):a&&(a=jb(a))&&(b=a.g[b.toString()],a=-1,b&&(a=ab(b,c,d,e)),(c=-1<a?b[a]:null)&&ob(c));}
-    function ob(a){if("number"!==typeof a&&a&&!a.ca){var b=a.src;if(b&&b[B$1])bb(b.i,a);else {var c=a.type,d=a.proxy;b.removeEventListener?b.removeEventListener(c,d,a.capture):b.detachEvent?b.detachEvent(lb(c),d):b.addListener&&b.removeListener&&b.removeListener(d);(c=jb(b))?(bb(c,a),0==c.h&&(c.src=null,b[cb]=null)):Za(a);}}}function lb(a){return a in db$1?db$1[a]:db$1[a]="on"+a}function mb(a,b){if(a.ca)a=!0;else {b=new A(b,this);var c=a.listener,d=a.ia||a.src;a.fa&&ob(a);a=c.call(d,b);}return a}
+    function ob(a){if("number"!==typeof a&&a&&!a.ca){var b=a.src;if(b&&b[B$1])bb(b.i,a);else {var c=a.type,d=a.proxy;b.removeEventListener?b.removeEventListener(c,d,a.capture):b.detachEvent?b.detachEvent(lb(c),d):b.addListener&&b.removeListener&&b.removeListener(d);(c=jb(b))?(bb(c,a),0==c.h&&(c.src=null,b[cb]=null)):Za(a);}}}function lb(a){return a in db?db[a]:db[a]="on"+a}function mb(a,b){if(a.ca)a=!0;else {b=new A(b,this);var c=a.listener,d=a.ia||a.src;a.fa&&ob(a);a=c.call(d,b);}return a}
     function jb(a){a=a[cb];return a instanceof $a?a:null}var pb="__closure_events_fn_"+(1E9*Math.random()>>>0);function hb(a){if("function"===typeof a)return a;a[pb]||(a[pb]=function(b){return a.handleEvent(b)});return a[pb]}function C$1(){v.call(this);this.i=new $a(this);this.P=this;this.I=null;}t(C$1,v);C$1.prototype[B$1]=!0;C$1.prototype.removeEventListener=function(a,b,c,d){nb(this,a,b,c,d);};
     function D$1(a,b){var c,d=a.I;if(d)for(c=[];d;d=d.I)c.push(d);a=a.P;d=b.type||b;if("string"===typeof b)b=new z$1(b,a);else if(b instanceof z$1)b.target=b.target||a;else {var e=b;b=new z$1(d,a);Aa(b,e);}e=!0;if(c)for(var f=c.length-1;0<=f;f--){var h=b.g=c[f];e=qb(h,d,!0,b)&&e;}h=b.g=a;e=qb(h,d,!0,b)&&e;e=qb(h,d,!1,b)&&e;if(c)for(f=0;f<c.length;f++)h=b.g=c[f],e=qb(h,d,!1,b)&&e;}
     C$1.prototype.M=function(){C$1.Z.M.call(this);if(this.i){var a=this.i,c;for(c in a.g){for(var d=a.g[c],e=0;e<d.length;e++)Za(d[e]);delete a.g[c];a.h--;}}this.I=null;};C$1.prototype.N=function(a,b,c,d){return this.i.add(String(a),b,!1,c,d)};C$1.prototype.O=function(a,b,c,d){return this.i.add(String(a),b,!0,c,d)};
@@ -13419,6 +13419,27 @@
         registerVersion(D, "3.4.14", "esm2017");
     }();
 
+    const cleanTypes = {
+        'definitions': 'definitions',
+        'examples': 'examples'
+    };
+
+    function clean(token, cleanType) {
+        token = token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
+        if (cleanType === cleanTypes.definitions) {
+            // TODO: language specificity, general hackiness
+            return token.replace(/(^[djlmt]\')/, '');
+        }
+
+        // TODO: why allow trailing but not leading numbers?
+        // TODO: handle case sensitive languages
+        // wow https://stackoverflow.com/questions/20690499/concrete-javascript-regular-expression-for-accented-characters-diacritics
+        return token;
+    }
+
+    let studyList = {};
+    let indexedDbInstance = null;
+
     const languagesToCollection = {
         'fr': {
             'en': {
@@ -13435,7 +13456,7 @@
     };
 
     let collectionId = languagesToCollection['fr']['en'];
-    let db = null;
+    let firestore = null;
 
     let setLanguages = function (base, target) {
         if (target in languagesToCollection && base in languagesToCollection[target]) {
@@ -13444,23 +13465,125 @@
     };
 
     let getExampleData = function (word, queryType) {
-        const docRef = xa(db, collectionId.examples, `${word}-${queryType}`);
+        const docRef = xa(firestore, collectionId.examples, `${word}-${queryType}`);
 
         return dl(docRef);
     };
 
     let getDefinitions = function (word) {
-        const docRef = xa(db, collectionId.definitions, word);
+        const docRef = xa(firestore, collectionId.definitions, word);
         return dl(docRef);
     };
 
     let getAutocomplete = function (prefix) {
-        const docRef = xa(db, collectionId.autocomplete, prefix);
+        const docRef = xa(firestore, collectionId.autocomplete, prefix);
         return dl(docRef);
     };
 
-    let initialize$1 = function () {
-        db = Ua();
+    let getUnknownWordCount = function (tokens) {
+        // TODO: could precompute if performance becomes an issue
+        let unseenTokens = new Set(tokens.map(x => clean(x, cleanTypes.examples)));
+        for (const [key, value] of Object.entries(studyList)) {
+            let targetTokens = value.target;
+            for (const token of targetTokens) {
+                unseenTokens.delete(clean(token, cleanTypes.examples));
+            }
+            if (unseenTokens.size === 0) {
+                return 0;
+            }
+        }
+        return unseenTokens.size;
+    };
+
+    const cardTypes$1 = {
+        recognition: 'recognition',
+        recall: 'recall',
+        cloze: 'cloze'
+    };
+
+    let getKey = function (term, targetTokens, cardType) {
+        if (cardType === cardTypes$1.recognition || cardType === cardTypes$1.recall) {
+            // for recognition and recall cards, don't allow duplicates even if added via a separate term
+            return `${targetTokens.join('')}-${cardType}`;
+        }
+        // for cloze cards, one could have the same sentence with a different term being hidden
+        return `${targetTokens.join('')}-${cardType}-${term}`;
+    };
+
+    let makeCard = function (term, example, cardType) {
+        return {
+            // data for rendering the card
+            term: term,
+            cardType: cardType,
+            target: example.target,
+            base: example.base,
+            // data for SM2
+            streak: 0,
+            ease: 2.5,
+            interval: 0,
+            lastReviewTimestamp: Date.now(),
+            // data to get overall percentage
+            rightCount: 0,
+            wrongCount: 0
+        };
+    };
+
+    let inStudyList = function (term, example, cardType) {
+        const key = getKey(term, example.target, cardType);
+        return key in studyList;
+    };
+
+    let persistCard = function (key, card) {
+        if (!indexedDbInstance) {
+            localStorage.setItem('studyList', JSON.stringify(studyList));
+            return;
+        }
+        const transaction = indexedDbInstance.transaction(['studyList'], 'readwrite');
+        const objectStore = transaction.objectStore('studyList');
+        objectStore.add(card, key);
+        //TODO: error, success handling, or promisify
+    };
+
+    // TODO: promisify this?
+    let addCard = function (term, example, cardType) {
+        let key = getKey(term, example.target, cardType);
+        studyList[key] = makeCard(term, example, cardType);
+        persistCard(key, studyList[key]);
+    };
+
+    let initialize$2 = function () {
+        firestore = Ua();
+        const request = indexedDB.open("freqminer", 1);
+        request.onerror = (_) => {
+            console.log("falling back to localStorage");
+            indexedDbInstance = null;
+            if (localStorage.studyList) {
+                studyList = JSON.parse(localStorage.studyList);
+            }
+        };
+        request.onsuccess = (event) => {
+            indexedDbInstance = event.target.result;
+            const objectStore = indexedDbInstance.transaction(['studyList'], 'readwrite').objectStore('studyList');
+            const request = objectStore.openCursor();
+            request.onsuccess = function (event) {
+                let cursor = event.target.result;
+                if (cursor) {
+                    studyList[cursor.primaryKey] = cursor.value;
+                    cursor.continue();
+                }
+            };
+        };
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore('studyList');
+            db.createObjectStore('studyResults');
+            db.createObjectStore('visited');
+            indexedDbInstance = db;
+        };
+    };
+
+    let getStudyList = function () {
+        return studyList;
     };
 
     function renderDefinitionWithReference(term, reference, definition, container, referenceHandler) {
@@ -13558,7 +13681,7 @@
         }
     }
 
-    function initialize() {
+    function initialize$1() {
         lengthSelect.addEventListener('change', function () {
             for (const item of document.querySelectorAll('.collocation')) {
                 if (!item.classList.contains(`length-${lengthSelect.value}`)) {
@@ -13570,8 +13693,135 @@
         });
     }
 
+    const exportStudyListButton = document.getElementById('export-button');
+
+    // TODO: counterpart in data layer
+    const cardTypes = {
+        recognition: {
+            description: 'Recognition (translate from target language to base language)',
+            default: true
+        },
+        cloze: {
+            description: 'Cloze (fill in the missing word)'
+        },
+        recall: {
+            description: 'Recall (translate from base language to target language)'
+        }
+    };
+    // TODO: combine these two
+    const cardTypePriorities = ['recognition', 'cloze', 'recall'];
+
+    function renderCardTypeOptions(term, example, container) {
+        let addedCount = 0;
+        for (const cardType of cardTypePriorities) {
+            if (inStudyList(term, example, cardType)) {
+                continue;
+            }
+            addedCount++;
+            let option = document.createElement('option');
+            let metadata = cardTypes[cardType];
+            option.innerText = metadata.description;
+            option.value = cardType;
+            container.appendChild(option);
+        }
+        return addedCount;
+    }
+
+    function updateUnknownWordCount(element, example) {
+        let unknownWordCount = getUnknownWordCount(example.target);
+        element.innerText = `Add a flashcard? This sentence has ${unknownWordCount} word${unknownWordCount === 1 ? '' : 's'} not in your study list.`;
+    }
+
+    function renderAddCardControls(term, example, container) {
+        let instructions = document.createElement('p');
+        instructions.classList.add('instructions', 'add-card');
+
+        let selectorContainer = document.createElement('p');
+        selectorContainer.classList.add('add-card-form-item');
+        let typeSelectionLabel = document.createElement('label');
+        typeSelectionLabel.innerText = `Choose the card type: `;
+        let typeSelector = document.createElement('select');
+        typeSelector.name = 'cardType';
+        const availableOptions = renderCardTypeOptions(term, example, typeSelector);
+        if (availableOptions === 0) {
+            instructions.innerText = 'This example is already in your study list.';
+            container.appendChild(instructions);
+            return;
+        }
+        instructions.classList.add('unknown-update');
+        updateUnknownWordCount(instructions, example);
+        instructions.addEventListener('list-update', function () {
+            updateUnknownWordCount(instructions, example);
+        });
+        typeSelectionLabel.appendChild(typeSelector);
+        selectorContainer.appendChild(typeSelectionLabel);
+
+        let submitContainer = document.createElement('p');
+        submitContainer.classList.add('add-card-form-item');
+        let submitButton = document.createElement('input');
+        submitButton.classList.add('add-card-submit');
+        submitButton.type = 'submit';
+        submitButton.value = 'Create';
+        submitContainer.appendChild(submitButton);
+        container.appendChild(instructions);
+        container.appendChild(selectorContainer);
+        container.appendChild(submitContainer);
+    }
+
+    function renderAddCardForm(term, example, container) {
+        let addCardContainer = document.createElement('li');
+        addCardContainer.classList.add('example-option');
+        let addCardForm = document.createElement('form');
+        addCardForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            //TODO: why is FormData not working?
+            const cardType = event.target.querySelector('select[name="cardType"]').value;
+            addCard(term, example, cardType);
+            event.target.querySelector('input[type="submit"]').value = 'Added ✅';
+            setTimeout(function () {
+                addCardForm.innerHTML = '';
+                renderAddCardControls(term, example, addCardForm);
+                document.querySelectorAll('.unknown-update').forEach(element => {
+                    const event = new Event('list-update');
+                    element.dispatchEvent(event);
+                });
+            }, 300);
+        });
+        renderAddCardControls(term, example, addCardForm);
+        addCardContainer.appendChild(addCardForm);
+        container.appendChild(addCardContainer);
+    }
+
+    function exportStudyList(studyList) {
+        console.log(JSON.stringify(Object.keys(studyList)));
+        let content = "data:text/plain;charset=utf-8,";
+        for (const [key, value] of Object.entries(studyList)) {
+            // TODO: figure out cloze/recall exports
+            if (value.cardType === 'recognition') {
+                //replace is a hack for flashcard field separator...TODO could escape
+                content += [value.target.join(' ').replace(';', ''), value.base.join(' ').replace(';', '')].join(';');
+                content += '\n';
+            }
+        }
+        //wow, surely it can't be this absurd
+        let encodedUri = encodeURI(content);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "freq-miner-export-" + Date.now() + ".txt");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function initialize() {
+        exportStudyListButton.addEventListener('click', function () {
+            exportStudyList(getStudyList());
+        });
+    }
+
     const DEFAULT_BASE_LANGUAGE = 'english';
 
+    initialize$3();
     initialize$2();
     initialize$1();
     initialize();
@@ -13605,6 +13855,13 @@
 
     const suggestionContainer = document.getElementById('autocomplete');
 
+    const studyIcon = document.getElementById('study-icon');
+    document.getElementById('menu-icon');
+
+    const mainContainer = document.getElementById('main-container');
+    const studyContainer = document.getElementById('study-container');
+    const menuContainer = document.getElementById('menu-container');
+
     // ordering is important
     const tabs = [
         { tab: resultsTab, container: examplesContainer },
@@ -13623,11 +13880,6 @@
         'english': {
             'key': 'en'
         }
-    };
-
-    const cleanTypes = {
-        'definitions': 'definitions',
-        'examples': 'examples'
     };
 
     const datasetPriorities = ['tatoeba', 'opensubs', 'commoncrawl', 'wiki'];
@@ -13658,18 +13910,7 @@
             'attributionSiteName': 'Opus'
         }
     };
-    function clean(token, cleanType) {
-        token = token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
-        if (cleanType === cleanTypes.definitions) {
-            // TODO: language specificity, general hackiness
-            return token.replace(/(^[djlmt]\')/, '');
-        }
 
-        // TODO: why allow trailing but not leading numbers?
-        // TODO: handle case sensitive languages
-        // wow https://stackoverflow.com/questions/20690499/concrete-javascript-regular-expression-for-accented-characters-diacritics
-        return token;
-    }
     function clearDefinitions() {
         definitionsResultContainer.innerHTML = '';
     }
@@ -13711,13 +13952,17 @@
     }
     function renderTextToSpeech(text, container) {
         let listenContainer = document.createElement('li');
+        listenContainer.classList.add('example-option', 'tts');
         listenContainer.innerText = 'Say this sentence';
         let button = document.createElement('i');
-        button.classList.add('volume', 'tts');
+        button.classList.add('volume');
         listenContainer.appendChild(button);
-        button.addEventListener('click', function () {
+        listenContainer.addEventListener('click', function () {
             const ttsKeys = languageMetadata[targetLanguageSelector.value].tts;
             let voice = speechSynthesis.getVoices().find(voice => ttsKeys.indexOf(voice.lang) > -1);
+            if (!voice) {
+                return;
+            }
             let utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = voice.lang;
             utterance.voice = voice;
@@ -13725,6 +13970,7 @@
         });
         container.appendChild(listenContainer);
     }
+
     function renderExample(term, example, container) {
         let targetContainer = document.createElement('p');
         targetContainer.classList.add('target', 'example-text');
@@ -13738,6 +13984,8 @@
         moreOptionsContainer.innerText = '+';
         moreOptionsContainer.addEventListener('click', function () {
             if (optionsContainer.style.display === 'none') {
+                renderTextToSpeech(example.target.join(' '), optionsContainer);
+                renderAddCardForm(term, example, optionsContainer);
                 optionsContainer.removeAttribute('style');
                 moreOptionsContainer.innerText = '—';
                 moreOptionsContainer.classList.remove('more-options');
@@ -13747,6 +13995,7 @@
                 moreOptionsContainer.classList.remove('less-options');
                 moreOptionsContainer.classList.add('more-options');
                 optionsContainer.style.display = 'none';
+                optionsContainer.innerHTML = '';
             }
         });
         container.appendChild(moreOptionsContainer);
@@ -13759,7 +14008,6 @@
 
         optionsContainer.classList.add('option-list');
         optionsContainer.style.display = 'none';
-        renderTextToSpeech(example.target.join(' '), optionsContainer);
         container.appendChild(optionsContainer);
     }
     function renderExamples(term, examples, container) {
@@ -14053,5 +14301,17 @@
             switchToTab(event.target.id);
         });
     }
+
+    studyIcon.addEventListener('click', function () {
+        if (studyContainer.style.display === 'none') {
+            mainContainer.style.display = 'none';
+            menuContainer.style.display = 'none';
+            studyContainer.removeAttribute('style');
+        } else {
+            studyContainer.style.display = 'none';
+            menuContainer.style.display = 'none';
+            mainContainer.removeAttribute('style');
+        }
+    });
 
 })();

@@ -2,12 +2,15 @@ import { initialize as initializeFirebase } from "./firebase-init";
 import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, getAutocomplete, queryTypes } from "./data-layer";
 import { renderDefinitions } from "./definitions";
 import { renderCollocations, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
+import { initialize as initializeStudyMode, renderAddCardForm } from "./study-mode";
+import { clean, cleanTypes } from "./utils";
 
 const DEFAULT_BASE_LANGUAGE = 'english';
 
 initializeFirebase();
 initializeDatalayer();
 initializeCollocations();
+initializeStudyMode();
 
 const queryForm = document.getElementById('query-form');
 const searchBox = document.getElementById('search-box');
@@ -38,6 +41,13 @@ const collocationsTab = document.getElementById('collocations-tab');
 
 const suggestionContainer = document.getElementById('autocomplete');
 
+const studyIcon = document.getElementById('study-icon');
+const menuIcon = document.getElementById('menu-icon');
+
+const mainContainer = document.getElementById('main-container');
+const studyContainer = document.getElementById('study-container');
+const menuContainer = document.getElementById('menu-container');
+
 // ordering is important
 const tabs = [
     { tab: resultsTab, container: examplesContainer },
@@ -57,11 +67,6 @@ const languageMetadata = {
         'key': 'en'
     }
 };
-
-const cleanTypes = {
-    'definitions': 'definitions',
-    'examples': 'examples'
-}
 
 const datasetPriorities = ['tatoeba', 'opensubs', 'commoncrawl', 'wiki'];
 //TODO: probably should get this on load
@@ -91,18 +96,7 @@ const datasetMetadata = {
         'attributionSiteName': 'Opus'
     }
 };
-function clean(token, cleanType) {
-    token = token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
-    if (cleanType === cleanTypes.definitions) {
-        // TODO: language specificity, general hackiness
-        return token.replace(/(^[djlmt]\')/, '');
-    }
 
-    // TODO: why allow trailing but not leading numbers?
-    // TODO: handle case sensitive languages
-    // wow https://stackoverflow.com/questions/20690499/concrete-javascript-regular-expression-for-accented-characters-diacritics
-    return token;
-}
 function clearDefinitions() {
     definitionsResultContainer.innerHTML = '';
 }
@@ -144,13 +138,17 @@ function renderExampleText(term, tokens, queryType, container) {
 }
 function renderTextToSpeech(text, container) {
     let listenContainer = document.createElement('li');
+    listenContainer.classList.add('example-option', 'tts');
     listenContainer.innerText = 'Say this sentence';
     let button = document.createElement('i');
-    button.classList.add('volume', 'tts');
+    button.classList.add('volume');
     listenContainer.appendChild(button);
-    button.addEventListener('click', function () {
+    listenContainer.addEventListener('click', function () {
         const ttsKeys = languageMetadata[targetLanguageSelector.value].tts;
         let voice = speechSynthesis.getVoices().find(voice => ttsKeys.indexOf(voice.lang) > -1);
+        if (!voice) {
+            return;
+        }
         let utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = voice.lang;
         utterance.voice = voice;
@@ -158,6 +156,7 @@ function renderTextToSpeech(text, container) {
     });
     container.appendChild(listenContainer);
 }
+
 function renderExample(term, example, container) {
     let targetContainer = document.createElement('p');
     targetContainer.classList.add('target', 'example-text');
@@ -171,6 +170,8 @@ function renderExample(term, example, container) {
     moreOptionsContainer.innerText = '+';
     moreOptionsContainer.addEventListener('click', function () {
         if (optionsContainer.style.display === 'none') {
+            renderTextToSpeech(example.target.join(' '), optionsContainer);
+            renderAddCardForm(term, example, optionsContainer);
             optionsContainer.removeAttribute('style');
             moreOptionsContainer.innerText = '—';
             moreOptionsContainer.classList.remove('more-options');
@@ -180,6 +181,7 @@ function renderExample(term, example, container) {
             moreOptionsContainer.classList.remove('less-options');
             moreOptionsContainer.classList.add('more-options');
             optionsContainer.style.display = 'none';
+            optionsContainer.innerHTML = '';
         }
     });
     container.appendChild(moreOptionsContainer);
@@ -192,7 +194,6 @@ function renderExample(term, example, container) {
 
     optionsContainer.classList.add('option-list');
     optionsContainer.style.display = 'none';
-    renderTextToSpeech(example.target.join(' '), optionsContainer);
     container.appendChild(optionsContainer);
 }
 function renderExamples(term, examples, container) {
@@ -488,3 +489,15 @@ for (const entry of tabs) {
         switchToTab(event.target.id)
     });
 }
+
+studyIcon.addEventListener('click', function () {
+    if (studyContainer.style.display === 'none') {
+        mainContainer.style.display = 'none';
+        menuContainer.style.display = 'none';
+        studyContainer.removeAttribute('style');
+    } else {
+        studyContainer.style.display = 'none';
+        menuContainer.style.display = 'none';
+        mainContainer.removeAttribute('style');
+    }
+});
