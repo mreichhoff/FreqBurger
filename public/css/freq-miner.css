@@ -112,8 +112,35 @@ select {
     margin: 10px 0;
 }
 
+.options-toggle {
+    font-size: 20px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 4px 0;
+    vertical-align: top;
+}
+
+.option-list {
+    margin: 8px 0;
+    padding: 8px;
+    font-weight: 300;
+    list-style-type: none;
+    border: 1px solid #3333;
+}
+
+.more-options {
+    color: #6de200;
+}
+
+.less-options {
+    color: #ff635f;
+    font-size: 18px;
+}
+
 .target {
     font-size: 18px;
+    width: calc(100% - 40px);
+    display: inline-block;
 }
 
 .base {
@@ -209,6 +236,10 @@ select {
     .tabs {
         border-bottom: 1px solid #eeee;
     }
+
+    .option-list {
+        border: 1px solid #eee4;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -240,4 +271,30 @@ select {
     .secondary-controls-container {
         font-size: 14px;
     }
+}
+
+.volume {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(0.7);
+    width: 22px;
+    height: 22px;
+    border: 2px solid;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.volume::before {
+    content: "";
+    display: inline-block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 0;
+    height: 10px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 6px solid;
+    top: 4px;
+    left: 7px
 }

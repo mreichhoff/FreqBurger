@@ -50,7 +50,8 @@ let baseLanguage = 'English';
 
 const languageMetadata = {
     'french': {
-        'key': 'fr'
+        'key': 'fr',
+        'tts': ['fr-FR', 'fr_FR']
     },
     'english': {
         'key': 'en'
@@ -141,6 +142,22 @@ function renderExampleText(term, tokens, queryType, container) {
         container.append(" ");
     }
 }
+function renderTextToSpeech(text, container) {
+    let listenContainer = document.createElement('li');
+    listenContainer.innerText = 'Say this sentence';
+    let button = document.createElement('i');
+    button.classList.add('volume', 'tts');
+    listenContainer.appendChild(button);
+    button.addEventListener('click', function () {
+        const ttsKeys = languageMetadata[targetLanguageSelector.value].tts;
+        let voice = speechSynthesis.getVoices().find(voice => ttsKeys.indexOf(voice.lang) > -1);
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = voice.lang;
+        utterance.voice = voice;
+        speechSynthesis.speak(utterance);
+    });
+    container.appendChild(listenContainer);
+}
 function renderExample(term, example, container) {
     let targetContainer = document.createElement('p');
     targetContainer.classList.add('target', 'example-text');
@@ -148,11 +165,35 @@ function renderExample(term, example, container) {
     renderExampleText(term, targetTextTokens, queryTypes.target, targetContainer);
     container.appendChild(targetContainer);
 
+    let moreOptionsContainer = document.createElement('p');
+    let optionsContainer = document.createElement('ul');
+    moreOptionsContainer.classList.add('options-toggle', 'more-options');
+    moreOptionsContainer.innerText = '+';
+    moreOptionsContainer.addEventListener('click', function () {
+        if (optionsContainer.style.display === 'none') {
+            optionsContainer.removeAttribute('style');
+            moreOptionsContainer.innerText = '—';
+            moreOptionsContainer.classList.remove('more-options');
+            moreOptionsContainer.classList.add('less-options');
+        } else {
+            moreOptionsContainer.innerText = '+';
+            moreOptionsContainer.classList.remove('less-options');
+            moreOptionsContainer.classList.add('more-options');
+            optionsContainer.style.display = 'none';
+        }
+    });
+    container.appendChild(moreOptionsContainer);
+
     let baseContainer = document.createElement('p');
     baseContainer.classList.add('base', 'example-text');
     const baseTextTokens = example.base;
     renderExampleText(term, baseTextTokens, queryTypes.base, baseContainer);
     container.appendChild(baseContainer);
+
+    optionsContainer.classList.add('option-list');
+    optionsContainer.style.display = 'none';
+    renderTextToSpeech(example.target.join(' '), optionsContainer);
+    container.appendChild(optionsContainer);
 }
 function renderExamples(term, examples, container) {
     let exampleList = document.createElement('ul');
@@ -430,7 +471,7 @@ searchBox.addEventListener('input', function () {
     }
     let currentPrefix = searchBox.value;
     getAutocomplete(searchBox.value).then(value => {
-        if (searchBox.value !== currentPrefix) {
+        if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
             // this could be a late return of an old promise; just leave it
             return false;
         }
