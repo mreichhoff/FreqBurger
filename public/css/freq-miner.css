@@ -313,6 +313,32 @@ select {
     top: 14px
 }
 
+.search {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid;
+    border-radius: 100%;
+    margin-left: -4px;
+    cursor: pointer;
+}
+
+.search::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    border-radius: 3px;
+    width: 2px;
+    height: 8px;
+    background: currentColor;
+    transform: rotate(-45deg);
+    top: 10px;
+    left: 12px
+}
+
 .menu {
     margin-top: 8px;
 }
@@ -341,13 +367,78 @@ select {
     top: 6px
 }
 
+.export {
+    cursor: pointer;
+}
+
+.result-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    cursor: pointer;
+    height: 100px;
+    line-height: 100px;
+    font-size: 50px;
+    gap: 30px;
+    font-weight: bold;
+}
+
+.wrong-button {
+    background-color: #ff635f;
+    color: black;
+    margin: 0 100px;
+}
+
+.right-button {
+    background-color: #6de200;
+    color: black;
+    margin: 0 100px;
+}
+
+.result-indicator-wrong {
+    background-color: #ff635f;
+    color: black;
+}
+
+.result-indicator-right {
+    background-color: #6de200;
+    color: black;
+}
+
+.delete-button {
+    margin-top: 50px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.study-container {
+    font-weight: 300;
+}
+
+.study-container .instructions {
+    margin: 20px auto;
+}
+
+.instructions.call-to-action {
+    font-size: 18px;
+}
+
+.question {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+.answer {
+    margin-top: 20px;
+    font-size: 24px;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
         color: rgba(255, 255, 255, 0.87);
     }
 
-    input[type="text"] {
+    input[type="search"] {
         background-color: rgba(74, 74, 74, 0.9);
         border: 1px solid #3333;
         color: rgba(255, 255, 255, 0.87);
@@ -380,8 +471,17 @@ select {
     .header-container,
     .controls,
     .tabs,
+    .study-container,
     .result-container {
         width: 98%;
+    }
+
+    .right-button {
+        margin: 0;
+    }
+
+    .wrong-button {
+        margin: 0;
     }
 }
 
@@ -392,6 +492,7 @@ select {
 
     .example-container,
     .header-container,
+    .study-container,
     .controls,
     .tabs,
     .result-container {

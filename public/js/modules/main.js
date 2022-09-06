@@ -2,7 +2,7 @@ import { initialize as initializeFirebase } from "./firebase-init";
 import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, getAutocomplete, queryTypes } from "./data-layer";
 import { renderDefinitions } from "./definitions";
 import { renderCollocations, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
-import { initialize as initializeStudyMode, renderAddCardForm } from "./study-mode";
+import { initialize as initializeStudyMode, renderAddCardForm, setupStudyMode, teardownStudyMode } from "./study-mode";
 import { clean, cleanTypes } from "./utils";
 
 const DEFAULT_BASE_LANGUAGE = 'english';
@@ -41,7 +41,7 @@ const collocationsTab = document.getElementById('collocations-tab');
 
 const suggestionContainer = document.getElementById('autocomplete');
 
-const studyIcon = document.getElementById('study-icon');
+const modeIcon = document.getElementById('mode-icon');
 const menuIcon = document.getElementById('menu-icon');
 
 const mainContainer = document.getElementById('main-container');
@@ -471,7 +471,7 @@ searchBox.addEventListener('input', function () {
         return false;
     }
     let currentPrefix = searchBox.value;
-    getAutocomplete(searchBox.value).then(value => {
+    getAutocomplete(clean(searchBox.value, cleanTypes.examples)).then(value => {
         if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
             // this could be a late return of an old promise; just leave it
             return false;
@@ -490,14 +490,20 @@ for (const entry of tabs) {
     });
 }
 
-studyIcon.addEventListener('click', function () {
+modeIcon.addEventListener('click', function () {
     if (studyContainer.style.display === 'none') {
         mainContainer.style.display = 'none';
         menuContainer.style.display = 'none';
+        setupStudyMode();
+        modeIcon.classList.remove('study');
+        modeIcon.classList.add('search');
         studyContainer.removeAttribute('style');
     } else {
         studyContainer.style.display = 'none';
         menuContainer.style.display = 'none';
+        teardownStudyMode();
+        modeIcon.classList.remove('search');
+        modeIcon.classList.add('study');
         mainContainer.removeAttribute('style');
     }
 });

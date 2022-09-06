@@ -5,6 +5,9 @@ const cleanTypes = {
 
 function clean(token, cleanType) {
     token = token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
+    // smart quotes, whyyyyy
+    token = token.replace(/[\u2018\u2019]/g, "'");
+    token = token.replace(/[\u201C\u201D]/g, '"');
     if (cleanType === cleanTypes.definitions) {
         // TODO: language specificity, general hackiness
         return token.replace(/(^[djlmt]\')/, '');

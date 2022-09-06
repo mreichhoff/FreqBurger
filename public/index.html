@@ -18,7 +18,7 @@
     <div class="header-container">
         <span id="menu-icon" class="menu"></span>
         <h1 class="main-header">FreqMiner</h1>
-        <span id="study-icon" class="study"></span>
+        <span id="mode-icon" class="study"></span>
     </div>
     <div id="main-container">
         <div id="query-container" class="controls">
@@ -39,7 +39,7 @@
                         <input id="base-target-toggle" style="display:none" type="checkbox" />
                     </label>
                 </div>
-                <input type="text" autocapitalize="none" autocomplete="off" class="primary-control" id="search-box"
+                <input type="search" autocapitalize="none" autocomplete="off" class="primary-control" id="search-box"
                     placeholder="Enter a word..." enterkeyhint="search" />
                 <ul id="autocomplete" class="search-suggestions" style="display:none"></ul>
             </form>
@@ -81,9 +81,40 @@
         </div>
     </div>
     <div id="study-container" class="study-container" style="display:none">
-        <p id="export-button">Export Study List</p>
+        <div id="study-mode-fallback" class="instructions call-to-action" style="display:none">
+            It looks like you haven't added any flash cards. If you'd like to use our spaced repetition, use the plus
+            sign to add cards to your list!
+        </div>
+        <div id="study-mode-done" class="instructions call-to-action" style="display:none">
+            Studying complete. Feel free to add more cards!
+        </div>
+        <div id="study-mode">
+            <p class="instructions">
+                Cards due: <span id="cards-due"></span>
+            </p>
+            <div class="instructions call-to-action" id="study-instructions"></div>
+            <div id="card-question-container" class="question"></div>
+            <div id="card-hint-container" style="display:none"></div>
+            <div class="instructions">Click or tap, or hit the space bar, to show the answer.</div>
+            <div id="flipped-container" style="visibility: hidden;">
+                Answer:
+                <div id="card-answer-container" class="answer"></div>
+                <div id="study-controls-container">
+                    <div class="instructions">Click the buttons below, or use the arrow keys.</div>
+                    <div id="result-buttons" class="result-buttons">
+                        <div id="wrong-button" class="wrong-button">✕</div>
+                        <div id="right-button" class="right-button">✔</div>
+                    </div>
+                </div>
+                <div id="delete-card-container">
+                    <div id="delete-card-button" class="delete-button">Delete This Card</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="menu-container" style="display:none"></div>
+    <div id="menu-container" style="display:none">
+        <p id="export-button" class="instructions export">Export Study List</p>
+    </div>
     <script type="text/javascript" src="/js/bundle.js"></script>
 </body>
 
