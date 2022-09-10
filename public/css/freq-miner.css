@@ -35,14 +35,20 @@ select {
 }
 
 .study-container,
+.menu-container,
 .example-container,
 .result-container {
     width: 1000px;
     margin: 10px auto;
 }
 
+.menu-container,
 .study-container {
     text-align: center;
+}
+
+.menu-container p {
+    margin: 40px auto;
 }
 
 .result-container.grid {
@@ -339,6 +345,10 @@ select {
     left: 12px
 }
 
+.icon-container {
+    cursor: pointer;
+}
+
 .menu {
     margin-top: 8px;
 }
@@ -410,6 +420,7 @@ select {
     cursor: pointer;
 }
 
+.menu-container,
 .study-container {
     font-weight: 300;
 }
@@ -448,6 +459,14 @@ select {
         color: rgba(177, 178, 225, 0.95);
     }
 
+    .menu-container a {
+        color: rgba(177, 178, 225, 0.95);
+    }
+
+    .startup-suggestion {
+        color: rgba(177, 178, 225, 0.95);
+    }
+
     input::placeholder {
         color: #eeee;
     }
@@ -472,6 +491,7 @@ select {
     .controls,
     .tabs,
     .study-container,
+    .menu-container,
     .result-container {
         width: 98%;
     }
@@ -488,15 +508,6 @@ select {
 @media (max-width:664px) {
     h1 {
         font-size: 24px;
-    }
-
-    .example-container,
-    .header-container,
-    .study-container,
-    .controls,
-    .tabs,
-    .result-container {
-        width: 98%;
     }
 
     .result-container.grid {

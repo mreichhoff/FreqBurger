@@ -16,7 +16,7 @@
 
 <body>
     <div class="header-container">
-        <span id="menu-icon" class="menu"></span>
+        <span id="menu-icon" class="icon-container"><i class="menu"></i></span>
         <h1 class="main-header">FreqMiner</h1>
         <span id="mode-icon" class="study"></span>
     </div>
@@ -44,6 +44,19 @@
                 <ul id="autocomplete" class="search-suggestions" style="display:none"></ul>
             </form>
         </div>
+        <div id="startup-container" style="display:none">
+            <p class="instructions">
+                Not sure where to start? Try <a class="startup-suggestion" id="startup-suggestion-primary"
+                    href="/french/parle">parle</a> or <a class="startup-suggestion" id="startup-suggestion-secondary"
+                    href="/french/losange">losange</a>, or just start typing in the
+                search box to get suggestions.
+            </p>
+            <p class="instructions">
+                You can also search for phrases, like <a class="startup-suggestion" id="startup-suggestion-primary"
+                    href="/french/tout le monde en parle">tout le monde en parle</a>, or for English translations, like
+                <a class="startup-suggestion" href="/french/classic?queryType=base">classic.</a>
+            </p>
+        </div>
         <div id="result-types-container" style="display:none">
             <div class="tabs">
                 <span id="examples-tab" class="tab active">Examples</span>
@@ -51,12 +64,14 @@
                 <span id="collocations-tab" class="tab">Collocations</span>
             </div>
             <div id="examples-container" class="example-container">
+                <p id="examples-fallback" class="instructions" style="display:none">That term wasn't found.</p>
                 <p class="instructions">Click any word, in any example, to learn more. Examples are sorted
                     by average word frequency.</p>
                 <div id="results-container" class="result-container grid"></div>
             </div>
             <div id="definitions-container" style="display:none" class="result-container">
-                <p class="instructions" id="definitions-fallback" style="display:none">Definitions not found. Note that
+                <p class="instructions" id="definitions-fallback" style="display:none">Definitions not found.
+                    Note that
                     definitions are currently
                     available only in the target language.</p>
                 <div id="definitions-result-container"></div>
@@ -82,7 +97,9 @@
     </div>
     <div id="study-container" class="study-container" style="display:none">
         <div id="study-mode-fallback" class="instructions call-to-action" style="display:none">
-            It looks like you haven't added any flash cards. If you'd like to use our spaced repetition, use the plus
+            It looks like you haven't added any flash cards. <br />If you'd like to use our spaced repetition, use
+            the
+            plus
             sign to add cards to your list!
         </div>
         <div id="study-mode-done" class="instructions call-to-action" style="display:none">
@@ -112,7 +129,13 @@
             </div>
         </div>
     </div>
-    <div id="menu-container" style="display:none">
+    <div id="menu-container" class="menu-container" style="display:none">
+        <p>
+            <a href="https://github.com/mreichhoff/freqminer">Check out the code</a>
+        </p>
+        <p>
+            <a href="https://github.com/mreichhoff/freqminer/issues/new">Report a bug</a>
+        </p>
         <p id="export-button" class="instructions export">Export Study List</p>
     </div>
     <script type="text/javascript" src="/js/bundle.js"></script>

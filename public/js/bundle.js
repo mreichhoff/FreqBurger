@@ -13816,6 +13816,9 @@
             renderAnswer: function (card, container) {
                 container.innerText = card.base.join(' ');
             },
+            export: function (card) {
+                return [card.target.join(' ').replace(';', ''), card.base.join(' ').replace(';', '')].join(';');
+            },
             default: true
         },
         cloze: {
@@ -13834,7 +13837,7 @@
                 } else {
                     // for single term cards, just make a new array with the term replaced with underscores
                     missingContainer.innerText = card.target.map(x => {
-                        if (clean(x, cleanTypes.example) === card.term) {
+                        if (clean(x, cleanTypes.examples) === card.term) {
                             return '____';
                         }
                         return x;
@@ -13848,6 +13851,9 @@
             },
             renderAnswer: function (card, container) {
                 container.innerText = card.term;
+            },
+            export: function (card) {
+                return null;
             }
         },
         recall: {
@@ -13860,6 +13866,9 @@
             },
             renderAnswer: function (card, container) {
                 container.innerText = card.target.join(' ');
+            },
+            export: function (card) {
+                return [card.base.join(' ').replace(';', ''), card.target.join(' ').replace(';', '')].join(';');
             }
         }
     };
@@ -13932,7 +13941,6 @@
             //TODO: why is FormData not working?
             const cardType = event.target.querySelector('select[name="cardType"]').value;
             addCard(term, example, cardType);
-            exportStudyListButton.removeAttribute('style');
             event.target.querySelector('input[type="submit"]').value = 'Added ✅';
             setTimeout(function () {
                 addCardForm.innerHTML = '';
@@ -13952,10 +13960,10 @@
         console.log(JSON.stringify(Object.keys(studyList)));
         let content = "data:text/plain;charset=utf-8,";
         for (const [key, value] of Object.entries(studyList)) {
-            // TODO: figure out cloze/recall exports
-            if (value.cardType === 'recognition') {
-                //replace is a hack for flashcard field separator...TODO could escape
-                content += [value.target.join(' ').replace(';', ''), value.base.join(' ').replace(';', '')].join(';');
+            // TODO: figure out cloze exports
+            const exportedCard = cardTypes[value.cardType].export(value);
+            if (exportedCard) {
+                content += exportedCard;
                 content += '\n';
             }
         }
@@ -14022,13 +14030,11 @@
     function setupStudyMode() {
         flippedContainer.style.visibility = 'hidden';
         if (studyListEmpty()) {
-            exportStudyListButton.style.display = 'none';
             studyModeContainer.style.display = 'none';
             studyModeFallback.removeAttribute('style');
             return;
         }
         studyModeFallback.style.display = 'none';
-        exportStudyListButton.removeAttribute('style');
         let nextCardDue = getCardsDue();
         if (!nextCardDue) {
             studyModeContainer.style.display = 'none';
@@ -14062,10 +14068,15 @@
         document.removeEventListener('keydown', keyboardShortcutHandler);
     }
 
-    function initialize() {
+    function setExportVisibility() {
         if (studyListEmpty()) {
             exportStudyListButton.style.display = 'none';
+        } else {
+            exportStudyListButton.removeAttribute('style');
         }
+    }
+
+    function initialize() {
         exportStudyListButton.addEventListener('click', function () {
             // TODO: try to limit this getStudyList thing....
             exportStudyList(getStudyList());
@@ -14118,11 +14129,14 @@
     const suggestionContainer = document.getElementById('autocomplete');
 
     const modeIcon = document.getElementById('mode-icon');
-    document.getElementById('menu-icon');
+    const menuIcon = document.getElementById('menu-icon');
 
     const mainContainer = document.getElementById('main-container');
     const studyContainer = document.getElementById('study-container');
     const menuContainer = document.getElementById('menu-container');
+
+    const startupContainer = document.getElementById('startup-container');
+    const examplesFallback = document.getElementById("examples-fallback");
 
     // ordering is important
     const tabs = [
@@ -14357,11 +14371,13 @@
         }
     }
     function clearResults() {
+        examplesFallback.style.display = 'none';
         resultsContainer.innerHTML = '';
     }
 
     function query(term, queryType, shouldPushState) {
         //ensure the parent container is shown
+        startupContainer.style.display = 'none';
         resultsTypesContainer.removeAttribute('style');
         clearSuggestions();
 
@@ -14400,6 +14416,8 @@
                         }
                     }, '', newUrl);
                 }
+            } else {
+                examplesFallback.removeAttribute('style');
             }
         }).catch(x => {
             //TODO
@@ -14409,6 +14427,7 @@
             clearDefinitions();
             definitionsFallback.style.display = 'none';
             if (value.exists()) {
+
                 renderDefinitions(termForDefinitions, value.data(), definitionsResultContainer, function (reference) {
                     searchBox.value = reference;
                     query(reference, queryTypes.target, true);
@@ -14424,6 +14443,9 @@
     queryForm.addEventListener('submit', function (event) {
         event.preventDefault();
         searchBox.blur();
+        if (!searchBox.value) {
+            return;
+        }
         query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target, true).then(x => {
             switchToTab(tabs[0].tab.id);
         });
@@ -14480,6 +14502,7 @@
             queryType: queryTypes.target
         };
     }
+
     if (history.state) {
         loadState(history.state);
     } else if (document.location.pathname !== '/') {
@@ -14491,6 +14514,8 @@
             loadState(state);
             history.pushState(state, '', document.location);
         }
+    } else {
+        startupContainer.removeAttribute('style');
     }
 
     window.onpopstate = (event) => {
@@ -14578,6 +14603,18 @@
             teardownStudyMode();
             modeIcon.classList.remove('search');
             modeIcon.classList.add('study');
+            mainContainer.removeAttribute('style');
+        }
+    });
+
+    menuIcon.addEventListener('click', function () {
+        if (menuContainer.style.display === 'none') {
+            mainContainer.style.display = 'none';
+            studyContainer.style.display = 'none';
+            setExportVisibility();
+            menuContainer.removeAttribute('style');
+        } else {
+            menuContainer.style.display = 'none';
             mainContainer.removeAttribute('style');
         }
     });

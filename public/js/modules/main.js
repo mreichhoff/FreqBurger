@@ -2,7 +2,7 @@ import { initialize as initializeFirebase } from "./firebase-init";
 import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, getAutocomplete, queryTypes } from "./data-layer";
 import { renderDefinitions } from "./definitions";
 import { renderCollocations, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
-import { initialize as initializeStudyMode, renderAddCardForm, setupStudyMode, teardownStudyMode } from "./study-mode";
+import { initialize as initializeStudyMode, renderAddCardForm, setupStudyMode, teardownStudyMode, setExportVisibility } from "./study-mode";
 import { clean, cleanTypes } from "./utils";
 
 const DEFAULT_BASE_LANGUAGE = 'english';
@@ -47,6 +47,9 @@ const menuIcon = document.getElementById('menu-icon');
 const mainContainer = document.getElementById('main-container');
 const studyContainer = document.getElementById('study-container');
 const menuContainer = document.getElementById('menu-container');
+
+const startupContainer = document.getElementById('startup-container');
+const examplesFallback = document.getElementById("examples-fallback");
 
 // ordering is important
 const tabs = [
@@ -281,11 +284,13 @@ function renderData(term, data) {
     }
 }
 function clearResults() {
+    examplesFallback.style.display = 'none';
     resultsContainer.innerHTML = '';
 }
 
 function query(term, queryType, shouldPushState) {
     //ensure the parent container is shown
+    startupContainer.style.display = 'none';
     resultsTypesContainer.removeAttribute('style');
     clearSuggestions();
 
@@ -325,7 +330,7 @@ function query(term, queryType, shouldPushState) {
                 }, '', newUrl);
             }
         } else {
-            //TODO
+            examplesFallback.removeAttribute('style');
         }
     }).catch(x => {
         //TODO
@@ -335,6 +340,7 @@ function query(term, queryType, shouldPushState) {
         clearDefinitions();
         definitionsFallback.style.display = 'none';
         if (value.exists()) {
+
             renderDefinitions(termForDefinitions, value.data(), definitionsResultContainer, function (reference) {
                 searchBox.value = reference;
                 query(reference, queryTypes.target, true);
@@ -350,6 +356,9 @@ function query(term, queryType, shouldPushState) {
 queryForm.addEventListener('submit', function (event) {
     event.preventDefault();
     searchBox.blur();
+    if (!searchBox.value) {
+        return;
+    }
     query(searchBox.value, toggleCheckbox.checked ? queryTypes.base : queryTypes.target, true).then(x => {
         switchToTab(tabs[0].tab.id);
     });
@@ -406,6 +415,7 @@ function parseUrl(path) {
         queryType: queryTypes.target
     };
 }
+
 if (history.state) {
     loadState(history.state);
 } else if (document.location.pathname !== '/') {
@@ -417,6 +427,8 @@ if (history.state) {
         loadState(state);
         history.pushState(state, '', document.location);
     }
+} else {
+    startupContainer.removeAttribute('style');
 }
 
 window.onpopstate = (event) => {
@@ -504,6 +516,18 @@ modeIcon.addEventListener('click', function () {
         teardownStudyMode();
         modeIcon.classList.remove('search');
         modeIcon.classList.add('study');
+        mainContainer.removeAttribute('style');
+    }
+});
+
+menuIcon.addEventListener('click', function () {
+    if (menuContainer.style.display === 'none') {
+        mainContainer.style.display = 'none';
+        studyContainer.style.display = 'none';
+        setExportVisibility();
+        menuContainer.removeAttribute('style');
+    } else {
+        menuContainer.style.display = 'none';
         mainContainer.removeAttribute('style');
     }
 });
