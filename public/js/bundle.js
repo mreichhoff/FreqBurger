@@ -13424,8 +13424,11 @@
         'examples': 'examples'
     };
 
-    function clean(token, cleanType) {
-        token = token.toLowerCase().replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
+    function clean(token, cleanType, noLowering) {
+        if (!noLowering) {
+            token = token.toLowerCase();
+        }
+        token = token.replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
         // smart quotes, whyyyyy
         token = token.replace(/[\u2018\u2019]/g, "'");
         token = token.replace(/[\u201C\u201D]/g, '"');
@@ -13450,6 +13453,20 @@
                 'definitions': 'fr-en-defs',
                 'autocomplete': 'fr-en-trie'
             }
+        },
+        'es': {
+            'en': {
+                'examples': 'es-en',
+                'definitions': 'es-en-defs',
+                'autocomplete': 'es-en-trie'
+            }
+        },
+        'de': {
+            'en': {
+                'examples': 'de-en',
+                'definitions': 'de-en-defs',
+                'autocomplete': 'de-en-trie'
+            }
         }
     };
 
@@ -13458,6 +13475,14 @@
         'fr-en': {
             base: 'English',
             target: 'French'
+        },
+        'es-en': {
+            base: 'English',
+            target: 'Spanish'
+        },
+        'de-en': {
+            base: 'English',
+            target: 'German'
         }
     };
 
@@ -13478,11 +13503,6 @@
     let getExampleData = function (word, queryType) {
         const docRef = xa(firestore, collectionId.examples, `${word}-${queryType}`);
 
-        return dl(docRef);
-    };
-
-    let getDefinitions = function (word) {
-        const docRef = xa(firestore, collectionId.definitions, word);
         return dl(docRef);
     };
 
@@ -13718,9 +13738,9 @@
             container.appendChild(tagElement);
         }
     }
-    function renderDefinitions(term, data, container, referenceHandler) {
+    function renderDefinitions(term, defs, container, referenceHandler) {
         let definitionContainer = document.createElement('div');
-        for (const definition of data.defs) {
+        for (const definition of defs) {
             renderDefinition(term, definition, definitionContainer, referenceHandler);
         }
         container.appendChild(definitionContainer);
@@ -13837,7 +13857,8 @@
                 } else {
                     // for single term cards, just make a new array with the term replaced with underscores
                     missingContainer.innerText = card.target.map(x => {
-                        if (clean(x, cleanTypes.examples) === card.term) {
+                        // oh no, ignore case...
+                        if (clean(x, cleanTypes.examples, getLanguagesFromLanguageKey(card.languages).target === 'German') === card.term) {
                             return '____';
                         }
                         return x;
@@ -14145,16 +14166,26 @@
         { tab: collocationsTab, container: collocationsContainer }
     ];
 
-    let targetLanguage = 'French';
-    let baseLanguage = 'English';
-
     const languageMetadata = {
         'french': {
             'key': 'fr',
-            'tts': ['fr-FR', 'fr_FR']
+            'tts': ['fr-FR', 'fr_FR'],
+            'label': 'French'
+        },
+        'spanish': {
+            'key': 'es',
+            'tts': ['es-ES', 'es_ES'],
+            'label': 'Spanish'
+        },
+        'german': {
+            'key': 'de',
+            'tts': ['de-DE', 'de_DE'],
+            'label': 'German',
+            'noLowering': true
         },
         'english': {
-            'key': 'en'
+            'key': 'en',
+            'label': 'English'
         }
     };
 
@@ -14202,7 +14233,7 @@
         for (const token of tokens) {
             let anchor = document.createElement('a');
             anchor.classList.add('token');
-            const cleanToken = clean(token, cleanTypes.examples);
+            const cleanToken = clean(token, cleanTypes.examples, getLoweringSetting(queryType));
             if (cleanToken === term) {
                 // TODO: array expansion thing with classList.add
                 anchor.classList.add('searched-term');
@@ -14369,24 +14400,40 @@
         } else {
             collocationsPrimary.removeAttribute('style');
         }
+        clearDefinitions();
+        definitionsFallback.style.display = 'none';
+        if (data.defs) {
+            renderDefinitions(term, data.defs, definitionsResultContainer, function (reference) {
+                searchBox.value = reference;
+                query(reference, queryTypes.target, true);
+            });
+        } else {
+            //TODO: specific messaging
+            definitionsFallback.removeAttribute('style');
+        }
     }
     function clearResults() {
         examplesFallback.style.display = 'none';
         resultsContainer.innerHTML = '';
     }
 
-    function query(term, queryType, shouldPushState) {
+    function getLoweringSetting(queryType) {
+        return languageMetadata[queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value].noLowering || false;
+    }
+
+    async function query(term, queryType, shouldPushState) {
         //ensure the parent container is shown
         startupContainer.style.display = 'none';
         resultsTypesContainer.removeAttribute('style');
         clearSuggestions();
 
-        const cleanTerm = clean(term, cleanTypes.examples);
+        const cleanTerm = clean(term, cleanTypes.examples, getLoweringSetting(queryType));
         const dataPromise = getExampleData(cleanTerm, queryType);
-        const termForDefinitions = clean(term, cleanTypes.definitions);
-        const definitionPromise = getDefinitions(termForDefinitions);
+        //TODO: whoops....
+        //const termForDefinitions = clean(term, cleanTypes.definitions);
 
-        return Promise.all([dataPromise.then(value => {
+        try {
+            const value = await dataPromise;
             if (value.exists()) {
                 // with each query, clear out the old results
                 clearResults();
@@ -14419,26 +14466,7 @@
             } else {
                 examplesFallback.removeAttribute('style');
             }
-        }).catch(x => {
-            //TODO
-        }),
-        // TODO: just combine with sentences into a single doc per word
-        definitionPromise.then(value => {
-            clearDefinitions();
-            definitionsFallback.style.display = 'none';
-            if (value.exists()) {
-
-                renderDefinitions(termForDefinitions, value.data(), definitionsResultContainer, function (reference) {
-                    searchBox.value = reference;
-                    query(reference, queryTypes.target, true);
-                });
-            } else {
-                //TODO: specific messaging
-                definitionsFallback.removeAttribute('style');
-            }
-        }).catch(x => {
-            // todo
-        })]);
+        } catch (x) { }
     }
     queryForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -14451,17 +14479,21 @@
         });
     });
 
-    toggleCheckbox.addEventListener('change', function () {
+    function setSearchInstructions() {
+        const targetLanguage = languageMetadata[targetLanguageSelector.value].label;
+        const baseLanguage = languageMetadata[baseLanguageSelector.value].label;
         if (toggleCheckbox.checked) {
             searchLabel.innerText = `Find ${targetLanguage} sentences whose translation has the ${baseLanguage} word:`;
         } else {
             searchLabel.innerText = `Find ${targetLanguage} sentences with the ${targetLanguage} word:`;
         }
-    });
+    }
+    toggleCheckbox.addEventListener('change', setSearchInstructions);
     function languageChangeHandler() {
         setLanguages(languageMetadata[baseLanguageSelector.value]['key'], languageMetadata[targetLanguageSelector.value]['key']);
         // When switching languages, clear out any existing results.
         clearResults();
+        setSearchInstructions();
     }
     targetLanguageSelector.addEventListener('change', languageChangeHandler);
     baseLanguageSelector.addEventListener('change', languageChangeHandler);
@@ -14471,6 +14503,7 @@
         baseLanguageSelector.value = state.languages.base;
         targetLanguageSelector.dispatchEvent(new Event('change'));
         baseLanguageSelector.dispatchEvent(new Event('change'));
+        setSearchInstructions();
         const term = decodeURIComponent(state.term);
         searchBox.value = term;
         if (state.queryType === queryTypes.base) {
@@ -14570,7 +14603,7 @@
             return false;
         }
         let currentPrefix = searchBox.value;
-        getAutocomplete(clean(searchBox.value, cleanTypes.examples)).then(value => {
+        getAutocomplete(clean(searchBox.value, cleanTypes.examples, getLoweringSetting(queryTypes.target))).then(value => {
             if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
                 // this could be a late return of an old promise; just leave it
                 return false;

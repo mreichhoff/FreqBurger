@@ -12,6 +12,20 @@ const languagesToCollection = {
             'definitions': 'fr-en-defs',
             'autocomplete': 'fr-en-trie'
         }
+    },
+    'es': {
+        'en': {
+            'examples': 'es-en',
+            'definitions': 'es-en-defs',
+            'autocomplete': 'es-en-trie'
+        }
+    },
+    'de': {
+        'en': {
+            'examples': 'de-en',
+            'definitions': 'de-en-defs',
+            'autocomplete': 'de-en-trie'
+        }
     }
 };
 
@@ -20,6 +34,14 @@ const languageKeysToLanguages = {
     'fr-en': {
         base: 'English',
         target: 'French'
+    },
+    'es-en': {
+        base: 'English',
+        target: 'Spanish'
+    },
+    'de-en': {
+        base: 'English',
+        target: 'German'
     }
 }
 

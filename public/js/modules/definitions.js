@@ -35,9 +35,9 @@ function renderDefinition(term, definition, container, referenceHandler) {
         container.appendChild(tagElement);
     }
 }
-function renderDefinitions(term, data, container, referenceHandler) {
+function renderDefinitions(term, defs, container, referenceHandler) {
     let definitionContainer = document.createElement('div');
-    for (const definition of data.defs) {
+    for (const definition of defs) {
         renderDefinition(term, definition, definitionContainer, referenceHandler);
     }
     container.appendChild(definitionContainer);

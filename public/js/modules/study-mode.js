@@ -50,7 +50,8 @@ const cardTypes = {
             } else {
                 // for single term cards, just make a new array with the term replaced with underscores
                 missingContainer.innerText = card.target.map(x => {
-                    if (clean(x, cleanTypes.examples) === card.term) {
+                    // oh no, ignore case...
+                    if (clean(x, cleanTypes.examples, getLanguagesFromLanguageKey(card.languages).target === 'German') === card.term) {
                         return '____';
                     }
                     return x;
