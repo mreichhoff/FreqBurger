@@ -99,7 +99,7 @@ def main():
                     target, args.target_language, args.target_ignore_case)
 
                 key = target.translate(str.maketrans(
-                    '', '', string.punctuation)).replace(' ', '')
+                    '', '', (string.punctuation + '¿' + '¡'))).replace(' ', '')
                 if key in seen:
                     continue
                 seen.add(key)

@@ -42,7 +42,7 @@ def tokenize(line, language, ignore_case):
     elif language == 'japanese':
         return []
     # TODO: experimenting with space only for now instead of nltk
-    return [normalize_case(x, ignore_case).strip(string.punctuation) for x in line.split(' ')]
+    return [normalize_case(x, ignore_case).strip(string.punctuation + '¿' + '¡') for x in line.split(' ')]
 
 
 def get_average_frequency_rank(word_frequencies, words):

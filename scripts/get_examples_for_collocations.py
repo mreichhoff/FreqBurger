@@ -7,9 +7,11 @@ from heapq import heappush, heappushpop
 from lang_utils import get_average_frequency_rank, get_words_with_punctuation, tokenize, should_block, join
 
 
-def get_collocations(filename):
+def get_collocations(filename, use_top_collocations):
     with open(filename) as f:
         full_set = json.load(f)
+        if use_top_collocations:
+            return full_set
         result = {}
         for value in full_set.values():
             for item in value.keys():
@@ -51,6 +53,8 @@ def main():
         '--base-ignore-case', help='lowercase all words (recommended except for, e.g., German)', action=argparse.BooleanOptionalAction)
     parser.add_argument(
         '--target-ignore-case', help='lowercase all words (recommended except for, e.g., German)', action=argparse.BooleanOptionalAction)
+    parser.add_argument(
+        '--top-collocations', help='use get_top_collocations output instead of sort_collocations', action=argparse.BooleanOptionalAction)
     parser.add_argument('--blocklist-filename',
                         help='a filename with vulgar or offensive words that should be excluded')
     parser.add_argument('--freq-ranked-filename',
@@ -58,7 +62,8 @@ def main():
     args = parser.parse_args()
 
     ranked_freqs = get_ranked_freqs(args.freq_ranked_filename)
-    collocations = get_collocations(args.collocations_file)
+    collocations = get_collocations(
+        args.collocations_file, args.top_collocations)
     blocklist = get_blocklist(args.blocklist_filename)
     seen = set()
     n = int(args.n)
@@ -95,7 +100,7 @@ def main():
                     ngram_joined = join(current_ngram, args.target_language)
                     if ngram_joined not in collocations:
                         continue
-                    if len(collocations[ngram_joined]) < int(args.n):
+                    if len(collocations[ngram_joined]) < int(args.num_examples):
                         heappush(collocations[ngram_joined],
                                  (-average_freq, target_words, base_words))
                     else:

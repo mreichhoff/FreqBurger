@@ -14,6 +14,7 @@ def main():
     raw_glosses_key = 'raw_glosses'
     tags_key = 'tags'
     form_of_key = 'form_of'
+    part_of_speech_key = 'pos'
 
     output = {}
     with open(args.filename) as f:
@@ -33,6 +34,9 @@ def main():
                 if form_of_key in sense:
                     output[curr[word_key]][len(
                         output[curr[word_key]])-1]['form'] = sense[form_of_key]
+                if part_of_speech_key in curr:
+                    output[curr[word_key]][len(
+                        output[curr[word_key]])-1]['pos'] = curr[part_of_speech_key]
 
     print(json.dumps(output, ensure_ascii=False))
 
