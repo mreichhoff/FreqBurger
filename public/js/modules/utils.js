@@ -3,9 +3,22 @@ const cleanTypes = {
     'examples': 'examples'
 }
 
-function clean(token, cleanType, noLowering) {
-    if (!noLowering) {
+const cleanSettings = {
+    'german': {
+        'noLowering': true
+    },
+    'chinese': {
+        'noSpaces': true
+    }
+};
+function clean(token, cleanType, language) {
+    if (!(language in cleanSettings) || !cleanSettings[language].noLowering) {
         token = token.toLowerCase();
+    }
+    if ((language in cleanSettings) && cleanSettings[language].noSpaces) {
+        token = token.replace(/\s/g, "");
+        // TODO: investigate regexes below being weird with chinese
+        return token;
     }
     token = token.replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
     // smart quotes, whyyyyy

@@ -75,6 +75,12 @@ const languageMetadata = {
         'label': 'German',
         'noLowering': true
     },
+    'chinese': {
+        'key': 'zh',
+        'tts': ['zh-CN', 'zh_CN'],
+        'label': 'Chinese',
+        'noSpaces': true
+    },
     'english': {
         'key': 'en',
         'label': 'English'
@@ -125,7 +131,8 @@ function renderExampleText(term, tokens, queryType, container) {
     for (const token of tokens) {
         let anchor = document.createElement('a');
         anchor.classList.add('token');
-        const cleanToken = clean(token, cleanTypes.examples, getLoweringSetting(queryType));
+        anchor.classList.add(getQueryLanguage(queryType));
+        const cleanToken = clean(token, cleanTypes.examples, getQueryLanguage(queryType));
         if (cleanToken === term) {
             // TODO: array expansion thing with classList.add
             anchor.classList.add('searched-term');
@@ -146,7 +153,9 @@ function renderExampleText(term, tokens, queryType, container) {
         anchor.innerText = token;
         container.appendChild(anchor);
         // YOU ARE IN NO POSITION TO JUDGE ME
-        container.append(" ");
+        if (!getSpaceSetting(queryType)) {
+            container.append(" ");
+        }
     }
 }
 function renderTextToSpeech(text, container) {
@@ -183,8 +192,8 @@ function renderExample(term, example, container) {
     moreOptionsContainer.innerText = '+';
     moreOptionsContainer.addEventListener('click', function () {
         if (optionsContainer.style.display === 'none') {
-            renderTextToSpeech(example.target.join(' '), optionsContainer);
-            renderAddCardForm(term, example, optionsContainer);
+            renderTextToSpeech(example.target.join(getSpaceSetting(queryTypes.target) ? '' : ' '), optionsContainer);
+            renderAddCardForm(term, example, getQueryLanguage(queryTypes.target), optionsContainer);
             optionsContainer.removeAttribute('style');
             moreOptionsContainer.innerText = '—';
             moreOptionsContainer.classList.remove('more-options');
@@ -309,8 +318,12 @@ function clearResults() {
     resultsContainer.innerHTML = '';
 }
 
-function getLoweringSetting(queryType) {
-    return languageMetadata[queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value].noLowering || false;
+function getQueryLanguage(queryType) {
+    return queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value;
+}
+
+function getSpaceSetting(queryType) {
+    return languageMetadata[queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value].noSpaces || false;
 }
 
 async function query(term, queryType, shouldPushState) {
@@ -319,7 +332,7 @@ async function query(term, queryType, shouldPushState) {
     resultsTypesContainer.removeAttribute('style');
     clearSuggestions();
 
-    const cleanTerm = clean(term, cleanTypes.examples, getLoweringSetting(queryType));
+    const cleanTerm = clean(term, cleanTypes.examples, getQueryLanguage(queryType));
     const dataPromise = getExampleData(cleanTerm, queryType);
     //TODO: whoops....
     //const termForDefinitions = clean(term, cleanTypes.definitions);
@@ -495,7 +508,7 @@ searchBox.addEventListener('input', function () {
         return false;
     }
     let currentPrefix = searchBox.value;
-    getAutocomplete(clean(searchBox.value, cleanTypes.examples, getLoweringSetting(queryTypes.target))).then(value => {
+    getAutocomplete(clean(searchBox.value, cleanTypes.examples, getQueryLanguage(queryTypes.target))).then(value => {
         if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
             // this could be a late return of an old promise; just leave it
             return false;

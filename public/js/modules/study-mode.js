@@ -50,8 +50,7 @@ const cardTypes = {
             } else {
                 // for single term cards, just make a new array with the term replaced with underscores
                 missingContainer.innerText = card.target.map(x => {
-                    // oh no, ignore case...
-                    if (clean(x, cleanTypes.examples, getLanguagesFromLanguageKey(card.languages).target === 'German') === card.term) {
+                    if (clean(x, cleanTypes.examples, getLanguagesFromLanguageKey(card.languages).key) === card.term) {
                         return '____';
                     }
                     return x;
@@ -105,12 +104,12 @@ function renderCardTypeOptions(term, example, container) {
     return addedCount;
 }
 
-function updateUnknownWordCount(element, example) {
-    let unknownWordCount = getUnknownWordCount(example.target);
+function updateUnknownWordCount(element, example, languageKey) {
+    let unknownWordCount = getUnknownWordCount(example.target, languageKey);
     element.innerText = `Add a flashcard? This sentence has ${unknownWordCount} word${unknownWordCount === 1 ? '' : 's'} not in your study list.`;
 }
 
-function renderAddCardControls(term, example, container) {
+function renderAddCardControls(term, example, languageKey, container) {
     let instructions = document.createElement('p');
     instructions.classList.add('instructions', 'add-card');
 
@@ -127,9 +126,9 @@ function renderAddCardControls(term, example, container) {
         return;
     }
     instructions.classList.add('unknown-update');
-    updateUnknownWordCount(instructions, example);
+    updateUnknownWordCount(instructions, example, languageKey);
     instructions.addEventListener('list-update', function () {
-        updateUnknownWordCount(instructions, example);
+        updateUnknownWordCount(instructions, example, languageKey);
     });
     typeSelectionLabel.appendChild(typeSelector);
     selectorContainer.appendChild(typeSelectionLabel);
@@ -146,7 +145,7 @@ function renderAddCardControls(term, example, container) {
     container.appendChild(submitContainer);
 }
 
-function renderAddCardForm(term, example, container) {
+function renderAddCardForm(term, example, languageKey, container) {
     let addCardContainer = document.createElement('li');
     addCardContainer.classList.add('example-option');
     let addCardForm = document.createElement('form');
@@ -158,14 +157,14 @@ function renderAddCardForm(term, example, container) {
         event.target.querySelector('input[type="submit"]').value = 'Added ✅';
         setTimeout(function () {
             addCardForm.innerHTML = '';
-            renderAddCardControls(term, example, addCardForm);
+            renderAddCardControls(term, example, languageKey, addCardForm);
             document.querySelectorAll('.unknown-update').forEach(element => {
                 const event = new Event('list-update');
                 element.dispatchEvent(event);
             });
         }, 200);
     });
-    renderAddCardControls(term, example, addCardForm);
+    renderAddCardControls(term, example, languageKey, addCardForm);
     addCardContainer.appendChild(addCardForm);
     container.appendChild(addCardContainer);
 }

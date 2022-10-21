@@ -23,6 +23,12 @@ function renderDefinition(term, definition, container, referenceHandler) {
         let termSignifier = document.createElement('span');
         termSignifier.classList.add('definition', 'term');
         termSignifier.innerText = term;
+        if (definition.transcription) {
+            termSignifier.innerText += ` (${definition.transcription})`;
+        }
+        if (definition.pos) {
+            termSignifier.innerText += ` (${definition.pos})`;
+        }
         definitionElement.appendChild(termSignifier);
         definitionElement.append(`: ${definition.def}`);
     }

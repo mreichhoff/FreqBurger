@@ -26,6 +26,13 @@ const languagesToCollection = {
             'definitions': 'de-en-defs',
             'autocomplete': 'de-en-trie'
         }
+    },
+    'zh': {
+        'en': {
+            'examples': 'zh-en',
+            'definitions': 'de-en-defs',
+            'autocomplete': 'zh-en-trie'
+        }
     }
 };
 
@@ -33,15 +40,23 @@ const languagesToCollection = {
 const languageKeysToLanguages = {
     'fr-en': {
         base: 'English',
-        target: 'French'
+        target: 'French',
+        key: 'french'
     },
     'es-en': {
         base: 'English',
-        target: 'Spanish'
+        target: 'Spanish',
+        key: 'spanish'
     },
     'de-en': {
         base: 'English',
-        target: 'German'
+        target: 'German',
+        key: 'german'
+    },
+    'zh-en': {
+        base: 'English',
+        target: 'Chinese',
+        key: 'chinese'
     }
 }
 
@@ -75,13 +90,13 @@ let getAutocomplete = function (prefix) {
     return getDoc(docRef);
 };
 
-let getUnknownWordCount = function (tokens) {
+let getUnknownWordCount = function (tokens, languageKey) {
     // TODO: could precompute if performance becomes an issue
-    let unseenTokens = new Set(tokens.map(x => clean(x, cleanTypes.examples)));
+    let unseenTokens = new Set(tokens.map(x => clean(x, cleanTypes.examples, languageKey)));
     for (const [key, value] of Object.entries(studyList)) {
         let targetTokens = value.target;
         for (const token of targetTokens) {
-            unseenTokens.delete(clean(token, cleanTypes.examples));
+            unseenTokens.delete(clean(token, cleanTypes.examples, languageKey));
         }
         if (unseenTokens.size === 0) {
             return 0;

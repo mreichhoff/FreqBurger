@@ -182,6 +182,10 @@ select {
     display: inline-block;
 }
 
+.target .chinese {
+    font-size: 24px;
+}
+
 .base {
     font-size: 14px;
 }

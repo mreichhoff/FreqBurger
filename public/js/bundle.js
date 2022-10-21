@@ -13424,9 +13424,22 @@
         'examples': 'examples'
     };
 
-    function clean(token, cleanType, noLowering) {
-        if (!noLowering) {
+    const cleanSettings = {
+        'german': {
+            'noLowering': true
+        },
+        'chinese': {
+            'noSpaces': true
+        }
+    };
+    function clean(token, cleanType, language) {
+        if (!(language in cleanSettings) || !cleanSettings[language].noLowering) {
             token = token.toLowerCase();
+        }
+        if ((language in cleanSettings) && cleanSettings[language].noSpaces) {
+            token = token.replace(/\s/g, "");
+            // TODO: investigate regexes below being weird with chinese
+            return token;
         }
         token = token.replace(/(^[^A-Za-zÀ-ÖØ-öø-ÿ]+)|([^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$)/g, '');
         // smart quotes, whyyyyy
@@ -13467,6 +13480,13 @@
                 'definitions': 'de-en-defs',
                 'autocomplete': 'de-en-trie'
             }
+        },
+        'zh': {
+            'en': {
+                'examples': 'zh-en',
+                'definitions': 'de-en-defs',
+                'autocomplete': 'zh-en-trie'
+            }
         }
     };
 
@@ -13474,15 +13494,23 @@
     const languageKeysToLanguages = {
         'fr-en': {
             base: 'English',
-            target: 'French'
+            target: 'French',
+            key: 'french'
         },
         'es-en': {
             base: 'English',
-            target: 'Spanish'
+            target: 'Spanish',
+            key: 'spanish'
         },
         'de-en': {
             base: 'English',
-            target: 'German'
+            target: 'German',
+            key: 'german'
+        },
+        'zh-en': {
+            base: 'English',
+            target: 'Chinese',
+            key: 'chinese'
         }
     };
 
@@ -13511,13 +13539,13 @@
         return dl(docRef);
     };
 
-    let getUnknownWordCount = function (tokens) {
+    let getUnknownWordCount = function (tokens, languageKey) {
         // TODO: could precompute if performance becomes an issue
-        let unseenTokens = new Set(tokens.map(x => clean(x, cleanTypes.examples)));
+        let unseenTokens = new Set(tokens.map(x => clean(x, cleanTypes.examples, languageKey)));
         for (const [key, value] of Object.entries(studyList)) {
             let targetTokens = value.target;
             for (const token of targetTokens) {
-                unseenTokens.delete(clean(token, cleanTypes.examples));
+                unseenTokens.delete(clean(token, cleanTypes.examples, languageKey));
             }
             if (unseenTokens.size === 0) {
                 return 0;
@@ -13726,6 +13754,12 @@
             let termSignifier = document.createElement('span');
             termSignifier.classList.add('definition', 'term');
             termSignifier.innerText = term;
+            if (definition.transcription) {
+                termSignifier.innerText += ` (${definition.transcription})`;
+            }
+            if (definition.pos) {
+                termSignifier.innerText += ` (${definition.pos})`;
+            }
             definitionElement.appendChild(termSignifier);
             definitionElement.append(`: ${definition.def}`);
         }
@@ -13857,8 +13891,7 @@
                 } else {
                     // for single term cards, just make a new array with the term replaced with underscores
                     missingContainer.innerText = card.target.map(x => {
-                        // oh no, ignore case...
-                        if (clean(x, cleanTypes.examples, getLanguagesFromLanguageKey(card.languages).target === 'German') === card.term) {
+                        if (clean(x, cleanTypes.examples, getLanguagesFromLanguageKey(card.languages).key) === card.term) {
                             return '____';
                         }
                         return x;
@@ -13912,12 +13945,12 @@
         return addedCount;
     }
 
-    function updateUnknownWordCount(element, example) {
-        let unknownWordCount = getUnknownWordCount(example.target);
+    function updateUnknownWordCount(element, example, languageKey) {
+        let unknownWordCount = getUnknownWordCount(example.target, languageKey);
         element.innerText = `Add a flashcard? This sentence has ${unknownWordCount} word${unknownWordCount === 1 ? '' : 's'} not in your study list.`;
     }
 
-    function renderAddCardControls(term, example, container) {
+    function renderAddCardControls(term, example, languageKey, container) {
         let instructions = document.createElement('p');
         instructions.classList.add('instructions', 'add-card');
 
@@ -13934,9 +13967,9 @@
             return;
         }
         instructions.classList.add('unknown-update');
-        updateUnknownWordCount(instructions, example);
+        updateUnknownWordCount(instructions, example, languageKey);
         instructions.addEventListener('list-update', function () {
-            updateUnknownWordCount(instructions, example);
+            updateUnknownWordCount(instructions, example, languageKey);
         });
         typeSelectionLabel.appendChild(typeSelector);
         selectorContainer.appendChild(typeSelectionLabel);
@@ -13953,7 +13986,7 @@
         container.appendChild(submitContainer);
     }
 
-    function renderAddCardForm(term, example, container) {
+    function renderAddCardForm(term, example, languageKey, container) {
         let addCardContainer = document.createElement('li');
         addCardContainer.classList.add('example-option');
         let addCardForm = document.createElement('form');
@@ -13965,14 +13998,14 @@
             event.target.querySelector('input[type="submit"]').value = 'Added ✅';
             setTimeout(function () {
                 addCardForm.innerHTML = '';
-                renderAddCardControls(term, example, addCardForm);
+                renderAddCardControls(term, example, languageKey, addCardForm);
                 document.querySelectorAll('.unknown-update').forEach(element => {
                     const event = new Event('list-update');
                     element.dispatchEvent(event);
                 });
             }, 200);
         });
-        renderAddCardControls(term, example, addCardForm);
+        renderAddCardControls(term, example, languageKey, addCardForm);
         addCardContainer.appendChild(addCardForm);
         container.appendChild(addCardContainer);
     }
@@ -14183,6 +14216,12 @@
             'label': 'German',
             'noLowering': true
         },
+        'chinese': {
+            'key': 'zh',
+            'tts': ['zh-CN', 'zh_CN'],
+            'label': 'Chinese',
+            'noSpaces': true
+        },
         'english': {
             'key': 'en',
             'label': 'English'
@@ -14233,7 +14272,8 @@
         for (const token of tokens) {
             let anchor = document.createElement('a');
             anchor.classList.add('token');
-            const cleanToken = clean(token, cleanTypes.examples, getLoweringSetting(queryType));
+            anchor.classList.add(getQueryLanguage(queryType));
+            const cleanToken = clean(token, cleanTypes.examples, getQueryLanguage(queryType));
             if (cleanToken === term) {
                 // TODO: array expansion thing with classList.add
                 anchor.classList.add('searched-term');
@@ -14254,7 +14294,9 @@
             anchor.innerText = token;
             container.appendChild(anchor);
             // YOU ARE IN NO POSITION TO JUDGE ME
-            container.append(" ");
+            if (!getSpaceSetting(queryType)) {
+                container.append(" ");
+            }
         }
     }
     function renderTextToSpeech(text, container) {
@@ -14291,8 +14333,8 @@
         moreOptionsContainer.innerText = '+';
         moreOptionsContainer.addEventListener('click', function () {
             if (optionsContainer.style.display === 'none') {
-                renderTextToSpeech(example.target.join(' '), optionsContainer);
-                renderAddCardForm(term, example, optionsContainer);
+                renderTextToSpeech(example.target.join(getSpaceSetting(queryTypes.target) ? '' : ' '), optionsContainer);
+                renderAddCardForm(term, example, getQueryLanguage(queryTypes.target), optionsContainer);
                 optionsContainer.removeAttribute('style');
                 moreOptionsContainer.innerText = '—';
                 moreOptionsContainer.classList.remove('more-options');
@@ -14417,8 +14459,12 @@
         resultsContainer.innerHTML = '';
     }
 
-    function getLoweringSetting(queryType) {
-        return languageMetadata[queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value].noLowering || false;
+    function getQueryLanguage(queryType) {
+        return queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value;
+    }
+
+    function getSpaceSetting(queryType) {
+        return languageMetadata[queryType === queryTypes.target ? targetLanguageSelector.value : baseLanguageSelector.value].noSpaces || false;
     }
 
     async function query(term, queryType, shouldPushState) {
@@ -14427,7 +14473,7 @@
         resultsTypesContainer.removeAttribute('style');
         clearSuggestions();
 
-        const cleanTerm = clean(term, cleanTypes.examples, getLoweringSetting(queryType));
+        const cleanTerm = clean(term, cleanTypes.examples, getQueryLanguage(queryType));
         const dataPromise = getExampleData(cleanTerm, queryType);
         //TODO: whoops....
         //const termForDefinitions = clean(term, cleanTypes.definitions);
@@ -14603,7 +14649,7 @@
             return false;
         }
         let currentPrefix = searchBox.value;
-        getAutocomplete(clean(searchBox.value, cleanTypes.examples, getLoweringSetting(queryTypes.target))).then(value => {
+        getAutocomplete(clean(searchBox.value, cleanTypes.examples, getQueryLanguage(queryTypes.target))).then(value => {
             if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
                 // this could be a late return of an old promise; just leave it
                 return false;
