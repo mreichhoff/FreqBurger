@@ -14289,6 +14289,9 @@
                 }
                 searchBox.value = cleanToken;
                 query(token, queryType, true);
+                if (resultsTypesContainer.getBoundingClientRect().top < 0) {
+                    resultsTypesContainer.scrollIntoView();
+                }
             });
             // TODO: non-space-delimited languages
             anchor.innerText = token;
