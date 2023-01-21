@@ -17746,7 +17746,7 @@
                 nodes: elements.nodes,
                 links: elements.edges
             }, {
-                nodeGroup: d => d.id.split(/\W/)[0], // take first word for color
+                nodeGroup: d => d.id.split('-')[0],
                 width: Math.min(container.offsetWidth, 1000),
                 height: 400,
                 nodeLabel: d => elements.labels[d.id],
