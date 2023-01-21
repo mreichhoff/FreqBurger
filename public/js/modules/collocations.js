@@ -54,12 +54,11 @@ function renderCollocationList(collocations, container, collocationHandler) {
         lengths.add(words.length);
         renderCollocation(words, fullList, collocationHandler, true, collocationMap[item]);
     }
-    for (const length of [...lengths].sort()) {
-        let option = document.createElement('option');
-        option.innerText = length;
-        option.value = length;
-        lengthSelect.appendChild(option);
-    }
+    const min = [...lengths].sort()[0];
+    const max = [...lengths].sort()[lengths.size - 1];
+    lengthSelect.min = min;
+    lengthSelect.max = max;
+    lengthSelect.value = min;
     container.appendChild(fullList);
     for (const item of document.querySelectorAll(`.collocation.length-${lengthSelect.value}`)) {
         item.removeAttribute('style');
@@ -79,7 +78,7 @@ function renderCollocationsFallback(words, container, callback) {
 }
 
 function initialize() {
-    lengthSelect.addEventListener('change', function () {
+    lengthSelect.addEventListener('input', function () {
         for (const item of document.querySelectorAll('.collocation')) {
             if (!item.classList.contains(`length-${lengthSelect.value}`)) {
                 item.style.display = 'none';
