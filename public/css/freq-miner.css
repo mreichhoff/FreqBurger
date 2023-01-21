@@ -59,9 +59,21 @@ select {
 
 .header-container {
     max-width: 1400px;
-    margin: 10px auto;
+    margin: 4px auto;
     display: grid;
     grid-template-columns: 40px 1fr 40px;
+}
+
+.tree-container {
+    text-align: center;
+}
+
+#show-list:checked~#collocations-tree-view {
+    display: none;
+}
+
+#show-list:not(:checked)~#collocations-list-view {
+    display: none;
 }
 
 .controls {
@@ -98,7 +110,7 @@ select {
 
 .tabs {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 1200px;
     margin: 0 auto;
     text-align: center;
@@ -111,6 +123,7 @@ select {
     opacity: 0.90;
     font-weight: 300;
     font-size: 15px;
+    margin: 8px;
 }
 
 .instructions.add-card {
@@ -230,7 +243,12 @@ select {
     font-weight: bold;
 }
 
-/* TODO: is this going to be the same for the definitions fallback? */
+.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.fallback-list,
 .collocation-list {
     list-style-type: none;
     padding: 0;
@@ -238,11 +256,35 @@ select {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 24px;
+    text-align: center;
+}
+
+.fallback {
+    cursor: pointer;
+    margin: 8px 0;
+    font-weight: 400;
 }
 
 .collocation {
     cursor: pointer;
     margin: 8px 0;
+}
+
+.collocation::after,
+.collocation::before {
+    content: "...";
+}
+
+.collocation.very-high-frequency::after {
+    content: "... 🔥🔥🔥";
+}
+
+.collocation.high-frequency::after {
+    content: "... 🔥";
+}
+
+.collocation.low-frequency::after {
+    content: "... 🥶"
 }
 
 .search-suggestions {
@@ -442,8 +484,9 @@ select {
     margin: 20px auto;
 }
 
-.instructions.call-to-action {
+.instructions.emphasized {
     font-size: 18px;
+    font-weight: 400;
 }
 
 .question {

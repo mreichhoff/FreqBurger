@@ -1,28 +1,58 @@
 const lengthSelect = document.getElementById('collocations-length-selector');
 
-function renderCollocation(collocation, container, collocationHandler) {
+function renderCollocation(collocation, container, collocationHandler, hide, counts) {
     let item = document.createElement('li');
     item.classList.add('collocation', `length-${collocation.length}`);
     let joinedText = collocation.join(' ');
-    item.style.display = 'none';
+    // TODO: silly hack to allow the lists and sankey graphs to use the same function...
+    if (hide) {
+        item.style.display = 'none';
+    }
     item.addEventListener('click', function () {
         collocationHandler(joinedText);
     });
     // TODO: non-space delimited languages
     item.innerText = joinedText;
+    if (counts) {
+        if (counts.numDatasets > 1 && counts.total > 100) {
+            item.classList.add('very-high-frequency');
+        } else if (counts.numDatasets > 1) {
+            item.classList.add('high-frequency');
+        } else if (counts.numDatasets === 1 && counts.total < 5) {
+            item.classList.add('low-frequency');
+        }
+    }
     container.appendChild(item);
 }
 
-function renderCollocations(collocations, container, collocationHandler) {
+function renderCollocationList(collocations, container, collocationHandler) {
+    let collocationMap = {};
+    Object.values(collocations).forEach(collocationsForDataset => {
+        // prioritize based on those in multiple datasets
+        // then based on counts
+        Object.entries(collocationsForDataset).forEach(([collocation, count]) => {
+            if (!(collocation in collocationMap)) {
+                collocationMap[collocation] = { numDatasets: 0, total: 0 }
+            }
+            collocationMap[collocation].numDatasets++;
+            collocationMap[collocation].total += count;
+        });
+    });
     lengthSelect.innerHTML = '';
     const fullList = document.createElement('ul');
     fullList.classList.add('collocation-list');
     //could use a boolean array, but this'll allow indeterminate collocation length
     let lengths = new Set();
-    for (const item of collocations) {
+    for (const item of Object.keys(collocationMap).sort((a, b) => {
+        // TODO: entries or keys?
+        if (collocationMap[a].numDatasets === collocationMap[b].numDatasets) {
+            return collocationMap[b].total - collocationMap[a].total;
+        }
+        return collocationMap[b].numDatasets - collocationMap[a].numDatasets;
+    })) {
         const words = item.split(' ');
         lengths.add(words.length);
-        renderCollocation(words, fullList, collocationHandler);
+        renderCollocation(words, fullList, collocationHandler, true, collocationMap[item]);
     }
     for (const length of [...lengths].sort()) {
         let option = document.createElement('option');
@@ -39,7 +69,7 @@ function renderCollocations(collocations, container, collocationHandler) {
 function renderCollocationsFallback(words, container, callback) {
     for (const word of words) {
         let item = document.createElement('li');
-        item.classList.add('collocation');
+        item.classList.add('fallback');
         item.innerText = word;
         item.addEventListener('click', function (event) {
             callback(event.target.innerText);
@@ -57,7 +87,7 @@ function initialize() {
                 item.removeAttribute('style');
             }
         }
-    })
+    });
 }
 
-export { renderCollocations, renderCollocationsFallback, initialize }
+export { renderCollocationList, renderCollocation, renderCollocationsFallback, initialize }

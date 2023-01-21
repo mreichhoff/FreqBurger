@@ -12,7 +12,6 @@
     <!-- <script defer src="/__/firebase/init.js?useEmulator=true"></script> -->
 
     <link rel="stylesheet" type="text/css" href="/css/freq-miner.css">
-    <!-- <script src="/js/external/cytoscape.min.js"></script> -->
 </head>
 
 <body>
@@ -64,8 +63,9 @@
         <div id="result-types-container" style="display:none">
             <div class="tabs">
                 <span id="examples-tab" class="tab active">Examples</span>
-                <span id="definitions-tab" class="tab">Definitions</span>
+                <span id="usage-diagrams-tab" class="tab">Diagrams</span>
                 <span id="collocations-tab" class="tab">Collocations</span>
+                <span id="definitions-tab" class="tab">Definitions</span>
             </div>
             <div id="examples-container" class="example-container">
                 <p id="examples-fallback" class="instructions" style="display:none">That term wasn't found.</p>
@@ -73,47 +73,86 @@
                     by average word frequency.</p>
                 <div id="results-container" class="result-container grid"></div>
             </div>
-            <div id="definitions-container" style="display:none" class="result-container">
-                <p class="instructions" id="definitions-fallback" style="display:none">Definitions not found.
-                    Note that
-                    definitions are currently
-                    available only in the target language.</p>
-                <div id="definitions-result-container"></div>
+            <div id="usage-diagrams-container" style="display:none" class="result-container">
+                <div id="usage-diagrams-primary" style="display: none">
+                    <!-- TODO: do we need both of these? -->
+                    <div id="usage-diagram-view">
+                        <p class="instructions">
+                            <label class="control secondary">See usage from:
+                                <select id="usage-diagram-dataset-selector"></select>
+                            </label>
+                        </p>
+                        <p class="instructions">
+                            Diagrams are generated based on the 6 most common collocations of lengths 2 and 3 words.
+                            Taller bars mean more frequent use.
+                        </p>
+                        <div id="usage-diagram-container" class="tree-container"></div>
+                        <p class="instructions">Click any word in the diagram for more information.</p>
+                        <div id="usage-diagram-detail-container" style="display:none">
+                            <p class="instructions emphasized">Matching phrases:</p>
+                            <p class="instructions">Click any phrase for examples.</p>
+                            <ul id="usage-diagram-detail-list" class="collocation-list"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="usage-diagram-fallback" class="instructions" style="display: none">
+                    <p>Click a word below to see its usage diagram.</p>
+                    <ul id="usage-diagram-fallback-list" class="fallback-list"></ul>
+                </div>
+                <p id="base-usage-diagram-message" class="instructions" style="display:none">
+                    No diagram found. Note that searches in the base language will
+                    currently not usage diagrams.</p>
             </div>
             <div id="collocations-container" style="display:none" class="result-container">
                 <div id="collocations-primary" style="display: none">
                     <p class="instructions">Collocations are groups of words commonly used together.</p>
-                    <p class="instructions">Click any collocation to get example sentences.</p>
-                    <label class="control secondary">See collocations with:
-                        <select id="collocations-length-selector"></select> words
-                    </label>
-                    <div id="collocation-list-container"></div>
+                    <div id="collocations-list-view">
+                        <p class="instructions emphasized">Click any collocation to get example sentences.</p>
+                        <p class="instructions">
+                            <label class="control secondary">See collocations with:
+                                <select id="collocations-length-selector"></select> words
+                            </label>
+                        </p>
+                        <p class="instructions emphasized">Hotter emojis mean more frequent use.</p>
+                        <div id="collocation-list-container"></div>
+                    </div>
                 </div>
                 <div id="collocations-fallback" class="instructions" style="display: none">
                     <p>Click a word below to see its most common collocations.</p>
-                    <ul id="collocations-fallback-list" class="collocation-list"></ul>
+                    <ul id="collocations-fallback-list" class="fallback-list"></ul>
                 </div>
                 <p id="base-collocations-message" class="instructions" style="display:none">
                     No collocations found. Note that searches in the base language will
                     currently not show any collocations.</p>
             </div>
+            <div id="definitions-container" style="display:none" class="result-container">
+                <div id="definitions-result-container"></div>
+                <div id="definitions-fallback" class="instructions" style="display: none">
+                    <p>Click a word below to see its definitions.</p>
+                    <ul id="definitions-fallback-list" class="fallback-list"></ul>
+                </div>
+                <p class="instructions" id="base-definitions-message" style="display:none">Definitions not found.
+                    Note that
+                    definitions are currently
+                    available only in the target language.</p>
+            </div>
         </div>
     </div>
     <div id="study-container" class="study-container" style="display:none">
-        <div id="study-mode-fallback" class="instructions call-to-action" style="display:none">
+        <div id="study-mode-fallback" class="instructions emphasized" style="display:none">
             It looks like you haven't added any flash cards. <br />If you'd like to use our spaced repetition, use
             the
             plus
             sign to add cards to your list!
         </div>
-        <div id="study-mode-done" class="instructions call-to-action" style="display:none">
+        <div id="study-mode-done" class="instructions emphasized" style="display:none">
             Studying complete. Feel free to add more cards!
         </div>
         <div id="study-mode">
             <p class="instructions">
                 Cards due: <span id="cards-due"></span>
             </p>
-            <div class="instructions call-to-action" id="study-instructions"></div>
+            <div class="instructions emphasized" id="study-instructions"></div>
             <div id="card-question-container" class="question"></div>
             <div id="card-hint-container" style="display:none"></div>
             <div class="instructions">Click or tap, or hit the space bar, to show the answer.</div>

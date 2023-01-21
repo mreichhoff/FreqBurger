@@ -1,7 +1,8 @@
 import { initialize as initializeFirebase } from "./firebase-init";
-import { initialize as initializeDatalayer, setLanguages, getExampleData, getDefinitions, getAutocomplete, queryTypes } from "./data-layer";
-import { renderDefinitions } from "./definitions";
-import { renderCollocations, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
+import { initialize as initializeDatalayer, setLanguages, getExampleData, getAutocomplete, queryTypes } from "./data-layer";
+import { renderDefinitions, renderDefinitionsFallback } from "./definitions";
+import { renderCollocationList, renderCollocationsFallback, initialize as initializeCollocations } from "./collocations";
+import { renderUsageDiagram, renderUsageDiagramFallback, tabSwitchCallback as diagramShownCallback, initialize as initializeUsageDiagrams } from "./usage-diagram";
 import { initialize as initializeStudyMode, renderAddCardForm, setupStudyMode, teardownStudyMode, setExportVisibility } from "./study-mode";
 import { clean, cleanTypes } from "./utils";
 
@@ -10,6 +11,7 @@ const DEFAULT_BASE_LANGUAGE = 'english';
 initializeFirebase();
 initializeDatalayer();
 initializeCollocations();
+initializeUsageDiagrams();
 initializeStudyMode();
 
 const queryForm = document.getElementById('query-form');
@@ -18,14 +20,23 @@ const searchLabel = document.getElementById('search-label');
 const toggleCheckbox = document.getElementById('base-target-toggle');
 
 const collocationListContainer = document.getElementById('collocation-list-container');
+const usageDiagramContainer = document.getElementById('usage-diagram-container');
 const collocationsPrimary = document.getElementById('collocations-primary');
+const usageDiagramsPrimary = document.getElementById('usage-diagrams-primary');
 const collocationsFallback = document.getElementById('collocations-fallback');
+const usageDiagramFallback = document.getElementById('usage-diagram-fallback');
 const collocationsFallbackList = document.getElementById('collocations-fallback-list');
+const usageDiagramFallbackList = document.getElementById('usage-diagram-fallback-list');
+const definitionsFallbackList = document.getElementById('definitions-fallback-list');
+
 const collocationsBaseFallback = document.getElementById('base-collocations-message');
+const usageDiagramBaseFallback = document.getElementById('base-usage-diagram-message');
+const definitionsBaseFallback = document.getElementById('base-definitions-message');
 
 const resultsContainer = document.getElementById('results-container');
 const examplesContainer = document.getElementById('examples-container');
 const collocationsContainer = document.getElementById('collocations-container');
+const usageDiagramsContainer = document.getElementById('usage-diagrams-container');
 const definitionsContainer = document.getElementById('definitions-container');
 const definitionsResultContainer = document.getElementById('definitions-result-container');
 const definitionsFallback = document.getElementById('definitions-fallback');
@@ -38,6 +49,7 @@ const baseLanguageSelector = document.getElementById('base-language-selector');
 const resultsTab = document.getElementById('examples-tab');
 const definitionsTab = document.getElementById('definitions-tab');
 const collocationsTab = document.getElementById('collocations-tab');
+const usageDiagramsTab = document.getElementById('usage-diagrams-tab');
 
 const suggestionContainer = document.getElementById('autocomplete');
 
@@ -53,9 +65,10 @@ const examplesFallback = document.getElementById("examples-fallback");
 
 // ordering is important
 const tabs = [
-    { tab: resultsTab, container: examplesContainer },
-    { tab: definitionsTab, container: definitionsContainer },
-    { tab: collocationsTab, container: collocationsContainer }
+    { tab: resultsTab, container: examplesContainer, callback: () => { } },
+    { tab: definitionsTab, container: definitionsContainer, callback: () => { } },
+    { tab: collocationsTab, container: collocationsContainer, callback: () => { } },
+    { tab: usageDiagramsTab, container: usageDiagramsContainer, callback: diagramShownCallback },
 ];
 
 const languageMetadata = {
@@ -264,7 +277,7 @@ function renderDataset(term, datasetId, results, container) {
 function renderData(term, data) {
     let value = {};
     collocationListContainer.innerHTML = '';
-    let collocations = new Set();
+    let collocations = {};
     for (const key of datasetPriorities) {
         if (!(key in data) || !data[key].examples) {
             // if there are no examples, bail out.
@@ -280,40 +293,63 @@ function renderData(term, data) {
         if (!data[key].collocations) {
             continue;
         }
-        Object.keys(data[key].collocations).forEach(x => collocations.add(x));
+        collocations[key] = data[key].collocations;
     }
-    renderCollocations(collocations, collocationListContainer, function (searchTerm) {
+    let collocationQuery = function (searchTerm) {
         searchBox.value = searchTerm;
         query(searchTerm, queryTypes.target, true).then(x => {
             switchToTab(tabs[0].tab.id);
         });
-    });
+    };
     //TODO there must be a better way, please no
     collocationsPrimary.style.display = 'none';
+    usageDiagramsPrimary.style.display = 'none';
     collocationsFallback.style.display = 'none';
+    usageDiagramFallback.style.display = 'none';
     collocationsBaseFallback.style.display = 'none';
-    if (data.words && collocations.size === 0) {
+    usageDiagramBaseFallback.style.display = 'none';
+    if (data.words && !Object.keys(collocations).length) {
         collocationsFallbackList.innerHTML = '';
         renderCollocationsFallback(data.words, collocationsFallbackList, function (word) {
             searchBox.value = word;
             query(word, queryTypes.target, true);
         });
+        usageDiagramFallbackList.innerHTML = '';
+        renderUsageDiagramFallback(data.words, usageDiagramFallbackList, function (word) {
+            searchBox.value = word;
+            // we'll directly show the diagram in this case
+            query(word, queryTypes.target, true).then(diagramShownCallback);
+        });
         collocationsFallback.removeAttribute('style');
-    } else if (collocations.size === 0) {
+        usageDiagramFallback.removeAttribute('style');
+    } else if (!Object.keys(collocations).length) {
         collocationsBaseFallback.removeAttribute('style');
+        usageDiagramBaseFallback.removeAttribute('style');
     } else {
         collocationsPrimary.removeAttribute('style');
+        usageDiagramsPrimary.removeAttribute('style');
+        renderUsageDiagram(term, collocations, usageDiagramContainer, collocationQuery);
+        renderCollocationList(collocations, collocationListContainer, collocationQuery);
     }
     clearDefinitions();
     definitionsFallback.style.display = 'none';
+    definitionsBaseFallback.style.display = 'none';
     if (data.defs) {
         renderDefinitions(term, data.defs, definitionsResultContainer, function (reference) {
             searchBox.value = reference;
             query(reference, queryTypes.target, true);
         });
+    } else if (data.words) {
+        definitionsFallbackList.innerHTML = '';
+        renderDefinitionsFallback(data.words, definitionsFallbackList, function (word) {
+            searchBox.value = word;
+            // we'll directly show the diagram in this case
+            query(word, queryTypes.target, true);
+        });
+        definitionsFallback.removeAttribute('style');
     } else {
         //TODO: specific messaging
-        definitionsFallback.removeAttribute('style');
+        definitionsBaseFallback.removeAttribute('style');
     }
 }
 function clearResults() {
@@ -340,41 +376,39 @@ async function query(term, queryType, shouldPushState) {
     //TODO: whoops....
     //const termForDefinitions = clean(term, cleanTypes.definitions);
 
-    try {
-        const value = await dataPromise;
-        if (value.exists()) {
-            // with each query, clear out the old results
-            clearResults();
-            renderData(cleanTerm, value.data());
-            let newUrl = `/${targetLanguageSelector.value}/${cleanTerm}`;
-            let newQueryString = [];
-            if (baseLanguageSelector.value !== DEFAULT_BASE_LANGUAGE) {
-                newQueryString.push(`base=${baseLanguageSelector.value}`);
-            }
-            if (queryType != queryTypes.target) {
-                newQueryString.push(`queryType=${queryType}`);
-            }
-            if (newQueryString.length !== 0) {
-                newUrl += '?';
-                for (let i = 0; i < newQueryString.length - 1; i++) {
-                    newUrl += `${newQueryString[i]}&`;
-                }
-                newUrl += newQueryString[newQueryString.length - 1];
-            }
-            if (shouldPushState) {
-                history.pushState({
-                    term: term,
-                    queryType: queryType,
-                    languages: {
-                        base: baseLanguageSelector.value,
-                        target: targetLanguageSelector.value
-                    }
-                }, '', newUrl);
-            }
-        } else {
-            examplesFallback.removeAttribute('style');
+    const value = await dataPromise;
+    if (value.exists()) {
+        // with each query, clear out the old results
+        clearResults();
+        renderData(cleanTerm, value.data());
+        let newUrl = `/${targetLanguageSelector.value}/${cleanTerm}`;
+        let newQueryString = [];
+        if (baseLanguageSelector.value !== DEFAULT_BASE_LANGUAGE) {
+            newQueryString.push(`base=${baseLanguageSelector.value}`);
         }
-    } catch (x) { }
+        if (queryType != queryTypes.target) {
+            newQueryString.push(`queryType=${queryType}`);
+        }
+        if (newQueryString.length !== 0) {
+            newUrl += '?';
+            for (let i = 0; i < newQueryString.length - 1; i++) {
+                newUrl += `${newQueryString[i]}&`;
+            }
+            newUrl += newQueryString[newQueryString.length - 1];
+        }
+        if (shouldPushState) {
+            history.pushState({
+                term: term,
+                queryType: queryType,
+                languages: {
+                    base: baseLanguageSelector.value,
+                    target: targetLanguageSelector.value
+                }
+            }, '', newUrl);
+        }
+    } else {
+        examplesFallback.removeAttribute('style');
+    }
 }
 queryForm.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -476,6 +510,7 @@ function switchToTab(id) {
         if (entry.tab.id === id) {
             entry.tab.classList.add('active');
             entry.container.removeAttribute('style');
+            entry.callback();
         } else {
             entry.tab.classList.remove('active');
             entry.container.style.display = 'none';
@@ -496,7 +531,9 @@ function renderAutocomplete(data, container) {
         container.appendChild(suggestion);
         suggestion.addEventListener('mousedown', function () {
             searchBox.value = word;
-            query(word, queryTypes.target, true);
+            query(word, queryTypes.target, true).then(_ => {
+                switchToTab(tabs[0].tab.id);
+            });
         });
     }
 }
@@ -526,7 +563,7 @@ searchBox.addEventListener('input', function () {
 
 for (const entry of tabs) {
     entry.tab.addEventListener('click', function (event) {
-        switchToTab(event.target.id)
+        switchToTab(event.target.id);
     });
 }
 

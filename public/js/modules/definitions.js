@@ -49,4 +49,17 @@ function renderDefinitions(term, defs, container, referenceHandler) {
     container.appendChild(definitionContainer);
 }
 
-export { renderDefinitions }
+//TODO: combine with collocations and diagram callback
+function renderDefinitionsFallback(words, container, callback) {
+    for (const word of words) {
+        let item = document.createElement('li');
+        item.classList.add('fallback');
+        item.innerText = word;
+        item.addEventListener('click', function (event) {
+            callback(event.target.innerText);
+        });
+        container.appendChild(item);
+    }
+}
+
+export { renderDefinitions, renderDefinitionsFallback }
