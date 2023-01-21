@@ -8,6 +8,7 @@ from firebase_admin import firestore
 
 def load_document(collection, key, document):
     collection.document(key).set({'defs': document}, merge=True)
+    print(key)
 
 
 def main():
@@ -28,20 +29,20 @@ def main():
     dictionary = {}
     with open(args.filename) as f:
         dictionary = json.load(f)
-    collection_id = f"{args.target_language}-{args.base_language}-defs"
+    collection_id = f"{args.target_language}-{args.base_language}"
 
     cred = credentials.Certificate(args.credential_path)
     firebase_admin.initialize_app(cred)
     db = firestore.client()
     collection = db.collection(collection_id)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         futures = []
         # index = 0
         for key, document in dictionary.items():
             # index = index + 1
             futures.append(executor.submit(
-                load_document, collection, key, document))
+                load_document, collection, f"{key}-target", document))
             # if index > 10:
             #     break
         # TODO: what was i going to do here?

@@ -21,6 +21,18 @@ allkeys = set()
 data = {}
 
 
+def should_exclude(item, no_roman):
+    if no_roman and item.isascii():
+        return True
+    return ('/' in item or item == '.' or item == '..')
+
+
+def clean(key, remove_spaces):
+    if remove_spaces:
+        return key.replace(' ', '')
+    return key
+
+
 def load_document(collection, key, document):
     collection.document(key).set(document, merge=True)
     print(key)
@@ -41,6 +53,10 @@ def main():
                         help='The list of keys; for example, a dataset from tatoeba might use tatoeba as the key', required=True)
     parser.add_argument(
         '--get-base-examples', help='find simple target language sentences that contain base language words', action=argparse.BooleanOptionalAction)
+    parser.add_argument(
+        '--remove-spaces', help='remove spaces from document keys, e.g. for chinese or japanese', action=argparse.BooleanOptionalAction)
+    parser.add_argument(
+        '--exclude-all-roman-characters', help='exclude keys that are only roman characters, e.g. for chinese or japanese', action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
 
     key_with_dataset = zip(args.file_list_keys, args.file_list)
@@ -62,10 +78,10 @@ def main():
     # print(len(allkeys))
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         for item in allkeys:
-            if '/' in item or item == '.' or item == '..':
+            if should_exclude(item, args.exclude_all_roman_characters):
                 print(f"failed to write: {item}")
                 continue
-            key = f"{item}-{word_key_suffix}"
+            key = f"{clean(item, args.remove_spaces)}-{word_key_suffix}"
             document = {}
             should_write = False
             for dataset_key, dataset in data.items():
