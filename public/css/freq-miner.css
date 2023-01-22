@@ -237,10 +237,12 @@ select {
 
 .tab {
     cursor: pointer;
+    opacity: 0.8;
 }
 
 .tab.active {
     font-weight: bold;
+    opacity: 1;
 }
 
 .clickable {
@@ -578,5 +580,11 @@ select {
 
     .secondary-controls-container {
         font-size: 14px;
+    }
+}
+
+@media (max-width:300px) {
+    .tabs {
+        font-size: 13px;
     }
 }

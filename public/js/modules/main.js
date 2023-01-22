@@ -543,18 +543,19 @@ searchBox.addEventListener('blur', function () {
 });
 
 searchBox.addEventListener('input', function () {
-    if (toggleCheckbox.checked || !searchBox.value) {
+    const cleanedTerm = clean(searchBox.value, cleanTypes.examples, getQueryLanguage(queryTypes.target));
+    if (toggleCheckbox.checked || !cleanedTerm) {
         clearSuggestions();
         return false;
     }
     let currentPrefix = searchBox.value;
-    getAutocomplete(clean(searchBox.value, cleanTypes.examples, getQueryLanguage(queryTypes.target))).then(value => {
+    getAutocomplete(cleanedTerm).then(value => {
         if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
             // this could be a late return of an old promise; just leave it
             return false;
         }
         clearSuggestions();
-        if (value.exists()) {
+        if (value && value.exists()) {
             suggestionContainer.removeAttribute('style');
             renderAutocomplete(value.data(), suggestionContainer);
         }

@@ -106,6 +106,23 @@ function getDepth(width) {
     return 3;
 }
 
+function getFontSize(width) {
+    if (width >= 800) {
+        return 16;
+    }
+    return 14;
+}
+
+function getHeight(height) {
+    if (height >= 800) {
+        return 400;
+    }
+    if (height >= 700) {
+        return 350;
+    }
+    return 300;
+}
+
 function renderUsageDiagramForDataset(term, collocations, dataset, container, collocationHandler) {
     let trie = {};
     let rootDepth = 0;
@@ -119,13 +136,16 @@ function renderUsageDiagramForDataset(term, collocations, dataset, container, co
             links: elements.edges
         }, {
             nodeGroup: d => d.id.split('-')[0],
+            // TODO: not sure this can be done via CSS breakpoints given svg viewport, etc.?
+            // should probably also have main be responsible for this instead of reading window directly
             width: Math.min(container.offsetWidth, 1000),
-            height: 400,
+            height: getHeight(window.screen.availHeight),
             nodeLabel: d => elements.labels[d.id],
             nodeAlign: 'center',
             linkTitle: d => `${elements.labels[d.source.id]} ${elements.labels[d.target.id]}: ${d.value}`,
             linkClickHandler: (d, i) => renderDetails(elements.collocations[i.id], collocationHandler),
-            fontColor: window.matchMedia("(prefers-color-scheme: dark)").matches ? 'rgba(255, 255, 255, 0.87)' : 'rgba(0, 0, 0, 0.87)'
+            fontColor: window.matchMedia("(prefers-color-scheme: dark)").matches ? 'rgba(255, 255, 255, 0.87)' : 'rgba(0, 0, 0, 0.87)',
+            fontSize: getFontSize(container.offsetWidth)
         });
         container.innerHTML = '';
         container.appendChild(chart);
