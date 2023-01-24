@@ -94,6 +94,12 @@ const languageMetadata = {
         'label': 'Chinese',
         'noSpaces': true
     },
+    'japanese': {
+        'key': 'ja',
+        'tts': ['ja-JP', 'ja_JP'],
+        'label': 'Japanese',
+        'noSpaces': true
+    },
     'english': {
         'key': 'en',
         'label': 'English'

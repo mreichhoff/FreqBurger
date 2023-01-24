@@ -13430,6 +13430,9 @@
         },
         'chinese': {
             'noSpaces': true
+        },
+        'japanese': {
+            'noSpaces': true
         }
     };
     function clean(token, cleanType, language) {
@@ -13484,8 +13487,15 @@
         'zh': {
             'en': {
                 'examples': 'zh-en',
-                'definitions': 'de-en-defs',
+                'definitions': 'zh-en-defs',
                 'autocomplete': 'zh-en-trie'
+            }
+        },
+        'ja': {
+            'en': {
+                'examples': 'ja-en',
+                'definitions': 'ja-en-defs',
+                'autocomplete': 'ja-en-trie'
             }
         }
     };
@@ -13511,6 +13521,11 @@
             base: 'English',
             target: 'Chinese',
             key: 'chinese'
+        },
+        'ja-en': {
+            base: 'English',
+            target: 'Japanese',
+            key: 'japanese'
         }
     };
 
@@ -18373,6 +18388,12 @@
             'key': 'zh',
             'tts': ['zh-CN', 'zh_CN'],
             'label': 'Chinese',
+            'noSpaces': true
+        },
+        'japanese': {
+            'key': 'ja',
+            'tts': ['ja-JP', 'ja_JP'],
+            'label': 'Japanese',
             'noSpaces': true
         },
         'english': {

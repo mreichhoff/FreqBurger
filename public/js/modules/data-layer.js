@@ -30,8 +30,15 @@ const languagesToCollection = {
     'zh': {
         'en': {
             'examples': 'zh-en',
-            'definitions': 'de-en-defs',
+            'definitions': 'zh-en-defs',
             'autocomplete': 'zh-en-trie'
+        }
+    },
+    'ja': {
+        'en': {
+            'examples': 'ja-en',
+            'definitions': 'ja-en-defs',
+            'autocomplete': 'ja-en-trie'
         }
     }
 };
@@ -57,6 +64,11 @@ const languageKeysToLanguages = {
         base: 'English',
         target: 'Chinese',
         key: 'chinese'
+    },
+    'ja-en': {
+        base: 'English',
+        target: 'Japanese',
+        key: 'japanese'
     }
 }
 

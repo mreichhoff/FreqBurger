@@ -9,6 +9,9 @@ const cleanSettings = {
     },
     'chinese': {
         'noSpaces': true
+    },
+    'japanese': {
+        'noSpaces': true
     }
 };
 function clean(token, cleanType, language) {
