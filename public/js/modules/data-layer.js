@@ -20,6 +20,13 @@ const languagesToCollection = {
             'autocomplete': 'es-en-trie'
         }
     },
+    'it': {
+        'en': {
+            'examples': 'it-en',
+            'definitions': 'it-en-defs',// TODO: remove?
+            'autocomplete': 'it-en-trie'
+        }
+    },
     'de': {
         'en': {
             'examples': 'de-en',

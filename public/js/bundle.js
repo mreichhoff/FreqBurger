@@ -13477,6 +13477,13 @@
                 'autocomplete': 'es-en-trie'
             }
         },
+        'it': {
+            'en': {
+                'examples': 'it-en',
+                'definitions': 'it-en-defs',// TODO: remove?
+                'autocomplete': 'it-en-trie'
+            }
+        },
         'de': {
             'en': {
                 'examples': 'de-en',
@@ -18370,29 +18377,34 @@
     const languageMetadata = {
         'french': {
             'key': 'fr',
-            'tts': ['fr-FR', 'fr_FR'],
+            'tts': ['fr-FR', 'fr_FR'],//Thomas
             'label': 'French'
         },
         'spanish': {
             'key': 'es',
-            'tts': ['es-ES', 'es_ES'],
+            'tts': ['es-ES', 'es_ES'],//Mónica
             'label': 'Spanish'
+        },
+        'italian': {
+            'key': 'it',
+            'tts': ['it-IT', 'it_IT'],//Alice
+            'label': 'Italian'
         },
         'german': {
             'key': 'de',
-            'tts': ['de-DE', 'de_DE'],
+            'tts': ['de-DE', 'de_DE'],//Anna
             'label': 'German',
             'noLowering': true
         },
         'chinese': {
             'key': 'zh',
-            'tts': ['zh-CN', 'zh_CN'],
+            'tts': ['zh-CN', 'zh_CN'],//Tingting
             'label': 'Chinese',
             'noSpaces': true
         },
         'japanese': {
             'key': 'ja',
-            'tts': ['ja-JP', 'ja_JP'],
+            'tts': ['ja-JP', 'ja_JP'],//Kyoko
             'label': 'Japanese',
             'noSpaces': true
         },
@@ -18429,6 +18441,12 @@
             'attributionUrl': 'https://opus.nlpl.eu/Wikipedia.php',
             'attributionSiteName': 'Opus'
         }
+    };
+
+    // voice loading is just weird, and different per browser...
+    let voices = speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = function () {
+        voices = speechSynthesis.getVoices();
     };
 
     function clearDefinitions() {
@@ -18485,7 +18503,9 @@
         listenContainer.appendChild(button);
         listenContainer.addEventListener('click', function () {
             const ttsKeys = languageMetadata[targetLanguageSelector.value].tts;
-            let voice = speechSynthesis.getVoices().find(voice => ttsKeys.indexOf(voice.lang) > -1);
+            //TODO: we're gonna have to do fallbacks, because at least macos has wacky ones
+            let availableVoices = voices || speechSynthesis.getVoices();
+            let voice = availableVoices.findLast(voice => ttsKeys.indexOf(voice.lang) > -1);
             if (!voice) {
                 return;
             }
