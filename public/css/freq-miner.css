@@ -130,6 +130,10 @@ select {
     text-align: left;
 }
 
+#startup-container .instructions {
+    margin-bottom: 30px;
+}
+
 .add-card-form-item {
     font-size: 14px;
 }
