@@ -74,34 +74,54 @@ const tabs = [
 const languageMetadata = {
     'french': {
         'key': 'fr',
-        'tts': ['fr-FR', 'fr_FR'],//Thomas
+        'tts': {
+            // include both locale formats because of seemingly off-spec behavior on android
+            locales: ['fr-FR', 'fr_FR'],
+            // include preferred names because of a recent iOS update having odd voices
+            preferredName: 'Thomas'
+        },
         'label': 'French'
     },
     'spanish': {
         'key': 'es',
-        'tts': ['es-ES', 'es_ES'],//Mónica
+        'tts': {
+            locales: ['es-ES', 'es_ES'],
+            preferredName: 'Mónica'
+        },
         'label': 'Spanish'
     },
     'italian': {
         'key': 'it',
-        'tts': ['it-IT', 'it_IT'],//Alice
+        'tts': {
+            locales: ['it-IT', 'it_IT'],
+            preferredName: 'Alice'
+        },
         'label': 'Italian'
     },
     'german': {
         'key': 'de',
-        'tts': ['de-DE', 'de_DE'],//Anna
+        'tts': {
+            locales: ['de-DE', 'de_DE'],
+            preferredName: 'Anna'
+        },
         'label': 'German',
         'noLowering': true
     },
     'chinese': {
         'key': 'zh',
-        'tts': ['zh-CN', 'zh_CN'],//Tingting
+        'tts': {
+            locales: ['zh-CN', 'zh_CN'],
+            preferredName: 'Tingting'
+        },
         'label': 'Chinese',
         'noSpaces': true
     },
     'japanese': {
         'key': 'ja',
-        'tts': ['ja-JP', 'ja_JP'],//Kyoko
+        'tts': {
+            locales: ['ja-JP', 'ja_JP'],
+            preferredName: 'Kyoko'
+        },
         'label': 'Japanese',
         'noSpaces': true
     },
@@ -191,6 +211,9 @@ function renderExampleText(term, tokens, queryType, container) {
         }
     }
 }
+function findVoice(voices, options) {
+    return voices.find(voice => options.locales.indexOf(voice.lang) > -1 && voice.name === options.preferredName) || voices.find(voice => options.locales.indexOf(voice.lang) > -1);
+}
 function renderTextToSpeech(text, container) {
     let listenContainer = document.createElement('li');
     listenContainer.classList.add('example-option', 'tts');
@@ -202,7 +225,7 @@ function renderTextToSpeech(text, container) {
         const ttsKeys = languageMetadata[targetLanguageSelector.value].tts;
         //TODO: we're gonna have to do fallbacks, because at least macos has wacky ones
         let availableVoices = voices || speechSynthesis.getVoices();
-        let voice = availableVoices.findLast(voice => ttsKeys.indexOf(voice.lang) > -1);
+        let voice = findVoice(availableVoices, ttsKeys);
         if (!voice) {
             return;
         }
