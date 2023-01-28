@@ -4,13 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>freqminer: mine sentences by word frequency</title>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <!-- <script defer src="/__/firebase/init.js?useEmulator=true"></script> -->
-
+    <title>FreqMiner</title>
+    <meta name="description" content="Learn languages by studying the most common words and phrases.">
     <link rel="stylesheet" type="text/css" href="/css/freq-miner.css">
 </head>
 
@@ -51,13 +46,18 @@
         </div>
         <div id="startup-container" style="display:none">
             <p class="instructions">
-                Not sure where to start? Try <a class="startup-suggestion" id="startup-suggestion-primary"
-                    href="/french/parle">parle</a> or <a class="startup-suggestion" id="startup-suggestion-secondary"
-                    href="/french/losange">losange</a>, or just start typing in the
+                Not sure where to start? Check out a sample in
+                <a class="startup-suggestion" href="/french/parle">French</a>,
+                <a class="startup-suggestion" href="/japanese/指導">Japanese</a>,
+                <a class="startup-suggestion" href="/spanish/siguiente">Spanish</a>,
+                <a class="startup-suggestion" href="/german/schnell">German</a>,
+                <a class="startup-suggestion" href="/chinese/照顾">Chinese</a>, or
+                <a class="startup-suggestion" href="/italian/bisogno">Italian</a>,
+                or just start typing in the
                 search box to get suggestions.
             </p>
             <p class="instructions">
-                You can also search for phrases, like <a class="startup-suggestion" id="startup-suggestion-primary"
+                You can also search for phrases, like <a class="startup-suggestion"
                     href="/french/tout le monde en parle">tout le monde en parle</a>, or for English translations, like
                 <a class="startup-suggestion" href="/french/classic?queryType=base">classic.</a>
             </p>
@@ -84,16 +84,14 @@
                                 <select id="usage-diagram-dataset-selector"></select>
                             </label>
                         </p>
-                        <p class="instructions">
-                            Taller bars mean more frequent use.
-                        </p>
-                        <div id="usage-diagram-container" class="tree-container"></div>
                         <p class="instructions">Click any word in the diagram for more information.</p>
+                        <div id="usage-diagram-container" class="tree-container"></div>
                         <div id="usage-diagram-detail-container" style="display:none">
                             <p class="instructions emphasized">Matching phrases:</p>
                             <p class="instructions">Click any phrase for examples.</p>
                             <ul id="usage-diagram-detail-list" class="collocation-list"></ul>
                         </div>
+                        <p class="instructions">Taller bars mean more frequent use.</p>
                     </div>
                 </div>
                 <div id="usage-diagram-fallback" class="instructions" style="display: none">
@@ -102,7 +100,7 @@
                 </div>
                 <p id="base-usage-diagram-message" class="instructions" style="display:none">
                     No diagram found. Note that searches in the base language will
-                    currently not usage diagrams.</p>
+                    currently not show usage diagrams.</p>
             </div>
             <div id="collocations-container" style="display:none" class="result-container">
                 <div id="collocations-primary" style="display: none">
