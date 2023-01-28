@@ -166,6 +166,9 @@ speechSynthesis.onvoiceschanged = function () {
     voices = speechSynthesis.getVoices();
 };
 
+// hacking around garbage collection issues...
+window.activeUtterances = [];
+
 function clearDefinitions() {
     definitionsResultContainer.innerHTML = '';
 }
@@ -178,6 +181,8 @@ function getOrderingSuffix(number) {
     return number === 1 ? 'st' : number === 2 ? 'nd' : number === 3 ? 'rd' : 'th';
 }
 function renderExampleText(term, tokens, queryType, container) {
+    let currentIndex = 0;
+    let anchors = [];
     for (const token of tokens) {
         let anchor = document.createElement('a');
         anchor.classList.add('token');
@@ -209,12 +214,20 @@ function renderExampleText(term, tokens, queryType, container) {
         if (!getSpaceSetting(queryType)) {
             container.append(" ");
         }
+        anchors.push({
+            start: currentIndex,
+            end: currentIndex + token.length,
+            element: anchor
+        });
+        currentIndex += token.length;
+        currentIndex += getSpaceSetting(queryType) ? 0 : 1;
     }
+    return anchors;
 }
 function findVoice(voices, options) {
     return voices.find(voice => options.locales.indexOf(voice.lang) > -1 && voice.name === options.preferredName) || voices.find(voice => options.locales.indexOf(voice.lang) > -1);
 }
-function renderTextToSpeech(text, container) {
+function renderTextToSpeech(text, container, anchors) {
     let listenContainer = document.createElement('li');
     listenContainer.classList.add('example-option', 'tts');
     listenContainer.innerText = 'Say this sentence';
@@ -232,6 +245,29 @@ function renderTextToSpeech(text, container) {
         let utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = voice.lang;
         utterance.voice = voice;
+        activeUtterances.push(utterance);
+        utterance.addEventListener('boundary', function (event) {
+            if (event.charIndex == null || event.charLength == null) {
+                return false;
+            }
+            anchors.forEach(anchor => {
+                if (anchor.start >= event.charIndex && anchor.end <= (event.charIndex + (event.charLength || 1))) {
+                    anchor.element.style.backgroundColor = '#6de200';
+                } else {
+                    anchor.element.removeAttribute('style');
+                }
+            });
+        });
+        utterance.addEventListener('end', function () {
+            anchors.forEach(anchor => {
+                anchor.element.removeAttribute('style');
+            });
+            // length check shouldn't be necessary, but just in case, I guess?
+            if (activeUtterances.length !== 0) {
+                activeUtterances.shift();
+            }
+        });
+
         speechSynthesis.speak(utterance);
     });
     container.appendChild(listenContainer);
@@ -241,7 +277,7 @@ function renderExample(term, example, container) {
     let targetContainer = document.createElement('p');
     targetContainer.classList.add('target', 'example-text');
     const targetTextTokens = example.target;
-    renderExampleText(term, targetTextTokens, queryTypes.target, targetContainer);
+    let anchors = renderExampleText(term, targetTextTokens, queryTypes.target, targetContainer);
     container.appendChild(targetContainer);
 
     let moreOptionsContainer = document.createElement('p');
@@ -250,7 +286,7 @@ function renderExample(term, example, container) {
     moreOptionsContainer.innerText = '+';
     moreOptionsContainer.addEventListener('click', function () {
         if (optionsContainer.style.display === 'none') {
-            renderTextToSpeech(example.target.join(getSpaceSetting(queryTypes.target) ? '' : ' '), optionsContainer);
+            renderTextToSpeech(example.target.join(getSpaceSetting(queryTypes.target) ? '' : ' '), optionsContainer, anchors);
             renderAddCardForm(term, example, getQueryLanguage(queryTypes.target), optionsContainer);
             optionsContainer.removeAttribute('style');
             moreOptionsContainer.innerText = '—';
