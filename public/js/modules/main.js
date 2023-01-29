@@ -162,13 +162,18 @@ const datasetMetadata = {
 };
 
 // voice loading is just weird, and different per browser...
-let voices = speechSynthesis.getVoices();
-speechSynthesis.onvoiceschanged = function () {
-    voices = speechSynthesis.getVoices();
-};
+let voices = [];
 
-// hacking around garbage collection issues...
-window.activeUtterances = [];
+function initializeSpeechSynthesis() {
+    if ('speechSynthesis' in window) {
+        voices = speechSynthesis.getVoices();
+        speechSynthesis.onvoiceschanged = function () {
+            voices = speechSynthesis.getVoices();
+        };
+        // hacking around garbage collection issues...
+        window.activeUtterances = [];
+    }
+}
 
 let coveragePercentages = {};
 
@@ -697,3 +702,5 @@ menuIcon.addEventListener('click', function () {
         mainContainer.removeAttribute('style');
     }
 });
+
+initializeSpeechSynthesis();
