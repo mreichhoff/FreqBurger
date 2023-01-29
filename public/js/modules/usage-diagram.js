@@ -126,9 +126,15 @@ function getHeight(height) {
 function renderUsageDiagramForDataset(term, collocations, dataset, container, collocationHandler) {
     let trie = {};
     let rootDepth = 0;
+    // Build what is effectively a level-order trie based on the collocations.
+    // Level ordering ensures nodes are not confused in cases where the same word appears at multiple depths.
+    // For example, `peut` needs nodes at two levels with these two collocations: 
+    // peut parler
+    // peut pas parler
     for (const [collocation, count] of Object.entries(collocations)) {
         rootDepth = Math.min(rootDepth, addToTrie(trie, collocation, count, term, getDepth(container.offsetWidth)));
     }
+    // Once the trie is built, convert that to a set of nodes and edges, and render a sankey diagram.
     let elements = getDiagramElements(trie, rootDepth);
     treeRenderers[dataset] = function () {
         let chart = SankeyChart({
@@ -194,7 +200,7 @@ function initialize() {
     });
 }
 
-//TODO: copy/pasted from observable
+//TODO: mostly copy/pasted from observable
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/sankey-diagram

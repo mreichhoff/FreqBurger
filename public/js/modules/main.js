@@ -5,6 +5,7 @@ import { renderCollocationList, renderCollocationsFallback, initialize as initia
 import { renderUsageDiagram, renderUsageDiagramFallback, tabSwitchCallback as diagramShownCallback, initialize as initializeUsageDiagrams } from "./usage-diagram";
 import { initialize as initializeStudyMode, renderAddCardForm, setupStudyMode, teardownStudyMode, setExportVisibility } from "./study-mode";
 import { clean, cleanTypes } from "./utils";
+import { renderCoverageGraph, hideCoverageGraph } from "./coverage-graph";
 
 const DEFAULT_BASE_LANGUAGE = 'english';
 
@@ -169,6 +170,8 @@ speechSynthesis.onvoiceschanged = function () {
 // hacking around garbage collection issues...
 window.activeUtterances = [];
 
+let coveragePercentages = {};
+
 function clearDefinitions() {
     definitionsResultContainer.innerHTML = '';
 }
@@ -323,10 +326,25 @@ function renderExamples(term, examples, container) {
     }
     container.appendChild(exampleList);
 }
-function renderFreq(freq, term, metadata, container) {
+function renderFreq(freq, term, metadata, datasetId, container) {
     const frequencyContainer = document.createElement('div');
     frequencyContainer.classList.add('frequency-metadata');
-    frequencyContainer.innerText = `${term} is the ${freq}${getOrderingSuffix(freq)} most common word in ${metadata['name']}`
+    frequencyContainer.innerHTML = `${term} is the ${freq}${getOrderingSuffix(freq)} most common word in ${metadata['name']}. `;
+    const toggleGraphLink = document.createElement('a');
+    toggleGraphLink.innerText = 'Show graph';
+    // TODO: there is probably a better way of toggling...
+    let expanded = false;
+    toggleGraphLink.addEventListener('click', function () {
+        if (!expanded) {
+            renderCoverageGraph(metadata['name'], coveragePercentages[datasetId], term, freq, frequencyContainer);
+            toggleGraphLink.innerText = 'Hide graph';
+        } else {
+            hideCoverageGraph(frequencyContainer);
+            toggleGraphLink.innerText = 'Show graph';
+        }
+        expanded = !expanded;
+    });
+    frequencyContainer.appendChild(toggleGraphLink);
     container.appendChild(frequencyContainer);
 }
 function renderDatasetMetadata(metadata, container) {
@@ -347,7 +365,7 @@ function renderDataset(term, datasetId, results, container) {
     renderHeader(metadata, container);
     renderDatasetMetadata(metadata, container);
     if (results.freq) {
-        renderFreq(results.freq, term, metadata, container);
+        renderFreq(results.freq, term, metadata, datasetId, container);
     }
     renderExamples(term, results.examples, container);
 }
@@ -514,6 +532,9 @@ function languageChangeHandler() {
     // When switching languages, clear out any existing results.
     clearResults();
     setSearchInstructions();
+    fetch(`/data/${languageMetadata[targetLanguageSelector.value].key}/dataset-coverage.json`)
+        .then(response => response.json())
+        .then(data => { coveragePercentages = data });
 }
 targetLanguageSelector.addEventListener('change', languageChangeHandler);
 baseLanguageSelector.addEventListener('change', languageChangeHandler);
@@ -521,17 +542,16 @@ baseLanguageSelector.addEventListener('change', languageChangeHandler);
 function loadState(state) {
     targetLanguageSelector.value = state.languages.target;
     baseLanguageSelector.value = state.languages.base;
-    targetLanguageSelector.dispatchEvent(new Event('change'));
-    baseLanguageSelector.dispatchEvent(new Event('change'));
+    languageChangeHandler();
     setSearchInstructions();
     const term = decodeURIComponent(state.term);
     searchBox.value = term;
     if (state.queryType === queryTypes.base) {
         toggleCheckbox.checked = true;
-        toggleCheckbox.dispatchEvent(new Event('change'));
+        setSearchInstructions();
     } else {
         toggleCheckbox.checked = false;
-        toggleCheckbox.dispatchEvent(new Event('change'));
+        setSearchInstructions();
     }
     query(term, state.queryType, false);
 }
@@ -569,6 +589,8 @@ if (history.state) {
     }
 } else {
     startupContainer.removeAttribute('style');
+    // TODO: ensure percentages are loaded in a better way
+    languageChangeHandler();
 }
 
 window.onpopstate = (event) => {
@@ -624,13 +646,13 @@ searchBox.addEventListener('input', function () {
     const cleanedTerm = clean(searchBox.value, cleanTypes.examples, getQueryLanguage(queryTypes.target));
     if (toggleCheckbox.checked || !cleanedTerm) {
         clearSuggestions();
-        return false;
+        return;
     }
     let currentPrefix = searchBox.value;
     getAutocomplete(cleanedTerm).then(value => {
         if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
             // this could be a late return of an old promise; just leave it
-            return false;
+            return;
         }
         clearSuggestions();
         if (value && value.exists()) {

@@ -2338,10 +2338,10 @@
     var k$1,goog=goog||{},l=commonjsGlobal||self;function aa$1(){}function ba$1(a){var b=typeof a;b="object"!=b?b:a?Array.isArray(a)?"array":b:"null";return "array"==b||"object"==b&&"number"==typeof a.length}function p(a){var b=typeof a;return "object"==b&&null!=a||"function"==b}function da(a){return Object.prototype.hasOwnProperty.call(a,ea)&&a[ea]||(a[ea]=++fa)}var ea="closure_uid_"+(1E9*Math.random()>>>0),fa=0;function ha(a,b,c){return a.call.apply(a.bind,arguments)}
     function ia(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var e=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(e,d);return a.apply(b,e)}}return function(){return a.apply(b,arguments)}}function q(a,b,c){Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?q=ha:q=ia;return q.apply(null,arguments)}
     function ja(a,b){var c=Array.prototype.slice.call(arguments,1);return function(){var d=c.slice();d.push.apply(d,arguments);return a.apply(this,d)}}function t(a,b){function c(){}c.prototype=b.prototype;a.Z=b.prototype;a.prototype=new c;a.prototype.constructor=a;a.Vb=function(d,e,f){for(var h=Array(arguments.length-2),n=2;n<arguments.length;n++)h[n-2]=arguments[n];return b.prototype[e].apply(d,h)};}function v(){this.s=this.s;this.o=this.o;}var ka=0,la={};v.prototype.s=!1;v.prototype.na=function(){if(!this.s&&(this.s=!0,this.M(),0!=ka)){var a=da(this);delete la[a];}};v.prototype.M=function(){if(this.o)for(;this.o.length;)this.o.shift()();};const ma$1=Array.prototype.indexOf?function(a,b){return Array.prototype.indexOf.call(a,b,void 0)}:function(a,b){if("string"===typeof a)return "string"!==typeof b||1!=b.length?-1:a.indexOf(b,0);for(let c=0;c<a.length;c++)if(c in a&&a[c]===b)return c;return -1},na=Array.prototype.forEach?function(a,b,c){Array.prototype.forEach.call(a,b,c);}:function(a,b,c){const d=a.length,e="string"===typeof a?a.split(""):a;for(let f=0;f<d;f++)f in e&&b.call(c,e[f],f,a);};
-    function oa(a){a:{var b=pa$1;const c=a.length,d="string"===typeof a?a.split(""):a;for(let e=0;e<c;e++)if(e in d&&b.call(void 0,d[e],e,a)){b=e;break a}b=-1;}return 0>b?null:"string"===typeof a?a.charAt(b):a[b]}function qa$1(a){return Array.prototype.concat.apply([],arguments)}function ra$1(a){const b=a.length;if(0<b){const c=Array(b);for(let d=0;d<b;d++)c[d]=a[d];return c}return []}function sa(a){return /^[\s\xa0]*$/.test(a)}var ta$1=String.prototype.trim?function(a){return a.trim()}:function(a){return /^[\s\xa0]*([\s\S]*?)[\s\xa0]*$/.exec(a)[1]};function w(a,b){return -1!=a.indexOf(b)}function ua(a,b){return a<b?-1:a>b?1:0}var x$2;a:{var va$1=l.navigator;if(va$1){var wa=va$1.userAgent;if(wa){x$2=wa;break a}}x$2="";}function xa$1(a,b,c){for(const d in a)b.call(c,a[d],d,a);}function ya$1(a){const b={};for(const c in a)b[c]=a[c];return b}var za="constructor hasOwnProperty isPrototypeOf propertyIsEnumerable toLocaleString toString valueOf".split(" ");function Aa(a,b){let c,d;for(let e=1;e<arguments.length;e++){d=arguments[e];for(c in d)a[c]=d[c];for(let f=0;f<za.length;f++)c=za[f],Object.prototype.hasOwnProperty.call(d,c)&&(a[c]=d[c]);}}function Ca(a){Ca[" "](a);return a}Ca[" "]=aa$1;function Fa(a){var b=Ga;return Object.prototype.hasOwnProperty.call(b,9)?b[9]:b[9]=a(9)}var Ha=w(x$2,"Opera"),y$1=w(x$2,"Trident")||w(x$2,"MSIE"),Ia=w(x$2,"Edge"),Ja=Ia||y$1,Ka$1=w(x$2,"Gecko")&&!(w(x$2.toLowerCase(),"webkit")&&!w(x$2,"Edge"))&&!(w(x$2,"Trident")||w(x$2,"MSIE"))&&!w(x$2,"Edge"),La=w(x$2.toLowerCase(),"webkit")&&!w(x$2,"Edge");function Ma$1(){var a=l.document;return a?a.documentMode:void 0}var Na;
-    a:{var Oa="",Pa=function(){var a=x$2;if(Ka$1)return /rv:([^\);]+)(\)|;)/.exec(a);if(Ia)return /Edge\/([\d\.]+)/.exec(a);if(y$1)return /\b(?:MSIE|rv)[: ]([^\);]+)(\)|;)/.exec(a);if(La)return /WebKit\/(\S+)/.exec(a);if(Ha)return /(?:Version)[ \/]?(\S+)/.exec(a)}();Pa&&(Oa=Pa?Pa[1]:"");if(y$1){var Qa=Ma$1();if(null!=Qa&&Qa>parseFloat(Oa)){Na=String(Qa);break a}}Na=Oa;}var Ga={};
+    function oa(a){a:{var b=pa$1;const c=a.length,d="string"===typeof a?a.split(""):a;for(let e=0;e<c;e++)if(e in d&&b.call(void 0,d[e],e,a)){b=e;break a}b=-1;}return 0>b?null:"string"===typeof a?a.charAt(b):a[b]}function qa$1(a){return Array.prototype.concat.apply([],arguments)}function ra$1(a){const b=a.length;if(0<b){const c=Array(b);for(let d=0;d<b;d++)c[d]=a[d];return c}return []}function sa(a){return /^[\s\xa0]*$/.test(a)}var ta$1=String.prototype.trim?function(a){return a.trim()}:function(a){return /^[\s\xa0]*([\s\S]*?)[\s\xa0]*$/.exec(a)[1]};function w(a,b){return -1!=a.indexOf(b)}function ua(a,b){return a<b?-1:a>b?1:0}var x$3;a:{var va$1=l.navigator;if(va$1){var wa=va$1.userAgent;if(wa){x$3=wa;break a}}x$3="";}function xa$1(a,b,c){for(const d in a)b.call(c,a[d],d,a);}function ya$1(a){const b={};for(const c in a)b[c]=a[c];return b}var za="constructor hasOwnProperty isPrototypeOf propertyIsEnumerable toLocaleString toString valueOf".split(" ");function Aa(a,b){let c,d;for(let e=1;e<arguments.length;e++){d=arguments[e];for(c in d)a[c]=d[c];for(let f=0;f<za.length;f++)c=za[f],Object.prototype.hasOwnProperty.call(d,c)&&(a[c]=d[c]);}}function Ca(a){Ca[" "](a);return a}Ca[" "]=aa$1;function Fa(a){var b=Ga;return Object.prototype.hasOwnProperty.call(b,9)?b[9]:b[9]=a(9)}var Ha=w(x$3,"Opera"),y$2=w(x$3,"Trident")||w(x$3,"MSIE"),Ia=w(x$3,"Edge"),Ja=Ia||y$2,Ka$1=w(x$3,"Gecko")&&!(w(x$3.toLowerCase(),"webkit")&&!w(x$3,"Edge"))&&!(w(x$3,"Trident")||w(x$3,"MSIE"))&&!w(x$3,"Edge"),La=w(x$3.toLowerCase(),"webkit")&&!w(x$3,"Edge");function Ma$1(){var a=l.document;return a?a.documentMode:void 0}var Na;
+    a:{var Oa="",Pa=function(){var a=x$3;if(Ka$1)return /rv:([^\);]+)(\)|;)/.exec(a);if(Ia)return /Edge\/([\d\.]+)/.exec(a);if(y$2)return /\b(?:MSIE|rv)[: ]([^\);]+)(\)|;)/.exec(a);if(La)return /WebKit\/(\S+)/.exec(a);if(Ha)return /(?:Version)[ \/]?(\S+)/.exec(a)}();Pa&&(Oa=Pa?Pa[1]:"");if(y$2){var Qa=Ma$1();if(null!=Qa&&Qa>parseFloat(Oa)){Na=String(Qa);break a}}Na=Oa;}var Ga={};
     function Ra$1(){return Fa(function(){let a=0;const b=ta$1(String(Na)).split("."),c=ta$1("9").split("."),d=Math.max(b.length,c.length);for(let h=0;0==a&&h<d;h++){var e=b[h]||"",f=c[h]||"";do{e=/(\d*)(\D*)(.*)/.exec(e)||["","","",""];f=/(\d*)(\D*)(.*)/.exec(f)||["","","",""];if(0==e[0].length&&0==f[0].length)break;a=ua(0==e[1].length?0:parseInt(e[1],10),0==f[1].length?0:parseInt(f[1],10))||ua(0==e[2].length,0==f[2].length)||ua(e[2],f[2]);e=e[3];f=f[3];}while(0==a)}return 0<=a})}var Sa$1;
-    if(l.document&&y$1){var Ta$1=Ma$1();Sa$1=Ta$1?Ta$1:parseInt(Na,10)||void 0;}else Sa$1=void 0;var Ua$1=Sa$1;var Va$1=function(){if(!l.addEventListener||!Object.defineProperty)return !1;var a=!1,b=Object.defineProperty({},"passive",{get:function(){a=!0;}});try{l.addEventListener("test",aa$1,b),l.removeEventListener("test",aa$1,b);}catch(c){}return a}();function z$1(a,b){this.type=a;this.g=this.target=b;this.defaultPrevented=!1;}z$1.prototype.h=function(){this.defaultPrevented=!0;};function A(a,b){z$1.call(this,a?a.type:"");this.relatedTarget=this.g=this.target=null;this.button=this.screenY=this.screenX=this.clientY=this.clientX=0;this.key="";this.metaKey=this.shiftKey=this.altKey=this.ctrlKey=!1;this.state=null;this.pointerId=0;this.pointerType="";this.i=null;if(a){var c=this.type=a.type,d=a.changedTouches&&a.changedTouches.length?a.changedTouches[0]:null;this.target=a.target||a.srcElement;this.g=b;if(b=a.relatedTarget){if(Ka$1){a:{try{Ca(b.nodeName);var e=!0;break a}catch(f){}e=
+    if(l.document&&y$2){var Ta$1=Ma$1();Sa$1=Ta$1?Ta$1:parseInt(Na,10)||void 0;}else Sa$1=void 0;var Ua$1=Sa$1;var Va$1=function(){if(!l.addEventListener||!Object.defineProperty)return !1;var a=!1,b=Object.defineProperty({},"passive",{get:function(){a=!0;}});try{l.addEventListener("test",aa$1,b),l.removeEventListener("test",aa$1,b);}catch(c){}return a}();function z$1(a,b){this.type=a;this.g=this.target=b;this.defaultPrevented=!1;}z$1.prototype.h=function(){this.defaultPrevented=!0;};function A(a,b){z$1.call(this,a?a.type:"");this.relatedTarget=this.g=this.target=null;this.button=this.screenY=this.screenX=this.clientY=this.clientX=0;this.key="";this.metaKey=this.shiftKey=this.altKey=this.ctrlKey=!1;this.state=null;this.pointerId=0;this.pointerType="";this.i=null;if(a){var c=this.type=a.type,d=a.changedTouches&&a.changedTouches.length?a.changedTouches[0]:null;this.target=a.target||a.srcElement;this.g=b;if(b=a.relatedTarget){if(Ka$1){a:{try{Ca(b.nodeName);var e=!0;break a}catch(f){}e=
     !1;}e||(b=null);}}else "mouseover"==c?b=a.fromElement:"mouseout"==c&&(b=a.toElement);this.relatedTarget=b;d?(this.clientX=void 0!==d.clientX?d.clientX:d.pageX,this.clientY=void 0!==d.clientY?d.clientY:d.pageY,this.screenX=d.screenX||0,this.screenY=d.screenY||0):(this.clientX=void 0!==a.clientX?a.clientX:a.pageX,this.clientY=void 0!==a.clientY?a.clientY:a.pageY,this.screenX=a.screenX||0,this.screenY=a.screenY||0);this.button=a.button;this.key=a.key||"";this.ctrlKey=a.ctrlKey;this.altKey=a.altKey;this.shiftKey=
     a.shiftKey;this.metaKey=a.metaKey;this.pointerId=a.pointerId||0;this.pointerType="string"===typeof a.pointerType?a.pointerType:Wa[a.pointerType]||"";this.state=a.state;this.i=a;a.defaultPrevented&&A.Z.h.call(this);}}t(A,z$1);var Wa={2:"touch",3:"pen",4:"mouse"};A.prototype.h=function(){A.Z.h.call(this);var a=this.i;a.preventDefault?a.preventDefault():a.returnValue=!1;};var B$1="closure_listenable_"+(1E6*Math.random()|0);var Xa=0;function Ya(a,b,c,d,e){this.listener=a;this.proxy=null;this.src=b;this.type=c;this.capture=!!d;this.ia=e;this.key=++Xa;this.ca=this.fa=!1;}function Za(a){a.ca=!0;a.listener=null;a.proxy=null;a.src=null;a.ia=null;}function $a(a){this.src=a;this.g={};this.h=0;}$a.prototype.add=function(a,b,c,d,e){var f=a.toString();a=this.g[f];a||(a=this.g[f]=[],this.h++);var h=ab(a,b,d,e);-1<h?(b=a[h],c||(b.fa=!1)):(b=new Ya(b,this.src,f,!!d,e),b.fa=c,a.push(b));return b};function bb(a,b){var c=b.type;if(c in a.g){var d=a.g[c],e=ma$1(d,b),f;(f=0<=e)&&Array.prototype.splice.call(d,e,1);f&&(Za(b),0==a.g[c].length&&(delete a.g[c],a.h--));}}
     function ab(a,b,c,d){for(var e=0;e<a.length;++e){var f=a[e];if(!f.ca&&f.listener==b&&f.capture==!!c&&f.ia==d)return e}return -1}var cb="closure_lm_"+(1E6*Math.random()|0),db={};function fb(a,b,c,d,e){if(d&&d.once)return gb(a,b,c,d,e);if(Array.isArray(b)){for(var f=0;f<b.length;f++)fb(a,b[f],c,d,e);return null}c=hb(c);return a&&a[B$1]?a.N(b,c,p(d)?!!d.capture:!!d,e):ib(a,b,c,!1,d,e)}
@@ -2388,7 +2388,7 @@
     k$1.getAllResponseHeaders=function(){if(!this.h)return "";const a=[],b=this.h.entries();for(var c=b.next();!c.done;)c=c.value,a.push(c[0]+": "+c[1]),c=b.next();return a.join("\r\n")};function sd(a){a.onreadystatechange&&a.onreadystatechange.call(a);}Object.defineProperty(qd.prototype,"withCredentials",{get:function(){return "include"===this.m},set:function(a){this.m=a?"include":"same-origin";}});var vd=l.JSON.parse;function X$1(a){C$1.call(this);this.headers=new S;this.u=a||null;this.h=!1;this.C=this.g=null;this.H="";this.m=0;this.j="";this.l=this.F=this.v=this.D=!1;this.B=0;this.A=null;this.J=wd;this.K=this.L=!1;}t(X$1,C$1);var wd="",xd=/^https?$/i,yd=["POST","PUT"];k$1=X$1.prototype;
     k$1.ea=function(a,b,c,d){if(this.g)throw Error("[goog.net.XhrIo] Object is active with another request="+this.H+"; newUri="+a);b=b?b.toUpperCase():"GET";this.H=a;this.j="";this.m=0;this.D=!1;this.h=!0;this.g=this.u?this.u.g():cc$1.g();this.C=this.u?Zb(this.u):Zb(cc$1);this.g.onreadystatechange=q(this.Fa,this);try{this.F=!0,this.g.open(b,String(a),!0),this.F=!1;}catch(f){zd(this,f);return}a=c||"";const e=new S(this.headers);d&&Kc(d,function(f,h){e.set(h,f);});d=oa(e.T());c=l.FormData&&a instanceof l.FormData;
     !(0<=ma$1(yd,b))||d||c||e.set("Content-Type","application/x-www-form-urlencoded;charset=utf-8");e.forEach(function(f,h){this.g.setRequestHeader(h,f);},this);this.J&&(this.g.responseType=this.J);"withCredentials"in this.g&&this.g.withCredentials!==this.L&&(this.g.withCredentials=this.L);try{Ad(this),0<this.B&&((this.K=Bd(this.g))?(this.g.timeout=this.B,this.g.ontimeout=q(this.pa,this)):this.A=Gb(this.pa,this.B,this)),this.v=!0,this.g.send(a),this.v=!1;}catch(f){zd(this,f);}};
-    function Bd(a){return y$1&&Ra$1()&&"number"===typeof a.timeout&&void 0!==a.ontimeout}function pa$1(a){return "content-type"==a.toLowerCase()}k$1.pa=function(){"undefined"!=typeof goog&&this.g&&(this.j="Timed out after "+this.B+"ms, aborting",this.m=8,D$1(this,"timeout"),this.abort(8));};function zd(a,b){a.h=!1;a.g&&(a.l=!0,a.g.abort(),a.l=!1);a.j=b;a.m=5;Cd(a);Dd(a);}function Cd(a){a.D||(a.D=!0,D$1(a,"complete"),D$1(a,"error"));}
+    function Bd(a){return y$2&&Ra$1()&&"number"===typeof a.timeout&&void 0!==a.ontimeout}function pa$1(a){return "content-type"==a.toLowerCase()}k$1.pa=function(){"undefined"!=typeof goog&&this.g&&(this.j="Timed out after "+this.B+"ms, aborting",this.m=8,D$1(this,"timeout"),this.abort(8));};function zd(a,b){a.h=!1;a.g&&(a.l=!0,a.g.abort(),a.l=!1);a.j=b;a.m=5;Cd(a);Dd(a);}function Cd(a){a.D||(a.D=!0,D$1(a,"complete"),D$1(a,"error"));}
     k$1.abort=function(a){this.g&&this.h&&(this.h=!1,this.l=!0,this.g.abort(),this.l=!1,this.m=a||7,D$1(this,"complete"),D$1(this,"abort"),Dd(this));};k$1.M=function(){this.g&&(this.h&&(this.h=!1,this.l=!0,this.g.abort(),this.l=!1),Dd(this,!0));X$1.Z.M.call(this);};k$1.Fa=function(){this.s||(this.F||this.v||this.l?Ed(this):this.cb());};k$1.cb=function(){Ed(this);};
     function Ed(a){if(a.h&&"undefined"!=typeof goog&&(!a.C[1]||4!=O$1(a)||2!=a.ba()))if(a.v&&4==O$1(a))Gb(a.Fa,0,a);else if(D$1(a,"readystatechange"),4==O$1(a)){a.h=!1;try{const n=a.ba();a:switch(n){case 200:case 201:case 202:case 204:case 206:case 304:case 1223:var b=!0;break a;default:b=!1;}var c;if(!(c=b)){var d;if(d=0===n){var e=String(a.H).match(Mc)[1]||null;if(!e&&l.self&&l.self.location){var f=l.self.location.protocol;e=f.substr(0,f.length-1);}d=!xd.test(e?e.toLowerCase():"");}c=d;}if(c)D$1(a,"complete"),D$1(a,
     "success");else {a.m=6;try{var h=2<O$1(a)?a.g.statusText:"";}catch(u){h="";}a.j=h+" ["+a.ba()+"]";Cd(a);}}finally{Dd(a);}}}function Dd(a,b){if(a.g){Ad(a);const c=a.g,d=a.C[0]?aa$1:null;a.g=null;a.C=null;b||D$1(a,"ready");try{c.onreadystatechange=d;}catch(e){}}}function Ad(a){a.g&&a.K&&(a.g.ontimeout=null);a.A&&(l.clearTimeout(a.A),a.A=null);}function O$1(a){return a.g?a.g.readyState:0}k$1.ba=function(){try{return 2<O$1(this)?this.g.status:-1}catch(a){return -1}};
@@ -2407,7 +2407,7 @@
     function uc$1(a,b){var c=null;if(a.g==b){zc(a);wc$1(a);a.g=null;var d=2;}else if(yc(a.i,b))c=b.D,Fc(a.i,b),d=1;else return;a.I=b.N;if(0!=a.G)if(b.i)if(1==d){c=b.s?b.s.length:0;b=Date.now()-b.F;var e=a.C;d=Sb();D$1(d,new Vb(d,c,b,e));Hc(a);}else Gc$1(a);else if(e=b.o,3==e||0==e&&0<a.I||!(1==d&&Nd(a,b)||2==d&&Bc(a)))switch(c&&0<c.length&&(b=a.i,b.i=b.i.concat(c)),e){case 1:Q$1(a,5);break;case 4:Q$1(a,10);break;case 3:Q$1(a,6);break;default:Q$1(a,2);}}
     function Od(a,b){let c=a.Pa+Math.floor(Math.random()*a.$a);a.j||(c*=2);return c*b}function Q$1(a,b){a.h.info("Error code "+b);if(2==b){var c=null;a.j&&(c=null);var d=q(a.jb,a);c||(c=new U$1("//www.google.com/images/cleardot.gif"),l.location&&"http"==l.location.protocol||Oc(c,"https"),jc$1(c));nd(c.toString(),d);}else J$1(2);a.G=0;a.j&&a.j.va(b);Ld(a);Jd(a);}k$1.jb=function(a){a?(this.h.info("Successfully pinged google.com"),J$1(2)):(this.h.info("Failed to ping google.com"),J$1(1));};
     function Ld(a){a.G=0;a.I=-1;if(a.j){if(0!=jd(a.i).length||0!=a.l.length)a.i.i.length=0,ra$1(a.l),a.l.length=0;a.j.ua();}}function Ec$1(a,b,c){let d=ad(c);if(""!=d.i)b&&Pc$1(d,b+"."+d.i),Qc(d,d.m);else {const e=l.location;d=bd(e.protocol,b?b+"."+e.hostname:e.hostname,+e.port,c);}a.aa&&xa$1(a.aa,function(e,f){R(d,f,e);});b=a.D;c=a.sa;b&&c&&R(d,b,c);R(d,"VER",a.ma);Kd(a,d);return d}
-    function nc(a,b,c){if(b&&!a.H)throw Error("Can't create secondary domain capable XhrIo object.");b=c&&a.Ba&&!a.qa?new X$1(new pd({ib:!0})):new X$1(a.qa);b.L=a.H;return b}function Sd(){}k$1=Sd.prototype;k$1.xa=function(){};k$1.wa=function(){};k$1.va=function(){};k$1.ua=function(){};k$1.Oa=function(){};function Td(){if(y$1&&!(10<=Number(Ua$1)))throw Error("Environmental error: no available transport.");}Td.prototype.g=function(a,b){return new Y$1(a,b)};
+    function nc(a,b,c){if(b&&!a.H)throw Error("Can't create secondary domain capable XhrIo object.");b=c&&a.Ba&&!a.qa?new X$1(new pd({ib:!0})):new X$1(a.qa);b.L=a.H;return b}function Sd(){}k$1=Sd.prototype;k$1.xa=function(){};k$1.wa=function(){};k$1.va=function(){};k$1.ua=function(){};k$1.Oa=function(){};function Td(){if(y$2&&!(10<=Number(Ua$1)))throw Error("Environmental error: no available transport.");}Td.prototype.g=function(a,b){return new Y$1(a,b)};
     function Y$1(a,b){C$1.call(this);this.g=new Id(b);this.l=a;this.h=b&&b.messageUrlParams||null;a=b&&b.messageHeaders||null;b&&b.clientProtocolHeaderRequired&&(a?a["X-Client-Protocol"]="webchannel":a={"X-Client-Protocol":"webchannel"});this.g.s=a;a=b&&b.initMessageHeaders||null;b&&b.messageContentType&&(a?a["X-WebChannel-Content-Type"]=b.messageContentType:a={"X-WebChannel-Content-Type":b.messageContentType});b&&b.ya&&(a?a["X-WebChannel-Client-Profile"]=b.ya:a={"X-WebChannel-Client-Profile":b.ya});this.g.P=
     a;(a=b&&b.httpHeadersOverwriteParam)&&!sa(a)&&(this.g.o=a);this.A=b&&b.supportsCrossDomainXhr||!1;this.v=b&&b.sendRawJson||!1;(b=b&&b.httpSessionIdParam)&&!sa(b)&&(this.g.D=b,a=this.h,null!==a&&b in a&&(a=this.h,b in a&&delete a[b]));this.j=new Z$1(this);}t(Y$1,C$1);Y$1.prototype.m=function(){this.g.j=this.j;this.A&&(this.g.H=!0);var a=this.g,b=this.l,c=this.h||void 0;a.Wa&&(a.h.info("Origin Trials enabled."),zb(q(a.hb,a,b)));J$1(0);a.W=b;a.aa=c||{};a.N=a.X;a.F=Ec$1(a,null,a.W);Hc(a);};Y$1.prototype.close=function(){Ic(this.g);};
     Y$1.prototype.u=function(a){if("string"===typeof a){var b={};b.__data__=a;Md(this.g,b);}else this.v?(b={},b.__data__=rb(a),Md(this.g,b)):Md(this.g,a);};Y$1.prototype.M=function(){this.g.j=null;delete this.j;Ic(this.g);delete this.g;Y$1.Z.M.call(this);};function Ud(a){ac$1.call(this);var b=a.__sm__;if(b){a:{for(const c in b){a=c;break a}a=void 0;}if(this.i=a)a=this.i,b=null!==b&&a in b?b[a]:void 0;this.data=b;}else this.data=a;}t(Ud,ac$1);function Vd(){bc$1.call(this);this.status=1;}t(Vd,bc$1);function Z$1(a){this.g=a;}
@@ -2493,7 +2493,7 @@
      * See the License for the specific language governing permissions and
      * limitations under the License.
      */
-    let x$1 = "9.9.2";
+    let x$2 = "9.9.2";
 
     /**
      * @license
@@ -2521,14 +2521,14 @@
     function O(t, ...e) {
         if (N.logLevel <= LogLevel.DEBUG) {
             const n = e.map(B);
-            N.debug(`Firestore (${x$1}): ${t}`, ...n);
+            N.debug(`Firestore (${x$2}): ${t}`, ...n);
         }
     }
 
     function F(t, ...e) {
         if (N.logLevel <= LogLevel.ERROR) {
             const n = e.map(B);
-            N.error(`Firestore (${x$1}): ${t}`, ...n);
+            N.error(`Firestore (${x$2}): ${t}`, ...n);
         }
     }
 
@@ -2537,7 +2537,7 @@
      */ function $(t, ...e) {
         if (N.logLevel <= LogLevel.WARN) {
             const n = e.map(B);
-            N.warn(`Firestore (${x$1}): ${t}`, ...n);
+            N.warn(`Firestore (${x$2}): ${t}`, ...n);
         }
     }
 
@@ -2597,7 +2597,7 @@
      */ function L(t = "Unexpected state") {
         // Log the failure in addition to throw an exception, just in case the
         // exception is swallowed.
-        const e = `FIRESTORE (${x$1}) INTERNAL ASSERTION FAILED: ` + t;
+        const e = `FIRESTORE (${x$2}) INTERNAL ASSERTION FAILED: ` + t;
         // NOTE: We don't use FirestoreError here because these are internal failures
         // that cannot be handled by the user. (Also it would create a circular
         // dependency between the error and assert modules which doesn't work.)
@@ -9680,7 +9680,7 @@
          * Modifies the headers for a request, adding any authorization token if
          * present and any additional headers for the request.
          */    uo(t, e, n) {
-            t["X-Goog-Api-Client"] = "gl-js/ fire/" + x$1, 
+            t["X-Goog-Api-Client"] = "gl-js/ fire/" + x$2, 
             // Content-Type: text/plain will avoid preflight requests which might
             // mess with CORS and redirects by proxies. If we add custom headers
             // we will need to change this code to potentially use the $httpOverwrite
@@ -13408,7 +13408,7 @@
      * @packageDocumentation
      */ !function(t, e = !0) {
         !function(t) {
-            x$1 = t;
+            x$2 = t;
         }(SDK_VERSION), _registerComponent(new Component("firestore", ((t, {options: n}) => {
             const s = t.getProvider("app").getImmediate(), i = new Ba(s, new J(t.getProvider("auth-internal")), new tt(t.getProvider("app-check-internal")));
             return n = Object.assign({
@@ -13906,7 +13906,7 @@
         });
     }
 
-    function max(values, valueof) {
+    function max$1(values, valueof) {
       let max;
       if (valueof === undefined) {
         for (const value of values) {
@@ -13971,11 +13971,11 @@
       return d.target.depth;
     }
 
-    function left(node) {
+    function left$1(node) {
       return node.depth;
     }
 
-    function right(node, n) {
+    function right$1(node, n) {
       return n - 1 - node.height;
     }
 
@@ -13983,13 +13983,13 @@
       return node.sourceLinks.length ? node.depth : n - 1;
     }
 
-    function center(node) {
+    function center$1(node) {
       return node.targetLinks.length ? node.depth
           : node.sourceLinks.length ? min(node.sourceLinks, targetDepth) - 1
           : 0;
     }
 
-    function constant$3(x) {
+    function constant$4(x) {
       return function() {
         return x;
       };
@@ -14073,11 +14073,11 @@
       };
 
       sankey.nodeId = function(_) {
-        return arguments.length ? (id = typeof _ === "function" ? _ : constant$3(_), sankey) : id;
+        return arguments.length ? (id = typeof _ === "function" ? _ : constant$4(_), sankey) : id;
       };
 
       sankey.nodeAlign = function(_) {
-        return arguments.length ? (align = typeof _ === "function" ? _ : constant$3(_), sankey) : align;
+        return arguments.length ? (align = typeof _ === "function" ? _ : constant$4(_), sankey) : align;
       };
 
       sankey.nodeSort = function(_) {
@@ -14093,11 +14093,11 @@
       };
 
       sankey.nodes = function(_) {
-        return arguments.length ? (nodes = typeof _ === "function" ? _ : constant$3(_), sankey) : nodes;
+        return arguments.length ? (nodes = typeof _ === "function" ? _ : constant$4(_), sankey) : nodes;
       };
 
       sankey.links = function(_) {
-        return arguments.length ? (links = typeof _ === "function" ? _ : constant$3(_), sankey) : links;
+        return arguments.length ? (links = typeof _ === "function" ? _ : constant$4(_), sankey) : links;
       };
 
       sankey.linkSort = function(_) {
@@ -14184,7 +14184,7 @@
       }
 
       function computeNodeLayers({nodes}) {
-        const x = max(nodes, d => d.depth) + 1;
+        const x = max$1(nodes, d => d.depth) + 1;
         const kx = (x1 - x0 - dx) / (x - 1);
         const columns = new Array(x);
         for (const node of nodes) {
@@ -14225,7 +14225,7 @@
 
       function computeNodeBreadths(graph) {
         const columns = computeNodeLayers(graph);
-        py = Math.min(dy, (y1 - y0) / (max(columns, c => c.length) - 1));
+        py = Math.min(dy, (y1 - y0) / (max$1(columns, c => c.length) - 1));
         initializeNodeBreadths(columns);
         for (let i = 0; i < iterations; ++i) {
           const alpha = Math.pow(0.99, i);
@@ -14361,23 +14361,23 @@
       return sankey;
     }
 
-    var pi = Math.PI,
-        tau = 2 * pi,
-        epsilon = 1e-6,
-        tauEpsilon = tau - epsilon;
+    var pi$1 = Math.PI,
+        tau$1 = 2 * pi$1,
+        epsilon$2 = 1e-6,
+        tauEpsilon$1 = tau$1 - epsilon$2;
 
-    function Path() {
+    function Path$1() {
       this._x0 = this._y0 = // start of current subpath
       this._x1 = this._y1 = null; // end of current subpath
       this._ = "";
     }
 
     function path() {
-      return new Path;
+      return new Path$1;
     }
 
-    Path.prototype = path.prototype = {
-      constructor: Path,
+    Path$1.prototype = path.prototype = {
+      constructor: Path$1,
       moveTo: function(x, y) {
         this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
       },
@@ -14415,12 +14415,12 @@
         }
 
         // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
-        else if (!(l01_2 > epsilon));
+        else if (!(l01_2 > epsilon$2));
 
         // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
         // Equivalently, is (x1,y1) coincident with (x2,y2)?
         // Or, is the radius zero? Line to (x1,y1).
-        else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
+        else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon$2) || !r) {
           this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
         }
 
@@ -14432,12 +14432,12 @@
               l20_2 = x20 * x20 + y20 * y20,
               l21 = Math.sqrt(l21_2),
               l01 = Math.sqrt(l01_2),
-              l = r * Math.tan((pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+              l = r * Math.tan((pi$1 - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
               t01 = l / l01,
               t21 = l / l21;
 
           // If the start tangent is not coincident with (x0,y0), line to.
-          if (Math.abs(t01 - 1) > epsilon) {
+          if (Math.abs(t01 - 1) > epsilon$2) {
             this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
           }
 
@@ -14462,7 +14462,7 @@
         }
 
         // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
-        else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
+        else if (Math.abs(this._x1 - x0) > epsilon$2 || Math.abs(this._y1 - y0) > epsilon$2) {
           this._ += "L" + x0 + "," + y0;
         }
 
@@ -14470,16 +14470,16 @@
         if (!r) return;
 
         // Does the angle go the wrong way? Flip the direction.
-        if (da < 0) da = da % tau + tau;
+        if (da < 0) da = da % tau$1 + tau$1;
 
         // Is this a complete circle? Draw two arcs to complete the circle.
-        if (da > tauEpsilon) {
+        if (da > tauEpsilon$1) {
           this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
         }
 
         // Is this arc non-empty? Draw an arc!
-        else if (da > epsilon) {
-          this._ += "A" + r + "," + r + ",0," + (+(da >= pi)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
+        else if (da > epsilon$2) {
+          this._ += "A" + r + "," + r + ",0," + (+(da >= pi$1)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
         }
       },
       rect: function(x, y, w, h) {
@@ -14490,17 +14490,17 @@
       }
     };
 
-    function constant$2(x) {
+    function constant$3(x) {
       return function constant() {
         return x;
       };
     }
 
-    function x(p) {
+    function x$1(p) {
       return p[0];
     }
 
-    function y(p) {
+    function y$1(p) {
       return p[1];
     }
 
@@ -14517,14 +14517,14 @@
     function link(curve) {
       var source = linkSource,
           target = linkTarget,
-          x$1 = x,
-          y$1 = y,
+          x = x$1,
+          y = y$1,
           context = null;
 
       function link() {
         var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
         if (!context) context = buffer = path();
-        curve(context, +x$1.apply(this, (argv[0] = s, argv)), +y$1.apply(this, argv), +x$1.apply(this, (argv[0] = t, argv)), +y$1.apply(this, argv));
+        curve(context, +x.apply(this, (argv[0] = s, argv)), +y.apply(this, argv), +x.apply(this, (argv[0] = t, argv)), +y.apply(this, argv));
         if (buffer) return context = null, buffer + "" || null;
       }
 
@@ -14537,11 +14537,11 @@
       };
 
       link.x = function(_) {
-        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$2(+_), link) : x$1;
+        return arguments.length ? (x = typeof _ === "function" ? _ : constant$3(+_), link) : x;
       };
 
       link.y = function(_) {
-        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$2(+_), link) : y$1;
+        return arguments.length ? (y = typeof _ === "function" ? _ : constant$3(+_), link) : y;
       };
 
       link.context = function(_) {
@@ -14572,6 +14572,111 @@
       return linkHorizontal()
           .source(horizontalSource)
           .target(horizontalTarget);
+    }
+
+    function ascending$1(a, b) {
+      return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+    }
+
+    function descending(a, b) {
+      return a == null || b == null ? NaN
+        : b < a ? -1
+        : b > a ? 1
+        : b >= a ? 0
+        : NaN;
+    }
+
+    function bisector(f) {
+      let compare1, compare2, delta;
+
+      // If an accessor is specified, promote it to a comparator. In this case we
+      // can test whether the search value is (self-) comparable. We can’t do this
+      // for a comparator (except for specific, known comparators) because we can’t
+      // tell if the comparator is symmetric, and an asymmetric comparator can’t be
+      // used to test whether a single value is comparable.
+      if (f.length !== 2) {
+        compare1 = ascending$1;
+        compare2 = (d, x) => ascending$1(f(d), x);
+        delta = (d, x) => f(d) - x;
+      } else {
+        compare1 = f === ascending$1 || f === descending ? f : zero$1;
+        compare2 = f;
+        delta = f;
+      }
+
+      function left(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+          if (compare1(x, x) !== 0) return hi;
+          do {
+            const mid = (lo + hi) >>> 1;
+            if (compare2(a[mid], x) < 0) lo = mid + 1;
+            else hi = mid;
+          } while (lo < hi);
+        }
+        return lo;
+      }
+
+      function right(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+          if (compare1(x, x) !== 0) return hi;
+          do {
+            const mid = (lo + hi) >>> 1;
+            if (compare2(a[mid], x) <= 0) lo = mid + 1;
+            else hi = mid;
+          } while (lo < hi);
+        }
+        return lo;
+      }
+
+      function center(a, x, lo = 0, hi = a.length) {
+        const i = left(a, x, lo, hi - 1);
+        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+      }
+
+      return {left, center, right};
+    }
+
+    function zero$1() {
+      return 0;
+    }
+
+    function number$2(x) {
+      return x === null ? NaN : +x;
+    }
+
+    const ascendingBisect = bisector(ascending$1);
+    const bisectRight = ascendingBisect.right;
+    bisector(number$2).center;
+    var bisect = bisectRight;
+
+    function extent(values, valueof) {
+      let min;
+      let max;
+      if (valueof === undefined) {
+        for (const value of values) {
+          if (value != null) {
+            if (min === undefined) {
+              if (value >= value) min = max = value;
+            } else {
+              if (min > value) min = value;
+              if (max < value) max = value;
+            }
+          }
+        }
+      } else {
+        let index = -1;
+        for (let value of values) {
+          if ((value = valueof(value, ++index, values)) != null) {
+            if (min === undefined) {
+              if (value >= value) min = max = value;
+            } else {
+              if (min > value) min = value;
+              if (max < value) max = value;
+            }
+          }
+        }
+      }
+      return [min, max];
     }
 
     class InternMap extends Map {
@@ -14636,6 +14741,96 @@
       return value !== null && typeof value === "object" ? value.valueOf() : value;
     }
 
+    var e10 = Math.sqrt(50),
+        e5 = Math.sqrt(10),
+        e2 = Math.sqrt(2);
+
+    function ticks(start, stop, count) {
+      var reverse,
+          i = -1,
+          n,
+          ticks,
+          step;
+
+      stop = +stop, start = +start, count = +count;
+      if (start === stop && count > 0) return [start];
+      if (reverse = stop < start) n = start, start = stop, stop = n;
+      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
+
+      if (step > 0) {
+        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+        if (r0 * step < start) ++r0;
+        if (r1 * step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) * step;
+      } else {
+        step = -step;
+        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
+        if (r0 / step < start) ++r0;
+        if (r1 / step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) / step;
+      }
+
+      if (reverse) ticks.reverse();
+
+      return ticks;
+    }
+
+    function tickIncrement(start, stop, count) {
+      var step = (stop - start) / Math.max(0, count),
+          power = Math.floor(Math.log(step) / Math.LN10),
+          error = step / Math.pow(10, power);
+      return power >= 0
+          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
+          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+    }
+
+    function tickStep(start, stop, count) {
+      var step0 = Math.abs(stop - start) / Math.max(0, count),
+          step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
+          error = step0 / step1;
+      if (error >= e10) step1 *= 10;
+      else if (error >= e5) step1 *= 5;
+      else if (error >= e2) step1 *= 2;
+      return stop < start ? -step1 : step1;
+    }
+
+    function max(values, valueof) {
+      let max;
+      if (valueof === undefined) {
+        for (const value of values) {
+          if (value != null
+              && (max < value || (max === undefined && value >= value))) {
+            max = value;
+          }
+        }
+      } else {
+        let index = -1;
+        for (let value of values) {
+          if ((value = valueof(value, ++index, values)) != null
+              && (max < value || (max === undefined && value >= value))) {
+            max = value;
+          }
+        }
+      }
+      return max;
+    }
+
+    function range(start, stop, step) {
+      start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+      var i = -1,
+          n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+          range = new Array(n);
+
+      while (++i < n) {
+        range[i] = start + i * step;
+      }
+
+      return range;
+    }
+
     function map$1(values, mapper) {
       if (typeof values[Symbol.iterator] !== "function") throw new TypeError("values is not iterable");
       if (typeof mapper !== "function") throw new TypeError("mapper is not a function");
@@ -14650,6 +14845,175 @@
         }
       }
       return set;
+    }
+
+    function identity$3(x) {
+      return x;
+    }
+
+    var top = 1,
+        right = 2,
+        bottom = 3,
+        left = 4,
+        epsilon$1 = 1e-6;
+
+    function translateX(x) {
+      return "translate(" + x + ",0)";
+    }
+
+    function translateY(y) {
+      return "translate(0," + y + ")";
+    }
+
+    function number$1(scale) {
+      return d => +scale(d);
+    }
+
+    function center(scale, offset) {
+      offset = Math.max(0, scale.bandwidth() - offset * 2) / 2;
+      if (scale.round()) offset = Math.round(offset);
+      return d => +scale(d) + offset;
+    }
+
+    function entering() {
+      return !this.__axis;
+    }
+
+    function axis(orient, scale) {
+      var tickArguments = [],
+          tickValues = null,
+          tickFormat = null,
+          tickSizeInner = 6,
+          tickSizeOuter = 6,
+          tickPadding = 3,
+          offset = typeof window !== "undefined" && window.devicePixelRatio > 1 ? 0 : 0.5,
+          k = orient === top || orient === left ? -1 : 1,
+          x = orient === left || orient === right ? "x" : "y",
+          transform = orient === top || orient === bottom ? translateX : translateY;
+
+      function axis(context) {
+        var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
+            format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$3) : tickFormat,
+            spacing = Math.max(tickSizeInner, 0) + tickPadding,
+            range = scale.range(),
+            range0 = +range[0] + offset,
+            range1 = +range[range.length - 1] + offset,
+            position = (scale.bandwidth ? center : number$1)(scale.copy(), offset),
+            selection = context.selection ? context.selection() : context,
+            path = selection.selectAll(".domain").data([null]),
+            tick = selection.selectAll(".tick").data(values, scale).order(),
+            tickExit = tick.exit(),
+            tickEnter = tick.enter().append("g").attr("class", "tick"),
+            line = tick.select("line"),
+            text = tick.select("text");
+
+        path = path.merge(path.enter().insert("path", ".tick")
+            .attr("class", "domain")
+            .attr("stroke", "currentColor"));
+
+        tick = tick.merge(tickEnter);
+
+        line = line.merge(tickEnter.append("line")
+            .attr("stroke", "currentColor")
+            .attr(x + "2", k * tickSizeInner));
+
+        text = text.merge(tickEnter.append("text")
+            .attr("fill", "currentColor")
+            .attr(x, k * spacing)
+            .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
+
+        if (context !== selection) {
+          path = path.transition(context);
+          tick = tick.transition(context);
+          line = line.transition(context);
+          text = text.transition(context);
+
+          tickExit = tickExit.transition(context)
+              .attr("opacity", epsilon$1)
+              .attr("transform", function(d) { return isFinite(d = position(d)) ? transform(d + offset) : this.getAttribute("transform"); });
+
+          tickEnter
+              .attr("opacity", epsilon$1)
+              .attr("transform", function(d) { var p = this.parentNode.__axis; return transform((p && isFinite(p = p(d)) ? p : position(d)) + offset); });
+        }
+
+        tickExit.remove();
+
+        path
+            .attr("d", orient === left || orient === right
+                ? (tickSizeOuter ? "M" + k * tickSizeOuter + "," + range0 + "H" + offset + "V" + range1 + "H" + k * tickSizeOuter : "M" + offset + "," + range0 + "V" + range1)
+                : (tickSizeOuter ? "M" + range0 + "," + k * tickSizeOuter + "V" + offset + "H" + range1 + "V" + k * tickSizeOuter : "M" + range0 + "," + offset + "H" + range1));
+
+        tick
+            .attr("opacity", 1)
+            .attr("transform", function(d) { return transform(position(d) + offset); });
+
+        line
+            .attr(x + "2", k * tickSizeInner);
+
+        text
+            .attr(x, k * spacing)
+            .text(format);
+
+        selection.filter(entering)
+            .attr("fill", "none")
+            .attr("font-size", 10)
+            .attr("font-family", "sans-serif")
+            .attr("text-anchor", orient === right ? "start" : orient === left ? "end" : "middle");
+
+        selection
+            .each(function() { this.__axis = position; });
+      }
+
+      axis.scale = function(_) {
+        return arguments.length ? (scale = _, axis) : scale;
+      };
+
+      axis.ticks = function() {
+        return tickArguments = Array.from(arguments), axis;
+      };
+
+      axis.tickArguments = function(_) {
+        return arguments.length ? (tickArguments = _ == null ? [] : Array.from(_), axis) : tickArguments.slice();
+      };
+
+      axis.tickValues = function(_) {
+        return arguments.length ? (tickValues = _ == null ? null : Array.from(_), axis) : tickValues && tickValues.slice();
+      };
+
+      axis.tickFormat = function(_) {
+        return arguments.length ? (tickFormat = _, axis) : tickFormat;
+      };
+
+      axis.tickSize = function(_) {
+        return arguments.length ? (tickSizeInner = tickSizeOuter = +_, axis) : tickSizeInner;
+      };
+
+      axis.tickSizeInner = function(_) {
+        return arguments.length ? (tickSizeInner = +_, axis) : tickSizeInner;
+      };
+
+      axis.tickSizeOuter = function(_) {
+        return arguments.length ? (tickSizeOuter = +_, axis) : tickSizeOuter;
+      };
+
+      axis.tickPadding = function(_) {
+        return arguments.length ? (tickPadding = +_, axis) : tickPadding;
+      };
+
+      axis.offset = function(_) {
+        return arguments.length ? (offset = +_, axis) : offset;
+      };
+
+      return axis;
+    }
+
+    function axisBottom(scale) {
+      return axis(bottom, scale);
+    }
+
+    function axisLeft(scale) {
+      return axis(left, scale);
     }
 
     var noop = {value: () => {}};
@@ -14803,7 +15167,7 @@
     // selection; we don’t ever want to create a selection backed by a live
     // HTMLCollection or NodeList. However, note that selection.selectAll will use a
     // static NodeList as a group, since it safely derived from querySelectorAll.
-    function array(x) {
+    function array$1(x) {
       return x == null ? [] : Array.isArray(x) ? x : Array.from(x);
     }
 
@@ -14819,7 +15183,7 @@
 
     function arrayAll(select) {
       return function() {
-        return array(select.apply(this, arguments));
+        return array$1(select.apply(this, arguments));
       };
     }
 
@@ -14923,7 +15287,7 @@
       querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
     };
 
-    function constant$1(x) {
+    function constant$2(x) {
       return function() {
         return x;
       };
@@ -15010,7 +15374,7 @@
           parents = this._parents,
           groups = this._groups;
 
-      if (typeof value !== "function") value = constant$1(value);
+      if (typeof value !== "function") value = constant$2(value);
 
       for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
         var parent = parents[j],
@@ -16069,9 +16433,9 @@
           : m1) * 255;
     }
 
-    var constant = x => () => x;
+    var constant$1 = x => () => x;
 
-    function linear(a, d) {
+    function linear$1(a, d) {
       return function(t) {
         return a + t * d;
       };
@@ -16085,13 +16449,13 @@
 
     function gamma(y) {
       return (y = +y) === 1 ? nogamma : function(a, b) {
-        return b - a ? exponential(a, b, y) : constant(isNaN(a) ? b : a);
+        return b - a ? exponential(a, b, y) : constant$1(isNaN(a) ? b : a);
       };
     }
 
     function nogamma(a, b) {
       var d = b - a;
-      return d ? linear(a, d) : constant(isNaN(a) ? b : a);
+      return d ? linear$1(a, d) : constant$1(isNaN(a) ? b : a);
     }
 
     var interpolateRgb = (function rgbGamma(y) {
@@ -16116,9 +16480,69 @@
       return rgb$1;
     })(1);
 
+    function numberArray(a, b) {
+      if (!b) b = [];
+      var n = a ? Math.min(b.length, a.length) : 0,
+          c = b.slice(),
+          i;
+      return function(t) {
+        for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
+        return c;
+      };
+    }
+
+    function isNumberArray(x) {
+      return ArrayBuffer.isView(x) && !(x instanceof DataView);
+    }
+
+    function genericArray(a, b) {
+      var nb = b ? b.length : 0,
+          na = a ? Math.min(nb, a.length) : 0,
+          x = new Array(na),
+          c = new Array(nb),
+          i;
+
+      for (i = 0; i < na; ++i) x[i] = interpolate$1(a[i], b[i]);
+      for (; i < nb; ++i) c[i] = b[i];
+
+      return function(t) {
+        for (i = 0; i < na; ++i) c[i] = x[i](t);
+        return c;
+      };
+    }
+
+    function date(a, b) {
+      var d = new Date;
+      return a = +a, b = +b, function(t) {
+        return d.setTime(a * (1 - t) + b * t), d;
+      };
+    }
+
     function interpolateNumber(a, b) {
       return a = +a, b = +b, function(t) {
         return a * (1 - t) + b * t;
+      };
+    }
+
+    function object(a, b) {
+      var i = {},
+          c = {},
+          k;
+
+      if (a === null || typeof a !== "object") a = {};
+      if (b === null || typeof b !== "object") b = {};
+
+      for (k in b) {
+        if (k in a) {
+          i[k] = interpolate$1(a[k], b[k]);
+        } else {
+          c[k] = b[k];
+        }
+      }
+
+      return function(t) {
+        for (k in i) c[k] = i[k](t);
+        return c;
       };
     }
 
@@ -16185,9 +16609,28 @@
             });
     }
 
+    function interpolate$1(a, b) {
+      var t = typeof b, c;
+      return b == null || t === "boolean" ? constant$1(b)
+          : (t === "number" ? interpolateNumber
+          : t === "string" ? ((c = color(b)) ? (b = c, interpolateRgb) : interpolateString)
+          : b instanceof color ? interpolateRgb
+          : b instanceof Date ? date
+          : isNumberArray(b) ? numberArray
+          : Array.isArray(b) ? genericArray
+          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+          : interpolateNumber)(a, b);
+    }
+
+    function interpolateRound(a, b) {
+      return a = +a, b = +b, function(t) {
+        return Math.round(a * (1 - t) + b * t);
+      };
+    }
+
     var degrees = 180 / Math.PI;
 
-    var identity$1 = {
+    var identity$2 = {
       translateX: 0,
       translateY: 0,
       rotate: 0,
@@ -16217,14 +16660,14 @@
     /* eslint-disable no-undef */
     function parseCss(value) {
       const m = new (typeof DOMMatrix === "function" ? DOMMatrix : WebKitCSSMatrix)(value + "");
-      return m.isIdentity ? identity$1 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
+      return m.isIdentity ? identity$2 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
     }
 
     function parseSvg(value) {
-      if (value == null) return identity$1;
+      if (value == null) return identity$2;
       if (!svgNode) svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
       svgNode.setAttribute("transform", value);
-      if (!(value = svgNode.transform.baseVal.consolidate())) return identity$1;
+      if (!(value = svgNode.transform.baseVal.consolidate())) return identity$2;
       value = value.matrix;
       return decompose(value.a, value.b, value.c, value.d, value.e, value.f);
     }
@@ -17278,6 +17721,152 @@
     selection.prototype.interrupt = selection_interrupt;
     selection.prototype.transition = selection_transition;
 
+    const pi = Math.PI,
+        tau = 2 * pi,
+        epsilon = 1e-6,
+        tauEpsilon = tau - epsilon;
+
+    function append(strings) {
+      this._ += strings[0];
+      for (let i = 1, n = strings.length; i < n; ++i) {
+        this._ += arguments[i] + strings[i];
+      }
+    }
+
+    function appendRound(digits) {
+      let d = Math.floor(digits);
+      if (!(d >= 0)) throw new Error(`invalid digits: ${digits}`);
+      if (d > 15) return append;
+      const k = 10 ** d;
+      return function(strings) {
+        this._ += strings[0];
+        for (let i = 1, n = strings.length; i < n; ++i) {
+          this._ += Math.round(arguments[i] * k) / k + strings[i];
+        }
+      };
+    }
+
+    class Path {
+      constructor(digits) {
+        this._x0 = this._y0 = // start of current subpath
+        this._x1 = this._y1 = null; // end of current subpath
+        this._ = "";
+        this._append = digits == null ? append : appendRound(digits);
+      }
+      moveTo(x, y) {
+        this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}`;
+      }
+      closePath() {
+        if (this._x1 !== null) {
+          this._x1 = this._x0, this._y1 = this._y0;
+          this._append`Z`;
+        }
+      }
+      lineTo(x, y) {
+        this._append`L${this._x1 = +x},${this._y1 = +y}`;
+      }
+      quadraticCurveTo(x1, y1, x, y) {
+        this._append`Q${+x1},${+y1},${this._x1 = +x},${this._y1 = +y}`;
+      }
+      bezierCurveTo(x1, y1, x2, y2, x, y) {
+        this._append`C${+x1},${+y1},${+x2},${+y2},${this._x1 = +x},${this._y1 = +y}`;
+      }
+      arcTo(x1, y1, x2, y2, r) {
+        x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
+
+        // Is the radius negative? Error.
+        if (r < 0) throw new Error(`negative radius: ${r}`);
+
+        let x0 = this._x1,
+            y0 = this._y1,
+            x21 = x2 - x1,
+            y21 = y2 - y1,
+            x01 = x0 - x1,
+            y01 = y0 - y1,
+            l01_2 = x01 * x01 + y01 * y01;
+
+        // Is this path empty? Move to (x1,y1).
+        if (this._x1 === null) {
+          this._append`M${this._x1 = x1},${this._y1 = y1}`;
+        }
+
+        // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
+        else if (!(l01_2 > epsilon));
+
+        // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
+        // Equivalently, is (x1,y1) coincident with (x2,y2)?
+        // Or, is the radius zero? Line to (x1,y1).
+        else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
+          this._append`L${this._x1 = x1},${this._y1 = y1}`;
+        }
+
+        // Otherwise, draw an arc!
+        else {
+          let x20 = x2 - x0,
+              y20 = y2 - y0,
+              l21_2 = x21 * x21 + y21 * y21,
+              l20_2 = x20 * x20 + y20 * y20,
+              l21 = Math.sqrt(l21_2),
+              l01 = Math.sqrt(l01_2),
+              l = r * Math.tan((pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+              t01 = l / l01,
+              t21 = l / l21;
+
+          // If the start tangent is not coincident with (x0,y0), line to.
+          if (Math.abs(t01 - 1) > epsilon) {
+            this._append`L${x1 + t01 * x01},${y1 + t01 * y01}`;
+          }
+
+          this._append`A${r},${r},0,0,${+(y01 * x20 > x01 * y20)},${this._x1 = x1 + t21 * x21},${this._y1 = y1 + t21 * y21}`;
+        }
+      }
+      arc(x, y, r, a0, a1, ccw) {
+        x = +x, y = +y, r = +r, ccw = !!ccw;
+
+        // Is the radius negative? Error.
+        if (r < 0) throw new Error(`negative radius: ${r}`);
+
+        let dx = r * Math.cos(a0),
+            dy = r * Math.sin(a0),
+            x0 = x + dx,
+            y0 = y + dy,
+            cw = 1 ^ ccw,
+            da = ccw ? a0 - a1 : a1 - a0;
+
+        // Is this path empty? Move to (x0,y0).
+        if (this._x1 === null) {
+          this._append`M${x0},${y0}`;
+        }
+
+        // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
+        else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
+          this._append`L${x0},${y0}`;
+        }
+
+        // Is this arc empty? We’re done.
+        if (!r) return;
+
+        // Does the angle go the wrong way? Flip the direction.
+        if (da < 0) da = da % tau + tau;
+
+        // Is this a complete circle? Draw two arcs to complete the circle.
+        if (da > tauEpsilon) {
+          this._append`A${r},${r},0,1,${cw},${x - dx},${y - dy}A${r},${r},0,1,${cw},${this._x1 = x0},${this._y1 = y0}`;
+        }
+
+        // Is this arc non-empty? Draw an arc!
+        else if (da > epsilon) {
+          this._append`A${r},${r},0,${+(da >= pi)},${cw},${this._x1 = x + r * Math.cos(a1)},${this._y1 = y + r * Math.sin(a1)}`;
+        }
+      }
+      rect(x, y, w, h) {
+        this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}h${w = +w}v${+h}h${-w}Z`;
+      }
+      toString() {
+        return this._;
+      }
+    }
+
     function formatDecimal(x) {
       return Math.abs(x = Math.round(x)) >= 1e21
           ? x.toLocaleString("en").replace(/,/g, "")
@@ -17431,7 +18020,7 @@
       "x": (x) => Math.round(x).toString(16)
     };
 
-    function identity(x) {
+    function identity$1(x) {
       return x;
     }
 
@@ -17439,11 +18028,11 @@
         prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
     function formatLocale(locale) {
-      var group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+      var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
           currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
           currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
           decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-          numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String)),
+          numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map.call(locale.numerals, String)),
           percent = locale.percent === undefined ? "%" : locale.percent + "",
           minus = locale.minus === undefined ? "−" : locale.minus + "",
           nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -17577,6 +18166,7 @@
 
     var locale;
     var format;
+    var formatPrefix;
 
     defaultLocale({
       thousands: ",",
@@ -17587,7 +18177,21 @@
     function defaultLocale(definition) {
       locale = formatLocale(definition);
       format = locale.format;
+      formatPrefix = locale.formatPrefix;
       return locale;
+    }
+
+    function precisionFixed(step) {
+      return Math.max(0, -exponent(Math.abs(step)));
+    }
+
+    function precisionPrefix(step, value) {
+      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+    }
+
+    function precisionRound(step, max) {
+      step = Math.abs(step), max = Math.abs(max) - step;
+      return Math.max(0, exponent(max) - exponent(step)) + 1;
     }
 
     function initRange(domain, range) {
@@ -17595,6 +18199,24 @@
         case 0: break;
         case 1: this.range(domain); break;
         default: this.range(range).domain(domain); break;
+      }
+      return this;
+    }
+
+    function initInterpolator(domain, interpolator) {
+      switch (arguments.length) {
+        case 0: break;
+        case 1: {
+          if (typeof domain === "function") this.interpolator(domain);
+          else this.range(domain);
+          break;
+        }
+        default: {
+          this.domain(domain);
+          if (typeof interpolator === "function") this.interpolator(interpolator);
+          else this.range(interpolator);
+          break;
+        }
       }
       return this;
     }
@@ -17643,6 +18265,296 @@
       return scale;
     }
 
+    function constants(x) {
+      return function() {
+        return x;
+      };
+    }
+
+    function number(x) {
+      return +x;
+    }
+
+    var unit = [0, 1];
+
+    function identity(x) {
+      return x;
+    }
+
+    function normalize(a, b) {
+      return (b -= (a = +a))
+          ? function(x) { return (x - a) / b; }
+          : constants(isNaN(b) ? NaN : 0.5);
+    }
+
+    function clamper(a, b) {
+      var t;
+      if (a > b) t = a, a = b, b = t;
+      return function(x) { return Math.max(a, Math.min(b, x)); };
+    }
+
+    // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+    // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
+    function bimap(domain, range, interpolate) {
+      var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+      if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+      else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
+      return function(x) { return r0(d0(x)); };
+    }
+
+    function polymap(domain, range, interpolate) {
+      var j = Math.min(domain.length, range.length) - 1,
+          d = new Array(j),
+          r = new Array(j),
+          i = -1;
+
+      // Reverse descending domains.
+      if (domain[j] < domain[0]) {
+        domain = domain.slice().reverse();
+        range = range.slice().reverse();
+      }
+
+      while (++i < j) {
+        d[i] = normalize(domain[i], domain[i + 1]);
+        r[i] = interpolate(range[i], range[i + 1]);
+      }
+
+      return function(x) {
+        var i = bisect(domain, x, 1, j) - 1;
+        return r[i](d[i](x));
+      };
+    }
+
+    function copy$1(source, target) {
+      return target
+          .domain(source.domain())
+          .range(source.range())
+          .interpolate(source.interpolate())
+          .clamp(source.clamp())
+          .unknown(source.unknown());
+    }
+
+    function transformer$1() {
+      var domain = unit,
+          range = unit,
+          interpolate = interpolate$1,
+          transform,
+          untransform,
+          unknown,
+          clamp = identity,
+          piecewise,
+          output,
+          input;
+
+      function rescale() {
+        var n = Math.min(domain.length, range.length);
+        if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
+        piecewise = n > 2 ? polymap : bimap;
+        output = input = null;
+        return scale;
+      }
+
+      function scale(x) {
+        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
+      }
+
+      scale.invert = function(y) {
+        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
+      };
+
+      scale.domain = function(_) {
+        return arguments.length ? (domain = Array.from(_, number), rescale()) : domain.slice();
+      };
+
+      scale.range = function(_) {
+        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+      };
+
+      scale.rangeRound = function(_) {
+        return range = Array.from(_), interpolate = interpolateRound, rescale();
+      };
+
+      scale.clamp = function(_) {
+        return arguments.length ? (clamp = _ ? true : identity, rescale()) : clamp !== identity;
+      };
+
+      scale.interpolate = function(_) {
+        return arguments.length ? (interpolate = _, rescale()) : interpolate;
+      };
+
+      scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+      };
+
+      return function(t, u) {
+        transform = t, untransform = u;
+        return rescale();
+      };
+    }
+
+    function continuous() {
+      return transformer$1()(identity, identity);
+    }
+
+    function tickFormat(start, stop, count, specifier) {
+      var step = tickStep(start, stop, count),
+          precision;
+      specifier = formatSpecifier(specifier == null ? ",f" : specifier);
+      switch (specifier.type) {
+        case "s": {
+          var value = Math.max(Math.abs(start), Math.abs(stop));
+          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
+          return formatPrefix(specifier, value);
+        }
+        case "":
+        case "e":
+        case "g":
+        case "p":
+        case "r": {
+          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+          break;
+        }
+        case "f":
+        case "%": {
+          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+          break;
+        }
+      }
+      return format(specifier);
+    }
+
+    function linearish(scale) {
+      var domain = scale.domain;
+
+      scale.ticks = function(count) {
+        var d = domain();
+        return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
+      };
+
+      scale.tickFormat = function(count, specifier) {
+        var d = domain();
+        return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+      };
+
+      scale.nice = function(count) {
+        if (count == null) count = 10;
+
+        var d = domain();
+        var i0 = 0;
+        var i1 = d.length - 1;
+        var start = d[i0];
+        var stop = d[i1];
+        var prestep;
+        var step;
+        var maxIter = 10;
+
+        if (stop < start) {
+          step = start, start = stop, stop = step;
+          step = i0, i0 = i1, i1 = step;
+        }
+        
+        while (maxIter-- > 0) {
+          step = tickIncrement(start, stop, count);
+          if (step === prestep) {
+            d[i0] = start;
+            d[i1] = stop;
+            return domain(d);
+          } else if (step > 0) {
+            start = Math.floor(start / step) * step;
+            stop = Math.ceil(stop / step) * step;
+          } else if (step < 0) {
+            start = Math.ceil(start * step) / step;
+            stop = Math.floor(stop * step) / step;
+          } else {
+            break;
+          }
+          prestep = step;
+        }
+
+        return scale;
+      };
+
+      return scale;
+    }
+
+    function linear() {
+      var scale = continuous();
+
+      scale.copy = function() {
+        return copy$1(scale, linear());
+      };
+
+      initRange.apply(scale, arguments);
+
+      return linearish(scale);
+    }
+
+    function transformer() {
+      var x0 = 0,
+          x1 = 1,
+          t0,
+          t1,
+          k10,
+          transform,
+          interpolator = identity,
+          clamp = false,
+          unknown;
+
+      function scale(x) {
+        return x == null || isNaN(x = +x) ? unknown : interpolator(k10 === 0 ? 0.5 : (x = (transform(x) - t0) * k10, clamp ? Math.max(0, Math.min(1, x)) : x));
+      }
+
+      scale.domain = function(_) {
+        return arguments.length ? ([x0, x1] = _, t0 = transform(x0 = +x0), t1 = transform(x1 = +x1), k10 = t0 === t1 ? 0 : 1 / (t1 - t0), scale) : [x0, x1];
+      };
+
+      scale.clamp = function(_) {
+        return arguments.length ? (clamp = !!_, scale) : clamp;
+      };
+
+      scale.interpolator = function(_) {
+        return arguments.length ? (interpolator = _, scale) : interpolator;
+      };
+
+      function range(interpolate) {
+        return function(_) {
+          var r0, r1;
+          return arguments.length ? ([r0, r1] = _, interpolator = interpolate(r0, r1), scale) : [interpolator(0), interpolator(1)];
+        };
+      }
+
+      scale.range = range(interpolate$1);
+
+      scale.rangeRound = range(interpolateRound);
+
+      scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+      };
+
+      return function(t) {
+        transform = t, t0 = t(x0), t1 = t(x1), k10 = t0 === t1 ? 0 : 1 / (t1 - t0);
+        return scale;
+      };
+    }
+
+    function copy(source, target) {
+      return target
+          .domain(source.domain())
+          .interpolator(source.interpolator())
+          .clamp(source.clamp())
+          .unknown(source.unknown());
+    }
+
+    function sequential() {
+      var scale = linearish(transformer()(identity));
+
+      scale.copy = function() {
+        return copy(scale, sequential());
+      };
+
+      return initInterpolator.apply(scale, arguments);
+    }
+
     function colors(specifier) {
       var n = specifier.length / 6 | 0, colors = new Array(n), i = 0;
       while (i < n) colors[i] = "#" + specifier.slice(i * 6, ++i * 6);
@@ -17650,6 +18562,129 @@
     }
 
     var schemeTableau10 = colors("4e79a7f28e2ce1575976b7b259a14fedc949af7aa1ff9da79c755fbab0ab");
+
+    function constant(x) {
+      return function constant() {
+        return x;
+      };
+    }
+
+    function withPath(shape) {
+      let digits = 3;
+
+      shape.digits = function(_) {
+        if (!arguments.length) return digits;
+        if (_ == null) {
+          digits = null;
+        } else {
+          const d = Math.floor(_);
+          if (!(d >= 0)) throw new RangeError(`invalid digits: ${_}`);
+          digits = d;
+        }
+        return shape;
+      };
+
+      return () => new Path(digits);
+    }
+
+    function array(x) {
+      return typeof x === "object" && "length" in x
+        ? x // Array, TypedArray, NodeList, array-like
+        : Array.from(x); // Map, Set, iterable, string, or anything else
+    }
+
+    function Linear(context) {
+      this._context = context;
+    }
+
+    Linear.prototype = {
+      areaStart: function() {
+        this._line = 0;
+      },
+      areaEnd: function() {
+        this._line = NaN;
+      },
+      lineStart: function() {
+        this._point = 0;
+      },
+      lineEnd: function() {
+        if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+        this._line = 1 - this._line;
+      },
+      point: function(x, y) {
+        x = +x, y = +y;
+        switch (this._point) {
+          case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
+          case 1: this._point = 2; // falls through
+          default: this._context.lineTo(x, y); break;
+        }
+      }
+    };
+
+    function curveLinear(context) {
+      return new Linear(context);
+    }
+
+    function x(p) {
+      return p[0];
+    }
+
+    function y(p) {
+      return p[1];
+    }
+
+    function d3line(x$1, y$1) {
+      var defined = constant(true),
+          context = null,
+          curve = curveLinear,
+          output = null,
+          path = withPath(line);
+
+      x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant(x$1);
+      y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant(y$1);
+
+      function line(data) {
+        var i,
+            n = (data = array(data)).length,
+            d,
+            defined0 = false,
+            buffer;
+
+        if (context == null) output = curve(buffer = path());
+
+        for (i = 0; i <= n; ++i) {
+          if (!(i < n && defined(d = data[i], i, data)) === defined0) {
+            if (defined0 = !defined0) output.lineStart();
+            else output.lineEnd();
+          }
+          if (defined0) output.point(+x$1(d, i, data), +y$1(d, i, data));
+        }
+
+        if (buffer) return output = null, buffer + "" || null;
+      }
+
+      line.x = function(_) {
+        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant(+_), line) : x$1;
+      };
+
+      line.y = function(_) {
+        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant(+_), line) : y$1;
+      };
+
+      line.defined = function(_) {
+        return arguments.length ? (defined = typeof _ === "function" ? _ : constant(!!_), line) : defined;
+      };
+
+      line.curve = function(_) {
+        return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
+      };
+
+      line.context = function(_) {
+        return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
+      };
+
+      return line;
+    }
 
     const datasetSelect = document.getElementById('usage-diagram-dataset-selector');
     const treeDetailList = document.getElementById('usage-diagram-detail-list');
@@ -17775,9 +18810,15 @@
     function renderUsageDiagramForDataset(term, collocations, dataset, container, collocationHandler) {
         let trie = {};
         let rootDepth = 0;
+        // Build what is effectively a level-order trie based on the collocations.
+        // Level ordering ensures nodes are not confused in cases where the same word appears at multiple depths.
+        // For example, `peut` needs nodes at two levels with these two collocations: 
+        // peut parler
+        // peut pas parler
         for (const [collocation, count] of Object.entries(collocations)) {
             rootDepth = Math.min(rootDepth, addToTrie(trie, collocation, count, term, getDepth(container.offsetWidth)));
         }
+        // Once the trie is built, convert that to a set of nodes and edges, and render a sankey diagram.
         let elements = getDiagramElements(trie, rootDepth);
         treeRenderers[dataset] = function () {
             let chart = SankeyChart({
@@ -17843,7 +18884,7 @@
         });
     }
 
-    //TODO: copy/pasted from observable
+    //TODO: mostly copy/pasted from observable
     // Copyright 2021 Observable, Inc.
     // Released under the ISC license.
     // https://observablehq.com/@d3/sankey-diagram
@@ -17887,9 +18928,9 @@
     } = {}) {
         // Convert nodeAlign from a name to a function (since d3-sankey is not part of core d3).
         if (typeof nodeAlign !== "function") nodeAlign = {
-            left: left,
-            right: right,
-            center: center
+            left: left$1,
+            right: right$1,
+            center: center$1
         }[nodeAlign] ?? justify;
 
         // Compute values.
@@ -18309,6 +19350,156 @@
         });
     }
 
+    //TODO not great to have this hardcoded this way
+    const separator = 100;
+
+    function getMaxX(freq) {
+        return Math.max(500, freq + (100 - (freq % 100)));
+    }
+
+    function hideCoverageGraph(container) {
+        // could also just hide, maybe
+        const graph = container.querySelector('svg');
+        const instructions = container.querySelector('p.instructions');
+        container.removeChild(graph);
+        container.removeChild(instructions);
+    }
+
+    function getCoverageIndex(frequency, indicesLength) {
+        // Add one to cover the 0 index that gets added; ensure we don't overflow.
+        return Math.min(1 + Math.round(frequency / 100), indicesLength - 1);
+    }
+
+    function renderCoverageGraph(datasetName, percentages, term, frequency, container) {
+        let transformedPercentages = [];
+        transformedPercentages.push({ x: 0, y: 0 });
+        let start = 1;
+        for (const point of percentages) {
+            transformedPercentages.push({ x: start, y: point * 100 });
+            if (start < separator) {
+                start = separator;
+            } else {
+                start += separator;
+            }
+        }
+        let chart = LineChart(transformedPercentages, {
+            x: d => d.x,
+            y: d => d.y,
+            yLabel: "Percentage of words recognized",
+            xLabel: "Number of words learned",
+            xDomain: [0, getMaxX(frequency)],
+            yDomain: [0, 100],
+            width: container.offsetWidth,
+            color: 'rgba(177, 178, 225)',
+            strokeWidth: 2.5
+        });
+        const coverage = transformedPercentages[getCoverageIndex(frequency, transformedPercentages.length)].y;
+        renderExplanation(datasetName, term, coverage, container);
+        container.appendChild(chart);
+    }
+
+    function renderExplanation(datasetName, term, coverage, container) {
+        let explanationContainer = document.createElement('p');
+        explanationContainer.classList.add('instructions', 'coverage-explanation');
+        explanationContainer.innerText = `In ${datasetName}, if you learned each word in order of frequency up to "${term}", you'd know approximately ${coverage.toFixed(2)}% of all words.`;
+        container.appendChild(explanationContainer);
+    }
+
+    // Copyright 2021 Observable, Inc.
+    // Released under the ISC license.
+    // https://observablehq.com/@d3/line-chart
+    function LineChart(data, {
+        x = ([x]) => x, // given d in data, returns the (temporal) x-value
+        y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
+        defined, // for gaps in data
+        curve = curveLinear, // method of interpolation between points
+        marginTop = 20, // top margin, in pixels
+        marginRight = 30, // right margin, in pixels
+        marginBottom = 30, // bottom margin, in pixels
+        marginLeft = 40, // left margin, in pixels
+        width = 640, // outer width, in pixels
+        height = 400, // outer height, in pixels
+        xType = sequential, // the x-scale type
+        xDomain, // [xmin, xmax]
+        xLabel = "",
+        xRange = [marginLeft, width - marginRight], // [left, right]
+        yType = linear, // the y-scale type
+        yDomain, // [ymin, ymax]
+        yRange = [height - marginBottom, marginTop], // [bottom, top]
+        yFormat, // a format specifier string for the y-axis
+        yLabel, // a label for the y-axis
+        color = "currentColor", // stroke color of line
+        strokeLinecap = "round", // stroke line cap of the line
+        strokeLinejoin = "round", // stroke line join of the line
+        strokeWidth = 1.5, // stroke width of line, in pixels
+        strokeOpacity = 1, // stroke opacity of line
+    } = {}) {
+        // Compute values.
+        const X = map$1(data, x);
+        const Y = map$1(data, y);
+        const I = range(X.length);
+        if (defined === undefined) defined = (d, i) => !isNaN(X[i]) && !isNaN(Y[i]);
+        const D = map$1(data, defined);
+
+        // Compute default domains.
+        if (xDomain === undefined) xDomain = extent(X);
+        if (yDomain === undefined) yDomain = [0, max(Y)];
+
+        // Construct scales and axes.
+        const xScale = xType(xDomain, xRange);
+        const yScale = yType(yDomain, yRange);
+        const xAxis = axisBottom(xScale).ticks(width / 80).tickSizeOuter(0);
+        const yAxis = axisLeft(yScale).ticks(height / 40, yFormat);
+
+        // Construct a line generator.
+        const line = d3line()
+            .defined(i => D[i])
+            .curve(curve)
+            .x(i => xScale(X[i]))
+            .y(i => yScale(Y[i]));
+
+        const svg = create$1("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", [0, 0, width, height])
+            .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+        svg.append("g")
+            .attr("transform", `translate(0,${height - marginBottom})`)
+            .call(xAxis)
+            .call(g => g.append("text")
+                .attr("x", (width / 2) - marginLeft)
+                .attr("y", 28)
+                .attr("fill", "currentColor")
+                .attr("text-anchor", "start")
+                .text(xLabel));
+
+        svg.append("g")
+            .attr("transform", `translate(${marginLeft},0)`)
+            .call(yAxis)
+            .call(g => g.select(".domain").remove())
+            .call(g => g.selectAll(".tick line").clone()
+                .attr("x2", width - marginLeft - marginRight)
+                .attr("stroke-opacity", 0.1))
+            .call(g => g.append("text")
+                .attr("x", -marginLeft)
+                .attr("y", 10)
+                .attr("fill", "currentColor")
+                .attr("text-anchor", "start")
+                .text(yLabel));
+
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", color)
+            .attr("stroke-width", strokeWidth)
+            .attr("stroke-linecap", strokeLinecap)
+            .attr("stroke-linejoin", strokeLinejoin)
+            .attr("stroke-opacity", strokeOpacity)
+            .attr("d", line(I));
+
+        return svg.node();
+    }
+
     const DEFAULT_BASE_LANGUAGE = 'english';
 
     initialize$4();
@@ -18472,6 +19663,8 @@
     // hacking around garbage collection issues...
     window.activeUtterances = [];
 
+    let coveragePercentages = {};
+
     function clearDefinitions() {
         definitionsResultContainer.innerHTML = '';
     }
@@ -18626,10 +19819,25 @@
         }
         container.appendChild(exampleList);
     }
-    function renderFreq(freq, term, metadata, container) {
+    function renderFreq(freq, term, metadata, datasetId, container) {
         const frequencyContainer = document.createElement('div');
         frequencyContainer.classList.add('frequency-metadata');
-        frequencyContainer.innerText = `${term} is the ${freq}${getOrderingSuffix(freq)} most common word in ${metadata['name']}`;
+        frequencyContainer.innerHTML = `${term} is the ${freq}${getOrderingSuffix(freq)} most common word in ${metadata['name']}. `;
+        const toggleGraphLink = document.createElement('a');
+        toggleGraphLink.innerText = 'Show graph';
+        // TODO: there is probably a better way of toggling...
+        let expanded = false;
+        toggleGraphLink.addEventListener('click', function () {
+            if (!expanded) {
+                renderCoverageGraph(metadata['name'], coveragePercentages[datasetId], term, freq, frequencyContainer);
+                toggleGraphLink.innerText = 'Hide graph';
+            } else {
+                hideCoverageGraph(frequencyContainer);
+                toggleGraphLink.innerText = 'Show graph';
+            }
+            expanded = !expanded;
+        });
+        frequencyContainer.appendChild(toggleGraphLink);
         container.appendChild(frequencyContainer);
     }
     function renderDatasetMetadata(metadata, container) {
@@ -18650,7 +19858,7 @@
         renderHeader(metadata, container);
         renderDatasetMetadata(metadata, container);
         if (results.freq) {
-            renderFreq(results.freq, term, metadata, container);
+            renderFreq(results.freq, term, metadata, datasetId, container);
         }
         renderExamples(term, results.examples, container);
     }
@@ -18817,6 +20025,9 @@
         // When switching languages, clear out any existing results.
         clearResults();
         setSearchInstructions();
+        fetch(`/data/${languageMetadata[targetLanguageSelector.value].key}/dataset-coverage.json`)
+            .then(response => response.json())
+            .then(data => { coveragePercentages = data; });
     }
     targetLanguageSelector.addEventListener('change', languageChangeHandler);
     baseLanguageSelector.addEventListener('change', languageChangeHandler);
@@ -18824,17 +20035,16 @@
     function loadState(state) {
         targetLanguageSelector.value = state.languages.target;
         baseLanguageSelector.value = state.languages.base;
-        targetLanguageSelector.dispatchEvent(new Event('change'));
-        baseLanguageSelector.dispatchEvent(new Event('change'));
+        languageChangeHandler();
         setSearchInstructions();
         const term = decodeURIComponent(state.term);
         searchBox.value = term;
         if (state.queryType === queryTypes.base) {
             toggleCheckbox.checked = true;
-            toggleCheckbox.dispatchEvent(new Event('change'));
+            setSearchInstructions();
         } else {
             toggleCheckbox.checked = false;
-            toggleCheckbox.dispatchEvent(new Event('change'));
+            setSearchInstructions();
         }
         query(term, state.queryType, false);
     }
@@ -18872,6 +20082,8 @@
         }
     } else {
         startupContainer.removeAttribute('style');
+        // TODO: ensure percentages are loaded in a better way
+        languageChangeHandler();
     }
 
     window.onpopstate = (event) => {
@@ -18927,13 +20139,13 @@
         const cleanedTerm = clean(searchBox.value, cleanTypes.examples, getQueryLanguage(queryTypes.target));
         if (toggleCheckbox.checked || !cleanedTerm) {
             clearSuggestions();
-            return false;
+            return;
         }
         let currentPrefix = searchBox.value;
         getAutocomplete(cleanedTerm).then(value => {
             if (searchBox.value !== currentPrefix || document.activeElement !== searchBox) {
                 // this could be a late return of an old promise; just leave it
-                return false;
+                return;
             }
             clearSuggestions();
             if (value && value.exists()) {

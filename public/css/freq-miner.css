@@ -1,5 +1,5 @@
 body {
-    background: #fafafa;
+    background: #fcfcfc;
     color: rgba(0, 0, 0, 0.87);
     font-family: Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
@@ -27,6 +27,22 @@ select {
     margin: 6px 0;
     font-weight: 300;
     opacity: 0.85;
+}
+
+/* TODO: really it's probably just "any <a> except class=token" */
+.instructions a,
+.startup-suggestion,
+.menu-container a,
+.dataset-attribution a,
+.frequency-metadata a,
+.frequency-metadata a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: rgb(73, 79, 164);
+}
+
+.frequency-metadata svg {
+    margin-top: 12px;
 }
 
 .dataset-description,
@@ -521,16 +537,12 @@ select {
         color: rgba(255, 255, 255, 0.87);
     }
 
-    .dataset-attribution a {
-        color: rgba(177, 178, 225, 0.95);
-    }
-
-    .menu-container a {
-        color: rgba(177, 178, 225, 0.95);
-    }
-
-    .startup-suggestion {
-        color: rgba(177, 178, 225, 0.95);
+    .instructions a,
+    .startup-suggestion,
+    .menu-container a,
+    .dataset-attribution a,
+    .frequency-metadata a {
+        color: rgb(177, 189, 225);
     }
 
     input::placeholder {
