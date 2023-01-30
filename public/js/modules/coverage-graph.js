@@ -25,7 +25,7 @@ function renderCoverageGraph(datasetName, percentages, term, frequency, containe
     transformedPercentages.push({ x: 0, y: 0 });
     let start = 1;
     for (const point of percentages) {
-        transformedPercentages.push({ x: start, y: point * 100 });
+        transformedPercentages.push({ x: start, y: point });
         if (start < separator) {
             start = separator;
         } else {
@@ -38,11 +38,12 @@ function renderCoverageGraph(datasetName, percentages, term, frequency, containe
         yLabel: "Percentage of words recognized",
         xLabel: "Number of words learned",
         xDomain: [0, getMaxX(frequency)],
-        yDomain: [0, 100],
+        yDomain: [0, 1],
         width: container.offsetWidth,
         height: 350,
         color: 'rgba(177, 178, 225)',
-        strokeWidth: 2.5
+        strokeWidth: 2.5,
+        yFormat: '%'
     });
     const coverage = transformedPercentages[getCoverageIndex(frequency, transformedPercentages.length)].y;
     renderExplanation(datasetName, term, coverage, container);
@@ -52,7 +53,7 @@ function renderCoverageGraph(datasetName, percentages, term, frequency, containe
 function renderExplanation(datasetName, term, coverage, container) {
     let explanationContainer = document.createElement('p');
     explanationContainer.classList.add('instructions', 'coverage-explanation');
-    explanationContainer.innerText = `In ${datasetName}, if you learned each word in order of frequency up to "${term}", you'd know approximately ${coverage.toFixed(2)}% of all words.`;
+    explanationContainer.innerText = `In ${datasetName}, if you learned each word in order of frequency up to "${term}", you'd know approximately ${(coverage * 100).toFixed(1)}% of all words.`;
     container.appendChild(explanationContainer);
 }
 
