@@ -40,6 +40,7 @@ function renderCoverageGraph(datasetName, percentages, term, frequency, containe
         xDomain: [0, getMaxX(frequency)],
         yDomain: [0, 100],
         width: container.offsetWidth,
+        height: 350,
         color: 'rgba(177, 178, 225)',
         strokeWidth: 2.5
     });
