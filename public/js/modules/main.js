@@ -258,8 +258,10 @@ function renderTextToSpeech(text, container, anchors) {
             if (event.charIndex == null || event.charLength == null) {
                 return false;
             }
+            const eventEnd = event.charIndex + (event.charLength || 1);
+            const eventStart = event.charIndex;
             anchors.forEach(anchor => {
-                if (anchor.start >= event.charIndex && anchor.end <= (event.charIndex + (event.charLength || 1))) {
+                if (eventStart >= anchor.start && eventEnd <= anchor.end) {
                     anchor.element.style.backgroundColor = '#6de200';
                 } else {
                     anchor.element.removeAttribute('style');
