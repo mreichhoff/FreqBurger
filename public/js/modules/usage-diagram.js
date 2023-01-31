@@ -150,7 +150,7 @@ function renderUsageDiagramForDataset(term, collocations, dataset, container, co
             nodeAlign: 'center',
             linkTitle: d => `${elements.labels[d.source.id]} ${elements.labels[d.target.id]}: ${d.value}`,
             linkClickHandler: (d, i) => renderDetails(elements.collocations[i.id], collocationHandler),
-            fontColor: window.matchMedia("(prefers-color-scheme: dark)").matches ? 'rgba(255, 255, 255, 0.87)' : 'rgba(0, 0, 0, 0.87)',
+            fontColor: 'currentColor',
             fontSize: getFontSize(container.offsetWidth)
         });
         container.innerHTML = '';
