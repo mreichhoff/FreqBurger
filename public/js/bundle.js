@@ -19391,7 +19391,7 @@
             yDomain: [0, 1],
             width: container.offsetWidth,
             height: 350,
-            color: 'rgba(177, 178, 225)',
+            color: '#68aaee',
             strokeWidth: 2.5,
             yFormat: '%'
         });
@@ -19831,9 +19831,12 @@
     function renderFreq(freq, term, metadata, datasetId, container) {
         const frequencyContainer = document.createElement('div');
         frequencyContainer.classList.add('frequency-metadata');
-        frequencyContainer.innerHTML = `${term} is the ${freq}${getOrderingSuffix(freq)} most common word in ${metadata['name']}. `;
+        frequencyContainer.innerHTML = `<p>${term} is the ${freq}${getOrderingSuffix(freq)} most common word in ${metadata['name']}.</p>`;
+        const toggleContainer = document.createElement('p');
         const toggleGraphLink = document.createElement('a');
-        toggleGraphLink.innerText = 'Show graph';
+        toggleContainer.appendChild(toggleGraphLink);
+        toggleGraphLink.classList.add('show-button');
+        toggleGraphLink.innerText = 'Show frequency graph';
         // TODO: there is probably a better way of toggling...
         let expanded = false;
         toggleGraphLink.addEventListener('click', function () {
@@ -19842,11 +19845,11 @@
                 toggleGraphLink.innerText = 'Hide graph';
             } else {
                 hideCoverageGraph(frequencyContainer);
-                toggleGraphLink.innerText = 'Show graph';
+                toggleGraphLink.innerText = 'Show frequency graph';
             }
             expanded = !expanded;
         });
-        frequencyContainer.appendChild(toggleGraphLink);
+        frequencyContainer.appendChild(toggleContainer);
         container.appendChild(frequencyContainer);
     }
     function renderDatasetMetadata(metadata, container) {

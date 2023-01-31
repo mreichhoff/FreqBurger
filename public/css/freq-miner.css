@@ -1,6 +1,6 @@
 body {
     background: #fcfcfc;
-    color: rgba(0, 0, 0, 0.87);
+    color: rgba(0, 0, 0, 0.95);
     font-family: Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -38,7 +38,7 @@ select {
 .frequency-metadata a {
     cursor: pointer;
     text-decoration: underline;
-    color: rgb(73, 79, 164);
+    color: rgb(21, 36, 255);
 }
 
 .frequency-metadata svg {
@@ -122,6 +122,10 @@ select {
 
 .control.right {
     text-align: right;
+}
+
+.show-button {
+    margin-top: 10px;
 }
 
 .tabs {
@@ -528,7 +532,7 @@ select {
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
-        color: rgba(255, 255, 255, 0.87);
+        color: rgba(255, 255, 255, 0.9);
     }
 
     input[type="search"] {
@@ -542,7 +546,8 @@ select {
     .menu-container a,
     .dataset-attribution a,
     .frequency-metadata a {
-        color: rgb(177, 189, 225);
+        color: #68aaee;
+        font-weight: 400;
     }
 
     input::placeholder {
