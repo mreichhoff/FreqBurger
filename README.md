@@ -38,11 +38,11 @@ It does this via sankey flow diagrams to understand what words commonly come bef
 
 In the sankey case, the diagram shows only the 6 most common 2-word collocations and the 6 most common 3-word collocations to reduce clutter. The user can also quickly find example sentences using the collocations in the diagram.
 
-<img src="./sankey-sample.png" width="640" height="320" alt="sankey-sample"/>
+![sankey-sample](./sankey-sample.png)
 
 The frequency diagrams attempt to show how much of the language a user could understand by learning in order of frequency up to the searched word, with the expectation that in most languages the top few thousand words account for an outsized proportion of words used.
 
-<img src="./freq-sample.png" width="592" height="320" alt="frequency-graph-sample"/>
+![freq-sample](./freq-sample.png)
 
 ## Naming
 
