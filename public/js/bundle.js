@@ -19557,7 +19557,11 @@
     const menuContainer = document.getElementById('menu-container');
 
     const startupContainer = document.getElementById('startup-container');
+    const multiLanguageStarter = document.getElementById('multi-language-starter');
     const examplesFallback = document.getElementById("examples-fallback");
+    const wordSuggestionElement = document.getElementById('word-suggestion');
+    const phraseSuggestionElement = document.getElementById('phrase-suggestion');
+    const baseSuggestionElement = document.getElementById('base-suggestion');
 
     // ordering is important
     const tabs = [
@@ -19576,7 +19580,12 @@
                 // include preferred names because of a recent iOS update having odd voices
                 preferredName: 'Thomas'
             },
-            'label': 'French'
+            'label': 'French',
+            'starters': {
+                word: 'parle',
+                phrase: 'tout le monde en parle',
+                base: 'classic'
+            }
         },
         'spanish': {
             'key': 'es',
@@ -19584,7 +19593,12 @@
                 locales: ['es-ES', 'es_ES'],
                 preferredName: 'Mónica'
             },
-            'label': 'Spanish'
+            'label': 'Spanish',
+            'starters': {
+                word: 'siguiente',
+                phrase: 'la mañana siguiente',
+                base: 'classic'
+            }
         },
         'italian': {
             'key': 'it',
@@ -19592,7 +19606,12 @@
                 locales: ['it-IT', 'it_IT'],
                 preferredName: 'Alice'
             },
-            'label': 'Italian'
+            'label': 'Italian',
+            'starters': {
+                word: 'bisogno',
+                phrase: 'ha bisogno di',
+                base: 'walk'
+            }
         },
         'german': {
             'key': 'de',
@@ -19601,7 +19620,12 @@
                 preferredName: 'Anna'
             },
             'label': 'German',
-            'noLowering': true
+            'noLowering': true,
+            'starters': {
+                word: 'schnell',
+                phrase: 'schnell wie möglich',
+                base: 'contact'
+            }
         },
         'chinese': {
             'key': 'zh',
@@ -19610,7 +19634,12 @@
                 preferredName: 'Tingting'
             },
             'label': 'Chinese',
-            'noSpaces': true
+            'noSpaces': true,
+            'starters': {
+                word: '照顾',
+                phrase: '照顾好自己',
+                base: 'yourself'
+            }
         },
         'japanese': {
             'key': 'ja',
@@ -19619,7 +19648,12 @@
                 preferredName: 'Kyoko'
             },
             'label': 'Japanese',
-            'noSpaces': true
+            'noSpaces': true,
+            'starters': {
+                word: '指導',
+                phrase: 'の指導者',
+                base: 'classic'
+            }
         },
         'english': {
             'key': 'en',
@@ -20050,45 +20084,69 @@
         languageChangeHandler();
         setSearchInstructions();
         const term = decodeURIComponent(state.term);
-        searchBox.value = term;
-        if (state.queryType === queryTypes.base) {
-            toggleCheckbox.checked = true;
-            setSearchInstructions();
+        if (term) {
+            searchBox.value = term;
+            if (state.queryType === queryTypes.base) {
+                toggleCheckbox.checked = true;
+                setSearchInstructions();
+            } else {
+                toggleCheckbox.checked = false;
+                setSearchInstructions();
+            }
+            query(term, state.queryType, false).then(_ => {
+                // we might be showing diagrams...
+                for (const entry of tabs) {
+                    if (entry.tab.classList.contains('active')) {
+                        entry.callback();
+                    }
+                }
+            });
         } else {
-            toggleCheckbox.checked = false;
-            setSearchInstructions();
+            startupContainer.removeAttribute('style');
+            const targetLanguage = state.languages.target;
+            if (targetLanguage in languageMetadata) {
+                multiLanguageStarter.style.display = 'none';
+                const starters = languageMetadata[targetLanguage].starters;
+                wordSuggestionElement.href = `/${targetLanguage}/${starters.word}`;
+                wordSuggestionElement.innerText = starters.word;
+                phraseSuggestionElement.href = `/${targetLanguage}/${starters.phrase}`;
+                phraseSuggestionElement.innerText = starters.phrase;
+                baseSuggestionElement.href = `/${targetLanguage}/${starters.base}?queryType=base`;
+                baseSuggestionElement.innerText = starters.base;
+
+            } else {
+                multiLanguageStarter.removeAttribute('style');
+            }
         }
-        query(term, state.queryType, false);
+
     }
 
-    function parseUrl(path) {
+    function parseUrl(path, queryString) {
         if (path[0] === '/') {
             path = path.substring(1);
         }
         const segments = path.split('/');
-        if (segments.length !== 2) {
+        if (segments.length > 2 || !segments[0]) {
             return null;
         }
         const targetLanguage = segments[0];
-        const term = segments[1];
+        const term = segments.length === 2 ? segments[1] : '';
+        const urlParams = new URLSearchParams(queryString);
         return {
             languages: {
-                base: DEFAULT_BASE_LANGUAGE,
+                base: urlParams.get('base') || DEFAULT_BASE_LANGUAGE,
                 target: targetLanguage
             },
             term: term,
-            queryType: queryTypes.target
+            queryType: urlParams.get('queryType') || queryTypes.target
         };
     }
 
     if (history.state) {
         loadState(history.state);
     } else if (document.location.pathname !== '/') {
-        let state = parseUrl(document.location.pathname);
+        let state = parseUrl(document.location.pathname, window.location.search);
         if (state) {
-            const urlParams = new URLSearchParams(window.location.search);
-            state.queryType = urlParams.get('queryType') || queryTypes.target;
-            state.languages.base = urlParams.get('base') || DEFAULT_BASE_LANGUAGE;
             loadState(state);
             history.pushState(state, '', document.location);
         }
@@ -20105,6 +20163,7 @@
             clearResults();
             clearDefinitions();
             resultsTypesContainer.style.display = 'none';
+            startupContainer.removeAttribute('style');
             return;
         }
         loadState(state);

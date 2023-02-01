@@ -45,7 +45,7 @@
             </form>
         </div>
         <div id="startup-container" style="display:none">
-            <p class="instructions">
+            <p class="instructions" id="multi-language-starter">
                 Not sure where to start? Check out a sample in
                 <a class="startup-suggestion" href="/french/parle">French</a>,
                 <a class="startup-suggestion" href="/japanese/指導">Japanese</a>,
@@ -55,9 +55,11 @@
                 <a class="startup-suggestion" href="/italian/bisogno">Italian</a>.
             </p>
             <p class="instructions">
-                You can also search for phrases, like <a class="startup-suggestion"
+                You can search for words, like <a id="word-suggestion" class="startup-suggestion"
+                    href="/french/parle">parle</a>.
+                You can also search for phrases, like <a id="phrase-suggestion" class="startup-suggestion"
                     href="/french/tout le monde en parle">tout le monde en parle</a>, or for English translations, like
-                <a class="startup-suggestion" href="/french/classic?queryType=base">classic.</a>
+                <a id="base-suggestion" class="startup-suggestion" href="/french/classic?queryType=base">classic</a>.
             </p>
             <p class="instructions">
                 You can get more info and check out the code on <a
