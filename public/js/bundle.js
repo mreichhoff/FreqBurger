@@ -20030,6 +20030,7 @@
                 }
                 newUrl += newQueryString[newQueryString.length - 1];
             }
+            document.title = `${cleanTerm} | ${languageMetadata[targetLanguageSelector.value].label} | FreqBurger`;
             if (shouldPushState) {
                 history.pushState({
                     term: term,
@@ -20104,6 +20105,7 @@
             startupContainer.removeAttribute('style');
             const targetLanguage = state.languages.target;
             if (targetLanguage in languageMetadata) {
+                document.title = `${languageMetadata[targetLanguage].label} | FreqBurger`;
                 multiLanguageStarter.style.display = 'none';
                 const starters = languageMetadata[targetLanguage].starters;
                 wordSuggestionElement.href = `/${targetLanguage}/${starters.word}`;
