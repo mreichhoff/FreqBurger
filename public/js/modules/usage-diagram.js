@@ -1,6 +1,7 @@
 import { sankey, sankeyLinkHorizontal, sankeyCenter, sankeyJustify, sankeyRight, sankeyLeft } from "d3-sankey";
 import { map, schemeTableau10, union, scaleOrdinal, format as d3format, create } from "d3";
 import { renderCollocation } from "./collocations";
+import { datasetMetadata } from "./config";
 
 const datasetSelect = document.getElementById('usage-diagram-dataset-selector');
 const treeDetailList = document.getElementById('usage-diagram-detail-list');
@@ -166,7 +167,7 @@ function renderUsageDiagram(term, collocations, container, collocationHandler) {
             continue;
         }
         let option = document.createElement('option');
-        option.innerText = dataset;
+        option.innerText = datasetMetadata[dataset].name;
         option.value = dataset;
         datasetSelect.appendChild(option);
         let collocationList = collocations[dataset];
