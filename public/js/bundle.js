@@ -19789,13 +19789,13 @@
                 }
                 const eventEnd = event.charIndex + (event.charLength || 1);
                 const eventStart = event.charIndex;
-                anchors.forEach(anchor => {
-                    if (eventStart >= anchor.start && eventEnd <= anchor.end) {
-                        anchor.element.style.backgroundColor = '#6de200';
-                    } else {
+                for (const anchor of anchors) {
+                    if (eventEnd <= anchor.start || anchor.end <= eventStart) {
                         anchor.element.removeAttribute('style');
+                    } else {
+                        anchor.element.style.backgroundColor = '#6de200';
                     }
-                });
+                }
             });
             utterance.addEventListener('end', function () {
                 anchors.forEach(anchor => {
@@ -20113,7 +20113,6 @@
                 phraseSuggestionElement.innerText = starters.phrase;
                 baseSuggestionElement.href = `/${targetLanguage}/${starters.base}?queryType=base`;
                 baseSuggestionElement.innerText = starters.base;
-
             } else {
                 multiLanguageStarter.removeAttribute('style');
             }
