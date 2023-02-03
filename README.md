@@ -54,6 +54,8 @@ sandwich, I guess?
 
 The site is built in plain JavaScript, with a firestore backend. D3 generates the visualizations.
 
+The files in `scripts/` process raw data from the sources listed in the acknowledgements; the files in `firebase/` load the processed data into firestore; frontend code is all in `public/`.
+
 While a system like ElasticSearch would likely be a better fit, a simple key-value pair store is 
 used for simplicity (for now). This is aided by the fact that the total number of words and ngrams
 in a given language is generally quite manageable; and by the fact that languages tend to evolve
@@ -74,4 +76,12 @@ Tatoeba is licensed under [CC-BY 2.0 FR](https://creativecommons.org/licenses/by
 
 ## Project Status
 
-The project is a prototype. Content moderation (including further screening for offensive content; a rudimentary blocklist has already been applied, but it's far from perfect) and improvement of the translations are both ongoing efforts.
+The project is a prototype, and under development.
+
+### Known Issues
+
+* Privileging word frequency ranks can favor sentences with typos or grammatical errors, like if a less-common form is replaced with a more-common one (imagine replacing making a typo and replacing `tea` with `the` or something in English).
+* More content moderation, including further screening for offensive content, is needed. A rudimentary blocklist has already been applied, but it's not perfect.
+* More filtering of junk words and characters is needed.
+* Improving the sankey diagrams (with more paths, perhaps) is another potential work item.
+* General code cleanup, tests, etc. would be desirable.
