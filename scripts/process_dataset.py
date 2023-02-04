@@ -100,7 +100,7 @@ def main():
 
                 key = target.translate(str.maketrans(
                     '', '', (string.punctuation + '¿' + '¡'))).replace(' ', '')
-                if key in seen:
+                if key in seen or len(target_tokens) == 0:
                     continue
                 seen.add(key)
 
