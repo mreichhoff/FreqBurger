@@ -20170,12 +20170,15 @@
 
     function switchToTab(id) {
         for (const entry of tabs) {
+            const separator = entry.tab.querySelector('.separator');
             if (entry.tab.id === id) {
                 entry.tab.classList.add('active');
+                separator.classList.add('expand');
                 entry.container.removeAttribute('style');
                 entry.callback();
             } else {
                 entry.tab.classList.remove('active');
+                separator.classList.remove('expand');
                 entry.container.style.display = 'none';
             }
         }
