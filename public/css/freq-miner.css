@@ -8,12 +8,16 @@ body {
     height: 100%;
 }
 
+input[type="search"] {
+    background-color: #fff;
+}
+
 select {
     font-size: 14px;
 }
 
 h1 {
-    font-size: 30px;
+    font-size: 26px;
 }
 
 .main-header {
@@ -78,10 +82,10 @@ h1 {
 }
 
 .header-container {
-    max-width: 1400px;
-    margin: 4px auto;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 40px 1fr 40px;
+    border-bottom: 1px solid #3333;
 }
 
 .tree-container {
@@ -181,6 +185,7 @@ h1 {
 
 .base.example-text {
     font-weight: 300;
+    opacity: 0.85;
 }
 
 .example {
@@ -188,13 +193,13 @@ h1 {
 }
 
 .options-toggle {
-    font-size: 20px;
+    font-size: 28px;
     cursor: pointer;
     display: inline-block;
     margin: 4px 0;
     vertical-align: top;
     margin: 4px 0 0 14px;
-    line-height: 20px;
+    line-height: 28px;
     font-weight: bold;
 }
 
@@ -212,7 +217,7 @@ h1 {
 
 .less-options {
     color: #ff635f;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .example-option {
@@ -431,11 +436,13 @@ h1 {
 .search,
 .study {
     margin-right: 10px;
+    margin-top: 8px;
 }
 
 .icon-container {
     cursor: pointer;
     margin-left: 10px;
+    margin-top: 8px;
 }
 
 .menu {
@@ -542,7 +549,7 @@ h1 {
     input[type="search"] {
         background-color: rgba(74, 74, 74, 0.9);
         border: 1px solid #3333;
-        color: rgba(255, 255, 255, 0.87);
+        color: rgba(255, 255, 255, 0.9);
     }
 
     .instructions a,
@@ -558,16 +565,14 @@ h1 {
         color: #eeee;
     }
 
+    .header-container,
+    .example-option,
     .tabs {
-        border-bottom: 1px solid #eeee;
+        border-bottom: 1px solid #eee6;
     }
 
     .option-list {
-        border: 1px solid #eee4;
-    }
-
-    .example-option {
-        border-bottom: 1px solid #eeee;
+        border: 1px solid #eee6;
     }
 }
 
